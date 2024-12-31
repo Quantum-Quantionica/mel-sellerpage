@@ -7,22 +7,24 @@ export interface DynamicListProps<T extends WithId> {
   title: string;
   nameKey: keyof T;
   provider: Provider<T>;
+  deleteInterceptor?: (item: T) => Promise<boolean> | boolean;
 }
 
-export default function DynamicList<T extends WithId>({ title, nameKey, provider }: DynamicListProps<T>) {
+export default function DynamicList<T extends WithId>({ title, nameKey, provider, deleteInterceptor }: DynamicListProps<T>) {
   const [items, setItems] = useState<T[]>([]);
 
   useEffect(() => {
     provider.listAll().then(setItems);
   }, []);
 
-  const handleDelete = async (id: string) => {
-    await provider.delete(id);
-    setItems(items.filter(item => item.id !== id));
-  };
+  const handleDelete = async (item: T) => {
+    if(!item.id) return;
+    if(!window.confirm(`Are you sure you want to delete ${item[nameKey]}?`)) return;
 
-  // get route url base
-  
+    if(deleteInterceptor && !(await deleteInterceptor(item))) return
+    await provider.delete(item.id);
+    setItems(items.filter(listItem => listItem.id !== item.id));
+  };
 
   return (
     <div>
@@ -31,9 +33,9 @@ export default function DynamicList<T extends WithId>({ title, nameKey, provider
         {items.map(item => (
           item.id && <li key={item.id}>
             <Link to={item.id}>
-              {item[nameKey] as string || `No ${nameKey} found`}
+              {item[nameKey] as string || `No ${nameKey as string} found`}
             </ Link>
-            <button onClick={() => handleDelete(item.id)}>Delete</button>
+            <button onClick={() => handleDelete(item)}>Delete</button>
           </li>
         ))}
       </ul>

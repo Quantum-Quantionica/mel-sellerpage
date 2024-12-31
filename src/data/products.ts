@@ -10,7 +10,7 @@ export interface Product {
     id?: string;
     name: string;
     description: string;
-    images?: string[];
+    image?: string[];
     youtube?: string;
     price: number;
     paymentInfo: string;
@@ -21,7 +21,7 @@ export interface Product {
 export default class ProductsProvider extends AbstractProvider<Product> {
   public collectionName = "products";
   public keys: (keyof Product)[] = [
-    "name", "description", "images", "youtube", "price", "paymentInfo", "infos", "reviews"
+    "name", "description", "image", "youtube", "price", "paymentInfo", "infos", "reviews"
   ];
   
 }

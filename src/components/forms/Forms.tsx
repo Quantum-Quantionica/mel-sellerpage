@@ -38,14 +38,13 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
     <div>
       <h1>{title}</h1>
       {provider.keys.map(key => {
-        const stringKey = key as string;
         const value = formData[key];
         const Field: FieldRenderer<T> = (fieldRenderers?.[key] || Input) as FieldRenderer<T>;
 
         return (
           <Field
-            key={stringKey}
-            name={stringKey}
+            key={key as string}
+            name={key}
             value={value}
             item={formData}
             onChange={newValue => handleChange(key, newValue)}
@@ -61,7 +60,7 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
 export type FieldRendererPros<T extends WithId> = {
   provider: Provider<T>
   item: Partial<T>
-  name: string
+  name: keyof T
   value: any
   onChange: (value: any) => void
 };
