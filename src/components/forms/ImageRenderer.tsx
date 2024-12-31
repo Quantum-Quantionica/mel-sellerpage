@@ -4,6 +4,7 @@ import { ref, uploadBytesResumable, deleteObject, getDownloadURL } from "firebas
 import { FieldRendererPros } from "./Forms";
 import { Provider, WithId } from "../../data/provider";
 import { storage } from "../../configs/firebase";
+import CachedImage from "../CacheImage";
 
 function getFileRef(item: WithId, provider: Provider<any>) {
   const hash = Math.random().toString(36).substring(7);
@@ -40,7 +41,7 @@ export async function deleteImage(url: string) {
 }
 
 const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item, save }: FieldRendererPros<T>) => {
-  const [state, setState] = useState<'ok'|'uploading'|'deleting'>('ok');
+  const [state, setState] = useState<'initial'|'uploading'|'deleting'|'finish'>('initial');
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,7 +53,7 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
     } else {
       setError("Failed to delete image. Please try again.");
     }
-    setState('ok');
+    setState('finish');
   }
 
   const handleFileChange = async (file: File) => {
@@ -90,7 +91,7 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
           onChange(downloadURL);
           setUploadProgress(0);
-          setState('ok');
+          setState('finish');
           resolve(downloadURL);
         }
       );
@@ -98,17 +99,18 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
   };
 
   useEffect(() => {
-    if(item.id) {
-      save()
+    if (item.id && value && state != 'initial') {
+      save();
     }
-  } ,[value]);
+    setState('finish');
+  }, [value]);
 
   return (
     <div>
       <label>{name}</label>
       {value && (
         <div>
-          <img src={value} alt="Preview" style={{ width: "100%", maxWidth: "600px", margin: "10px 0" }} />
+          <CachedImage src={value} alt="Preview" style={{ width: "100%", maxWidth: "600px", margin: "10px 0" }} />
           <p>URL: {value}</p>
         </div>
       )}
@@ -119,12 +121,12 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
           const file = e.target.files?.[0];
           if (file) handleFileChange(file);
         }}
-        disabled={state != 'ok'}
+        disabled={state != 'finish'}
       />
       {state == 'deleting' && <p>Deleting...</p>}
       {state == 'uploading' && <p>Uploading... {Math.round(uploadProgress)}%</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={handleDelete} disabled={state != 'ok' || !value}>Delete</button>
+      <button onClick={handleDelete} disabled={state != 'finish' || !value}>Delete</button>
     </div>
   );
 };

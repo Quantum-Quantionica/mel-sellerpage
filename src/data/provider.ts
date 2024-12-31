@@ -9,7 +9,7 @@ export interface Provider<T extends WithId> {
   keys: (keyof T)[];
   collectionName: string;
   listAll: (filter?: Partial<T>) => Promise<T[]>;
-  save: (item: Partial<T>) => Promise<Partial<T>>;
+  save: (item: Partial<T>, validate: boolean) => Promise<Partial<T>>;
   delete: (id: string) => Promise<void>;
   getById: (id: string) => Promise<T | null>;
 }
@@ -31,7 +31,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     return item;
   }
 
-  protected validateData(item: Partial<T>) {
+  private validateData(item: Partial<T>) {
     for (const key of this.requiredFields) {
       if (!item[key] || typeof item[key] === "string" && item[key].trim() === "") {
         throw new Error(`Field ${key} is required`);
@@ -55,9 +55,9 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
   }
 
-  async save(item: Partial<T>): Promise<Partial<T>> {
+  async save(item: Partial<T>, validate: boolean = false): Promise<Partial<T>> {
     this.filterData(item);
-    this.validateData(item);
+    if(validate) this.validateData(item);
     const partialItem = { ...item, updatedAt: serverTimestamp() };
     if (item.id) {
       partialItem.id = deleteField();

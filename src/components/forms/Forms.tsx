@@ -21,10 +21,10 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSave = async (): Promise<Partial<T>> => {
+  const handleSave = async (validate: boolean = false): Promise<Partial<T>> => {
     let newData = formData;
     try {
-      newData = await provider.save(formData as T);
+      newData = await provider.save(formData as T, validate);
       if (!id && newData.id) {
         const pathSegments = location.pathname.split('/');
         pathSegments[pathSegments.length - 1] = newData.id;
@@ -67,7 +67,7 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
         );
       })}
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={handleSave}>Save</button>
+      <button onClick={() => handleSave(true)}>Save</button>
     </div>
   );
 }
