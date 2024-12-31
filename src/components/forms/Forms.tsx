@@ -7,23 +7,25 @@ export interface DynamicFormProps<T extends WithId> {
   title: string;
   provider: Provider<T>;
   fieldRenderers?: { [key in keyof T]?: FieldRenderer<T> };
+  fieldConfigs?: { [key in keyof T]: object };
 }
 
-export default function DynamicForm<T extends WithId>({ id, title, provider, fieldRenderers }: DynamicFormProps<T>) {
+export default function DynamicForm<T extends WithId>({ id, title, provider, fieldRenderers, fieldConfigs }: DynamicFormProps<T>) {
   const [formData, setFormData] = useState<Partial<T>>({});
 
   const handleChange = (key: keyof T, value: any) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSave = async () => {
+  const handleSave = async (): Promise<Partial<T>> => {
+    let newData = formData;
     try {
-      const newData = await provider.save(formData as T);
+      newData = await provider.save(formData as T);
       setFormData(newData);
-      alert("Saved successfully!");
     } catch (error) {
       console.error("Error saving:", error);
     }
+    return newData;
   };
 
   useEffect(() => {
@@ -50,6 +52,8 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
             item={formData}
             onChange={newValue => handleChange(key, newValue)}
             provider={provider}
+            configs={fieldConfigs?.[key] as any}
+            save={handleSave}
           />
         );
       })}
@@ -58,12 +62,14 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
   );
 }
 
-export type FieldRendererPros<T extends WithId> = {
+export type FieldRendererPros<T extends WithId, Configs=any> = {
   provider: Provider<T>
   item: Partial<T>
   name: keyof T
   value: any
+  configs?: Configs
   onChange: (value: any) => void
+  save: () => Promise<Partial<T>>
 };
 export type FieldRenderer<T extends WithId> = React.FC<FieldRendererPros<T>>;
 
@@ -81,26 +87,35 @@ export const TextArea = <T extends WithId>({ name, value, onChange }: FieldRende
   </div>
 );
 
-interface ListRendererProps<T extends WithId> extends FieldRendererPros<T> {
+export interface ListRendererConfigs<T extends WithId> {
+  renderer: FieldRenderer<T>
+  autoSave: boolean
+}
+interface ListRendererProps<T extends WithId> extends FieldRendererPros<T, ListRendererConfigs<T>> {
   value: string[];
 }
-export const ListRenderer = <T extends WithId>({ name, value, onChange, provider, item }: ListRendererProps<T>) => (
-  <div>
+export function ListRenderer<T extends WithId>({ name, value, onChange, provider, item, configs, save }: ListRendererProps<T>) {
+  const Element = configs?.renderer || Input;
+  return <div>
     <label>{name}</label>
-    {(value || []).map((itemValue, index) => (
-      <Input
-        key={index}
-        item={item}
-        provider={provider}
-        name={`${name} [${index + 1}]`}
-        value={itemValue}
-        onChange={(newVal) => {
-          const newList = [...value];
-          newList[index] = newVal;
-          onChange(newList);
-        }}
-      />
-    ))}
-    <button type="button" onClick={() => onChange([...(value || []), ""]) }>Add Item</button>
+    <ul>
+      {(value || []).map((itemValue, index) => (<li key={index}>
+        <Element
+          item={item}
+          provider={provider}
+          name={`${name}[${index}]`}
+          value={itemValue}
+          onChange={(newVal) => {
+            const newList = [...value];
+            newList[index] = newVal;
+            onChange(newList);
+            if(configs?.autoSave) save();
+          }}
+          configs={configs}
+          save={save}
+        />
+      </li>))}
+    </ul>
+    <button type="button" onClick={() => onChange([...(value || []), ""]) }>Add {name} Item</button>
   </div>
-)
+}

@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 import ProductsProvider, { Product } from "../../data/products";
-import DynamicForm, { ListRenderer, TextArea } from "../../components/forms/Forms";
+import DynamicForm, { ListRenderer, ListRendererConfigs, TextArea } from "../../components/forms/Forms";
 import ImageRenderer, { deleteImage } from "../../components/forms/ImageRenderer";
 import DynamicList from "../../components/forms/List";
 
@@ -14,8 +14,12 @@ const ProductsPage = () => {
     return <>
       <Link to={newUrl}>Add Product</Link>
       <DynamicList provider={productsProvider} title="Products" nameKey="name" deleteInterceptor={async item => {
+        const images = item.images || [];
+        for(const url in images) {
+          await deleteImage(url);
+        }
         if(!item.image) return true;
-        return await deleteImage(item, "image", productsProvider);
+        return await deleteImage(item.image);
       }} />
     </>;
 
@@ -27,8 +31,17 @@ const ProductsPage = () => {
       fieldRenderers={{
         description: TextArea,
         image: ImageRenderer,
+        images: ListRenderer,
         tags: ListRenderer,
         reviews: ListRenderer,
+      }}
+      fieldConfigs={{
+        reviews: {
+          renderer: TextArea,
+        } as ListRendererConfigs<Product>,
+        images: {
+          renderer: ImageRenderer,
+        } as ListRendererConfigs<Product>,
       }}
     />
   );

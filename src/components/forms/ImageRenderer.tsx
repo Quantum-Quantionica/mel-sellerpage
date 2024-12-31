@@ -1,22 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getStorage, ref, uploadBytesResumable, deleteObject, getDownloadURL } from "firebase/storage";
 import { FieldRendererPros } from "./Forms";
 import { Provider, WithId } from "../../data/provider";
-import { deleteField } from "firebase/firestore";
 
 function getFileRef(item: WithId, provider: Provider<any>) {
   const storage = getStorage();
-  const fileName = `${provider.collectionName}/${item.id}`;
+  const hash = Math.random().toString(36).substring(7);
+  const fileName = `${provider.collectionName}/${item.id}/${hash}`;
   const fileRef = ref(storage, fileName);
 
   return fileRef
 }
 
-export async function deleteImage<T extends WithId>(item: Partial<T>, fieldName: keyof T, provider: Provider<T>) {
-  const fileRef = getFileRef(item, provider);
+export async function deleteImage(url: string) {
+  const fileRef = ref(getStorage(), url);
   try {
     await deleteObject(fileRef);
-    await provider.save({ id: item.id, [fieldName]: deleteField() } as Partial<T>);
   } catch (err) {
     console.error("Error deleting image:", err);
     return false;
@@ -24,21 +23,15 @@ export async function deleteImage<T extends WithId>(item: Partial<T>, fieldName:
   return true;
 }
 
-async function save<T extends WithId>(item: Partial<T>, provider: Provider<T>) {
-  await provider.save(item).then(newData => {
-    item.id = newData.id;
-  });
-}
-
-const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item }: FieldRendererPros<T>) => {
+const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item, save }: FieldRendererPros<T>) => {
   const [state, setState] = useState<'ok'|'uploading'|'deleting'>('ok');
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
 
   const handleDelete = async () => {
     setState('deleting');
-    if(await deleteImage(item, name, provider)){
-      onChange(null);
+    if(await deleteImage(value)){
+      onChange("");
     } else {
       setError("Failed to delete image. Please try again.");
     }
@@ -49,7 +42,7 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
     if (!file) return;
     setError(null);
     if(item.id == null) {
-      await save(item, provider);
+      item.id = (await save()).id;
       console.warn("Item id is null, saving item first.");
     }
     if (value) {
@@ -73,12 +66,17 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
       async () => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
         onChange(downloadURL);
-        provider.save({ id: item.id, [name]: downloadURL } as Partial<T>);
         setUploadProgress(0);
         setState('ok');
       }
     );
   };
+
+  useEffect(() => {
+    if(item.id) {
+      save()
+    }
+  } ,[value]);
 
   return (
     <div>

@@ -15,10 +15,11 @@ export interface Provider<T extends WithId> {
 }
 
 export type ProviderArrayFilter<T> = (list: T[]) => T[];
+export type ProviderArrayFilters<T> = {[key in keyof T]?: ProviderArrayFilter<string>};
 export default abstract class AbstractFirestoreProvider<T extends WithId> implements Provider<T> {
   public abstract collectionName: string;
   public abstract keys: (keyof T)[];
-  protected arrayFieldsFilter: Partial<Record<keyof T, ProviderArrayFilter<string>>> = {}
+  protected abstract arrayFieldsFilter: ProviderArrayFilters<T>
 
   private filterData(item: Partial<T>) {
     for (const entry of Object.entries(this.arrayFieldsFilter)) {
