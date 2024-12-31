@@ -99,11 +99,11 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
   };
 
   useEffect(() => {
-    if (item.id && value && state != 'initial') {
+    if (item.id && value && state !== 'initial') {
       save();
     }
     setState('finish');
-  }, [value]);
+  }, [value, item.id, state, save]);
 
   return (
     <div>
@@ -121,12 +121,12 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
           const file = e.target.files?.[0];
           if (file) handleFileChange(file);
         }}
-        disabled={state != 'finish'}
+        disabled={state !== 'finish'}
       />
-      {state == 'deleting' && <p>Deleting...</p>}
-      {state == 'uploading' && <p>Uploading... {Math.round(uploadProgress)}%</p>}
+      {state === 'deleting' && <p>Deleting...</p>}
+      {state === 'uploading' && <p>Uploading... {Math.round(uploadProgress)}%</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={handleDelete} disabled={state != 'finish' || !value}>Delete</button>
+      <button onClick={handleDelete} disabled={state !== 'finish' || !value}>Delete</button>
     </div>
   );
 };

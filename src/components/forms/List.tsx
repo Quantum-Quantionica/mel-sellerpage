@@ -15,7 +15,7 @@ export default function DynamicList<T extends WithId>({ title, nameKey, provider
 
   useEffect(() => {
     provider.listAll().then(setItems);
-  }, []);
+  }, [provider]);
 
   const handleDelete = async (item: T) => {
     if(!item.id) return;

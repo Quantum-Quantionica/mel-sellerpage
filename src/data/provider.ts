@@ -33,7 +33,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
 
   private validateData(item: Partial<T>) {
     for (const key of this.requiredFields) {
-      if (!item[key] || typeof item[key] === "string" && item[key].trim() === "") {
+      if (!item[key] || (typeof item[key] === "string" && item[key].trim() === "")) {
         throw new Error(`Field ${key} is required`);
       }
     }

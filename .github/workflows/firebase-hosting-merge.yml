@@ -25,21 +25,15 @@ jobs:
           node-version: 22.x
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: Restore cached Yarn
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Config Yarn Cache
         id: yarn-cache-restore
-        uses: actions/cache/restore@v4
+        uses: actions/cache@v4
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Yarn install
         run: yarn
-      - name: Save yarn cache
-        id: yarn-cache-save
-        uses: actions/cache/save@v4
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Build dist
         run: yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0

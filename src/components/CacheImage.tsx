@@ -49,18 +49,17 @@ interface CachedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
 
 const CachedImage: React.FC<CachedImageProps> = ({ src, ...props }) => {
   const [cachedSrc, setCachedSrc] = useState<string>("");
-  const fetchImage = async () => {
-    setCachedSrc(await getOrFetchImage(src));
-  };
-
   useEffect(() => {
+    const fetchImage = async () => {
+      setCachedSrc(await getOrFetchImage(src));
+    };
     if (src) {
       fetchImage();
     }
   }, [src]);
 
   if (!cachedSrc) return <span>Loading...</span>;
-  return <img {...props} src={cachedSrc} />;
+  return <img {...props} alt={props.alt} src={cachedSrc} />;
 };
 
 export default CachedImage;

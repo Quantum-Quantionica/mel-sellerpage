@@ -44,7 +44,7 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
         setFormData(item);
       });
     }
-  },[id]);
+  },[id, provider]);
 
   return (
     <div>
