@@ -18,7 +18,8 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
 
   const handleSave = async () => {
     try {
-      await provider.save(formData as T);
+      const newData = await provider.save(formData as T);
+      setFormData(newData);
       alert("Saved successfully!");
     } catch (error) {
       console.error("Error saving:", error);
@@ -86,7 +87,7 @@ interface ListRendererProps<T extends WithId> extends FieldRendererPros<T> {
 export const ListRenderer = <T extends WithId>({ name, value, onChange, provider, item }: ListRendererProps<T>) => (
   <div>
     <label>{name}</label>
-    {value.map((itemValue, index) => (
+    {(value || []).map((itemValue, index) => (
       <Input
         key={index}
         item={item}
@@ -100,6 +101,6 @@ export const ListRenderer = <T extends WithId>({ name, value, onChange, provider
         }}
       />
     ))}
-    <button type="button" onClick={() => onChange([...value, ""]) }>Add Item</button>
+    <button type="button" onClick={() => onChange([...(value || []), ""]) }>Add Item</button>
   </div>
 )

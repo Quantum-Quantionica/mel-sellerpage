@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 import ProductsProvider, { Product } from "../../data/products";
-import DynamicForm, { TextArea } from "../../components/forms/Forms";
+import DynamicForm, { ListRenderer, TextArea } from "../../components/forms/Forms";
 import ImageRenderer, { deleteImage } from "../../components/forms/ImageRenderer";
 import DynamicList from "../../components/forms/List";
 
@@ -27,6 +27,8 @@ const ProductsPage = () => {
       fieldRenderers={{
         description: TextArea,
         image: ImageRenderer,
+        tags: ListRenderer,
+        reviews: ListRenderer,
       }}
     />
   );

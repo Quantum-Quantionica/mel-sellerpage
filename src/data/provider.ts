@@ -9,14 +9,25 @@ export interface Provider<T extends WithId> {
   keys: (keyof T)[];
   collectionName: string;
   listAll: (filter?: Partial<T>) => Promise<T[]>;
-  save: (item: Partial<T>) => Promise<string>;
+  save: (item: Partial<T>) => Promise<Partial<T>>;
   delete: (id: string) => Promise<void>;
   getById: (id: string) => Promise<T | null>;
 }
 
+export type ProviderArrayFilter<T> = (list: T[]) => T[];
 export default abstract class AbstractFirestoreProvider<T extends WithId> implements Provider<T> {
   public abstract collectionName: string;
   public abstract keys: (keyof T)[];
+  protected arrayFieldsFilter: Partial<Record<keyof T, ProviderArrayFilter<string>>> = {}
+
+  private filterData(item: Partial<T>) {
+    for (const entry of Object.entries(this.arrayFieldsFilter)) {
+      const key = entry[0] as keyof T;
+      const filter = entry[1] as ProviderArrayFilter<string>;
+      item[key] = filter(item[key]);
+    }
+    return item;
+  }
 
   async listAll(filter?: Partial<T>): Promise<T[]> {
     const ref = collection(db, this.collectionName);
@@ -34,7 +45,8 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
   }
 
-  async save(item: Partial<T>): Promise<string> {
+  async save(item: Partial<T>): Promise<Partial<T>> {
+    this.filterData(item);
     const partialItem = { ...item, updatedAt: serverTimestamp() };
     if (item.id) {
       partialItem.id = deleteField();
@@ -48,7 +60,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
       item.id = newDocRef.id;
       console.log("New document created with ID:", newDocRef.id);
     }
-    return item.id;
+    return item;
   }
 
   async delete(id: string): Promise<void> {

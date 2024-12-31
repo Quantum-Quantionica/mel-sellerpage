@@ -16,12 +16,22 @@ export interface Product {
     paymentInfo: string;
     infos: InfoList[];
     reviews: string[];
+    tags: string[];
 }
 
 export default class ProductsProvider extends AbstractProvider<Product> {
   public collectionName = "products";
   public keys: (keyof Product)[] = [
-    "name", "description", "image", "youtube", "price", "paymentInfo", "infos", "reviews"
+    "name", "description", "image", "youtube", "price", "paymentInfo", "infos", "reviews", "tags"
   ];
-  
+  protected arrayFieldsFilter = {
+    reviews: this.filterStringArrays,
+    tags: this.filterStringArrays,
+  }
+
+  private filterStringArrays(list: string[]) {
+    return list
+      .map(item => item.trim())
+      .filter(item => item !== "");
+  }
 }

@@ -25,8 +25,8 @@ export async function deleteImage<T extends WithId>(item: Partial<T>, fieldName:
 }
 
 async function save<T extends WithId>(item: Partial<T>, provider: Provider<T>) {
-  await provider.save(item).then(id => {
-    item.id = id;
+  await provider.save(item).then(newData => {
+    item.id = newData.id;
   });
 }
 
