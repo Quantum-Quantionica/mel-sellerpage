@@ -1,17 +1,23 @@
 import './App.css';
 import AppRoutes from './AppRoutes';
-import Header, { menuItems } from '../components/Header';
+import AdminApp, { menuItems as adminMenus } from '../admin/AdminApp';
+
+import Header, { menuItems as appMenus } from '../components/Header';
 import Carrosel from '../components/Carrosel';
 import MainContent from '../components/MainContent';
 import Footer from '../components/Footer';
 
+
 function App() {
-  return <AppRoutes menus={menuItems}>
-    <Header />
-    <Carrosel />
-    <MainContent />
-    <Footer />
-  </AppRoutes>;
+  return <AppRoutes routes={[
+    { base: '/', routes: appMenus, rootElement: <>
+      <Header />
+      <Carrosel />
+      <MainContent />
+      <Footer />
+    </>},
+    { base: '/admin', routes: adminMenus, rootElement: <AdminApp /> },
+  ]} />
 }
 
 export default App;

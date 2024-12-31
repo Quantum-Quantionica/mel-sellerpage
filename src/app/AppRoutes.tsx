@@ -1,28 +1,50 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ReactNode } from "react";
-import { MenuItem } from "../components/Header";
-import EmptyPage from "../pages/EmptyPage";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { ReactNode, useEffect } from "react";
 
-interface AppRoutesProps {
-  children: ReactNode;
-  menus: MenuItem[]
+import { analytics, logEvent } from '../configs/firebase'
+import EmptyPage from "../pages/EmptyPage";
+import MenuItem from "./MenuItemInterface";
+
+interface RoutesInfo {
+  base: string;
+  routes: MenuItem[];
+  rootElement: ReactNode;
 }
 
-export default function AppRoutes({ children, menus }: AppRoutesProps) {
+interface AppRoutesProps {
+  routes: RoutesInfo[];
+}
+
+function AnalyticsListener() {
+  const location = useLocation();
+
+  useEffect(() => {
+    logEvent(analytics, "page_view", {
+      page_path: location.pathname,
+    });
+  }, [location]);
+
+  return null;
+}
+
+export default function AppRoutes({ routes }: AppRoutesProps) {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={children}>
-        {menus.map(item => 
-            <Route 
-                index={item.link === '/'}
+      <AnalyticsListener />
+      {routes.map(info =>
+        <Routes key={info.base}>
+          <Route path={info.base} element={info.rootElement} key={info.base}>
+            {info.routes.map(item =>
+              <Route
+                index={item.link === ''}
                 element={item.page ?? <EmptyPage name={item.name} />}
-                path={item.link}
+                path={info.base + item.link + (item.params ?? '')}
                 key={item.link}
-            /> 
-        )}
-        </Route>
-      </Routes>
+              />
+            )}
+          </Route>
+        </Routes>
+      )}
     </Router>
   );
 }
