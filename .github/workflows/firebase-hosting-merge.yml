@@ -11,10 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 20.x
+      - name: Set Firebase config
+        env:
+          FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+        run: |
+          if [ -z "$FIREBASE_CONFIG" ]; then
+            echo "FIREBASE_CONFIG is empty" && exit 1
+          fi
+          echo "$FIREBASE_CONFIG" > src/configs/firebaseConfig.json
+      - name: Use Node.js 22.x
         uses: actions/setup-node@v3
         with:
-          node-version: 20.x
+          node-version: 22.x
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -24,13 +32,16 @@ jobs:
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn && yarn build
+      - name: Yarn install
+        run: yarn
       - name: Save yarn cache
         id: yarn-cache-save
         uses: actions/cache/save@v4
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Build dist
+        run: yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
