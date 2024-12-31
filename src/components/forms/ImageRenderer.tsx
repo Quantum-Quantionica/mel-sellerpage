@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { getStorage, ref, uploadBytesResumable, deleteObject, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, deleteObject, getDownloadURL } from "firebase/storage";
+
 import { FieldRendererPros } from "./Forms";
 import { Provider, WithId } from "../../data/provider";
+import { storage } from "../../configs/firebase";
 
 function getFileRef(item: WithId, provider: Provider<any>) {
-  const storage = getStorage();
   const hash = Math.random().toString(36).substring(7);
   const fileName = `${provider.collectionName}/${item.id}/${hash}`;
   const fileRef = ref(storage, fileName);
@@ -12,8 +13,23 @@ function getFileRef(item: WithId, provider: Provider<any>) {
   return fileRef
 }
 
+const globalPromises = {
+  list: [] as Promise<any>[],
+  addPromise(promise: Promise<any>) {
+    this.list.push(promise);
+    promise.finally(() => {
+      const index = this.list.indexOf(promise);
+      if (index > -1) {
+        this.list.splice(index, 1);
+      }
+    });
+    return promise;
+  },
+  waitAll: async () => await Promise.all(globalPromises.list)
+};
+
 export async function deleteImage(url: string) {
-  const fileRef = ref(getStorage(), url);
+  const fileRef = ref(storage, url);
   try {
     await deleteObject(fileRef);
   } catch (err) {
@@ -30,7 +46,8 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
 
   const handleDelete = async () => {
     setState('deleting');
-    if(await deleteImage(value)){
+    await globalPromises.waitAll();
+    if(await globalPromises.addPromise(deleteImage(value))){
       onChange("");
     } else {
       setError("Failed to delete image. Please try again.");
@@ -50,26 +67,34 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
     }
 
     setState('uploading');
+    await globalPromises.waitAll();
     const fileRef = getFileRef(item, provider);
-    const uploadTask = uploadBytesResumable(fileRef, file)
-    uploadTask.on(
-      "state_changed",
-      snapshot => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        setUploadProgress(progress);
-      },
-      err => {
-        console.error("Error uploading image:", err);
-        setError("Failed to upload image. Please try again.");
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        onChange(downloadURL);
-        setUploadProgress(0);
-        setState('ok');
-      }
-    );
+    await globalPromises.addPromise(new Promise((resolve, reject) => {
+      const uploadTask = uploadBytesResumable(fileRef, file, {
+        cacheControl: "public, max-age=31536000",
+        contentType: file.type,
+      })
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          setUploadProgress(progress);
+        },
+        err => {
+          console.error("Error uploading image:", err);
+          setError("Failed to upload image. Please try again.");
+          reject(err);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          onChange(downloadURL);
+          setUploadProgress(0);
+          setState('ok');
+          resolve(downloadURL);
+        }
+      );
+    }));
   };
 
   useEffect(() => {

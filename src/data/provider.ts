@@ -20,6 +20,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
   public abstract collectionName: string;
   public abstract keys: (keyof T)[];
   protected abstract arrayFieldsFilter: ProviderArrayFilters<T>
+  protected abstract requiredFields: (keyof T)[];
 
   private filterData(item: Partial<T>) {
     for (const entry of Object.entries(this.arrayFieldsFilter)) {
@@ -28,6 +29,14 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
       item[key] = filter(item[key]);
     }
     return item;
+  }
+
+  protected validateData(item: Partial<T>) {
+    for (const key of this.requiredFields) {
+      if (!item[key] || typeof item[key] === "string" && item[key].trim() === "") {
+        throw new Error(`Field ${key} is required`);
+      }
+    }
   }
 
   async listAll(filter?: Partial<T>): Promise<T[]> {
@@ -48,6 +57,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
 
   async save(item: Partial<T>): Promise<Partial<T>> {
     this.filterData(item);
+    this.validateData(item);
     const partialItem = { ...item, updatedAt: serverTimestamp() };
     if (item.id) {
       partialItem.id = deleteField();

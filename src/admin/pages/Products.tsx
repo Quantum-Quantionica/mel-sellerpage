@@ -4,6 +4,7 @@ import ProductsProvider, { Product } from "../../data/products";
 import DynamicForm, { ListRenderer, ListRendererConfigs, TextArea } from "../../components/forms/Forms";
 import ImageRenderer, { deleteImage } from "../../components/forms/ImageRenderer";
 import DynamicList from "../../components/forms/List";
+import { deleteFolder } from "../../configs/firebase";
 
 const productsProvider = new ProductsProvider();
 const newUrl = 'new';
@@ -14,12 +15,8 @@ const ProductsPage = () => {
     return <>
       <Link to={newUrl}>Add Product</Link>
       <DynamicList provider={productsProvider} title="Products" nameKey="name" deleteInterceptor={async item => {
-        const images = item.images || [];
-        for(const url in images) {
-          await deleteImage(url);
-        }
-        if(!item.image) return true;
-        return await deleteImage(item.image);
+        await deleteFolder(`${productsProvider.collectionName}/${item.id}`);
+        return true;
       }} />
     </>;
 

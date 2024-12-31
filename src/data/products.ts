@@ -25,6 +25,7 @@ export default class ProductsProvider extends AbstractProvider<Product> {
   public keys: (keyof Product)[] = [
     "name", "description", "image", "images", "youtube", "price", "paymentInfo", "infos", "reviews", "tags"
   ];
+  protected requiredFields: (keyof Product)[] = ["name", "description"];
   protected arrayFieldsFilter: ProviderArrayFilters<Product> = {
     reviews: this.filterStringArrays,
     tags: this.filterStringArrays,
