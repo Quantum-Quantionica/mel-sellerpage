@@ -11,6 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Config Yarn Cache
+        id: yarn-cache-restore
+        uses: actions/cache@v4
+        with:
+          path: .yarn-cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+      - name: Yarn install
+        run: |
+          yarn config set cache-folder .yarn-cache
+          yarn install --frozen-lockfile --non-interactive
       - name: Set Firebase config
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
@@ -19,21 +33,6 @@ jobs:
             echo "FIREBASE_CONFIG is empty" && exit 1
           fi
           echo "$FIREBASE_CONFIG" > src/configs/firebaseConfig.json
-      - name: Use Node.js 22.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22.x
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - name: Config Yarn Cache
-        id: yarn-cache-restore
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      - name: Yarn install
-        run: yarn
       - name: Build dist
         run: yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
