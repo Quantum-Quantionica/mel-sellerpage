@@ -4,14 +4,16 @@ async function hash(url?: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(url);
     
-  // Calcula o hash (SHA-256)
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  
-  // Converte o hash para um formato legível (hexadecimal)
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, "0")).join("");
-  
-  return hashHex;
+  if(crypto.subtle) {
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, "0")).join("");
+    
+    return hashHex;
+  } else {
+    return url + "";
+  }
 }
 async function fetchAndConvertToDataUrl(url: string): string {
   try {

@@ -22,7 +22,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
   protected abstract arrayFieldsFilter: ProviderArrayFilters<T>
   protected abstract requiredFields: (keyof T)[];
 
-  private filterData(item: Partial<T>) {
+  protected filterData(item: Partial<T>) {
     for (const entry of Object.entries(this.arrayFieldsFilter)) {
       const key = entry[0] as keyof T;
       const filter = entry[1] as ProviderArrayFilter<string>;
