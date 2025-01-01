@@ -14,7 +14,6 @@ export interface Product {
     type?: ProductType;
     description: string;
     image?: string;
-    images?: string[];
     youtube?: string;
     paymentInfo: string;
     infos: InfoList[];
@@ -28,13 +27,12 @@ export interface Product {
 export default class ProductsProvider extends AbstractProvider<Product> {
   public collectionName = "products";
   public keys: (keyof Product)[] = [
-    "name", "description", "image", "images", "youtube", "price", "paymentInfo", "infos", "reviews", "tags", "purchaseUrl"
+    "name", "description", "image", "youtube", "price", "paymentInfo", "infos", "reviews", "tags", "purchaseUrl"
   ];
   protected requiredFields: (keyof Product)[] = ["name", "description"];
   protected arrayFieldsFilter: ProviderArrayFilters<Product> = {
     reviews: this.filterStringArrays,
     tags: this.filterStringArrays,
-    images: this.filterStringArrays,
   }
 
   constructor(

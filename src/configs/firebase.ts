@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getStorage, ref, listAll, deleteObject } from "firebase/storage";
+import { getStorage, ref, listAll, deleteObject, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { getAnalytics, logEvent as FirebaseLogEvent } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 
@@ -15,18 +15,47 @@ export const deleteFolder = async (folderPath: string) => {
   const folderRef = ref(storage, folderPath);
   const result = await listAll(folderRef);
 
-  // Excluir todos os arquivos
   const deletePromises = result.items.map((itemRef) => deleteObject(itemRef));
   await Promise.all(deletePromises);
 
-  // Excluir subpastas (se houver)
-  const subfolderDeletePromises = result.prefixes.map((subfolderRef) =>
+  await Promise.all(result.prefixes.map((subfolderRef) =>
     deleteFolder(subfolderRef.fullPath)
-  );
-  await Promise.all(subfolderDeletePromises);
+  ));
 
   console.log(`Folder "${folderPath}" deleted successfully.`);
 };
 
-// Exemplo de uso
-deleteFolder("images/some-folder");
+export async function deleteImage(url: string) {
+  const fileRef = ref(storage, url);
+  try {
+    await deleteObject(fileRef);
+  } catch (err) {
+    console.error("Error deleting image:", err);
+    return false;
+  }
+  return true;
+}
+
+export const uploadFile = async (
+  file: File, fileName: string, progressCallBack: (percentage: number) => void
+): Promise<string> => (new Promise((resolve, reject) => {
+  const fileRef = ref(storage, fileName);
+  const uploadTask = uploadBytesResumable(fileRef, file, {
+    cacheControl: "public, max-age=31536000, immutable",
+    contentType: file.type,
+  })
+  uploadTask.on(
+    "state_changed",
+    snapshot => {
+      progressCallBack((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+    },
+    err => {
+      console.error("Error uploading image:", err);
+      reject(err);
+    },
+    async () => {
+      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      resolve(downloadURL);
+    }
+  );
+}));

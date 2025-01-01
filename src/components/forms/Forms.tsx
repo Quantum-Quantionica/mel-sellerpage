@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { WithId, Provider } from "../../data/provider";
+import { Input } from ".";
 
 export interface DynamicFormProps<T extends WithId> {
   id?: string;
@@ -75,67 +76,10 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
 export type FieldRendererPros<T extends WithId, Configs=any> = {
   provider: Provider<T>
   item: Partial<T>
-  name: keyof T
+  name: string
   value: any
   configs?: Configs
   onChange: (value: any) => void
   save: () => Promise<Partial<T>>
 };
 export type FieldRenderer<T extends WithId> = React.FC<FieldRendererPros<T>>;
-
-export const Input = <T extends WithId>({name, value, onChange }: FieldRendererPros<T>) => (
-  <div>
-    <label>{name}</label>
-    <input type="text" value={value} onChange={(e) => onChange(e.target.value)} />
-  </div>
-);
-
-export const TextArea = <T extends WithId>({ name, value, onChange }: FieldRendererPros<T>) => (
-  <div>
-    <label>{name}</label>
-    <textarea value={value} onChange={(e) => onChange(e.target.value)} />
-  </div>
-);
-
-export interface ListRendererConfigs<T extends WithId> {
-  renderer: FieldRenderer<T>
-  autoSave: boolean
-}
-interface ListRendererProps<T extends WithId> extends FieldRendererPros<T, ListRendererConfigs<T>> {
-  value: string[];
-}
-export function ListRenderer<T extends WithId>({ name, value, onChange, provider, item, configs, save }: ListRendererProps<T>) {
-  const Element = configs?.renderer || Input;
-  const list = value || [];
-  function addLastItem() {
-    if(list[list.length - 1]?.trim && list[list.length - 1].trim() === "") return;
-    list.push("");
-  }
-  addLastItem();
-
-  return <div>
-    <label>{name}</label>
-    <ul>
-      {list.map((itemValue, index) => (<li key={index}>
-        <Element
-          item={item}
-          provider={provider}
-          name={`${name}[${index}]`}
-          value={itemValue}
-          onChange={(newVal) => {
-            const newList = [...value];
-            newList[index] = newVal;
-            onChange(newList);
-            if(configs?.autoSave) save();
-          }}
-          configs={configs}
-          save={save}
-        />
-      </li>))}
-    </ul>
-    <button type="button" onClick={() => {
-      addLastItem();
-      onChange(list) 
-    }}>Add {name} Item</button>
-  </div>
-}

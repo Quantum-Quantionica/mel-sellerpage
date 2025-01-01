@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 import ProductsProvider, { Product } from "../../data/products";
-import DynamicForm, { ListRenderer, ListRendererConfigs, TextArea } from "../../components/forms/Forms";
+import { DynamicForm, ListRenderer, ListRendererConfigs, TextArea } from "../../components/forms";
 import ImageRenderer from "../../components/forms/ImageRenderer";
 import DynamicList from "../../components/forms/List";
 import { deleteFolder } from "../../configs/firebase";
