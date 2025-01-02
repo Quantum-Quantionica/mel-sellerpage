@@ -1,6 +1,6 @@
-interface CachedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
+type CachedImageProps = React.ImgHTMLAttributes<HTMLImageElement>
 
-const CachedImage: React.FC<CachedImageProps> = ({ src, ...props }) => {
+const CachedImage = ({ src, ...props }: CachedImageProps) => {
   return <img {...props} alt={props.alt} src={src} />;
 };
 

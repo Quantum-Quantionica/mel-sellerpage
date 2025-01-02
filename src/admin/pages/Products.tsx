@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 import ProductsProvider, { Product } from "../../data/products";
-import { DynamicForm, ListRenderer, ListRendererConfigs, TextArea } from "../../components/forms";
+import { DynamicForm, InfoRenderer, ListRenderer, ListRendererConfigs, TextArea } from "../../components/forms";
 import ImageRenderer from "../../components/forms/ImageRenderer";
 import DynamicList from "../../components/forms/List";
 import { deleteFolder } from "../../configs/firebase";
@@ -39,14 +39,14 @@ const ProductsPage = ({provider, title, name}: ProductsPageProps) => {
         infos: ListRenderer,
       }}
       fieldConfigs={{
+        images: {
+          renderer: ImageRenderer,
+        } as ListRendererConfigs<Product>,
         reviews: {
           renderer: TextArea,
         } as ListRendererConfigs<Product>,
         infos: {
-          renderer: TextArea,
-        } as ListRendererConfigs<Product>,
-        images: {
-          renderer: ImageRenderer,
+          renderer: InfoRenderer,
         } as ListRendererConfigs<Product>,
       }}
     />

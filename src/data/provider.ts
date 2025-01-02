@@ -15,7 +15,7 @@ export interface Provider<T extends WithId> {
 }
 
 export type ProviderArrayFilter<T> = (list: T[]) => T[];
-export type ProviderArrayFilters<T> = {[key in keyof T]?: ProviderArrayFilter<string>};
+export type ProviderArrayFilters<T> = {[key in keyof T]?: ProviderArrayFilter<any>};
 export default abstract class AbstractFirestoreProvider<T extends WithId> implements Provider<T> {
   public abstract collectionName: string;
   public abstract keys: (keyof T)[];
@@ -62,14 +62,14 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     if (item.id) {
       partialItem.id = deleteField();
       const ref = doc(db, this.collectionName, item.id);
+      console.log("Document updated with ID:", item.id, item);
       await setDoc(ref, partialItem, { merge: true });
-      console.log("Document updated with ID:", item.id);
     } else {
       partialItem.createdAt = serverTimestamp();
       const ref = collection(db, this.collectionName);
       const newDocRef = await addDoc(ref, partialItem);
-      item.id = newDocRef.id;
       console.log("New document created with ID:", newDocRef.id);
+      item.id = newDocRef.id;
     }
     return item;
   }
