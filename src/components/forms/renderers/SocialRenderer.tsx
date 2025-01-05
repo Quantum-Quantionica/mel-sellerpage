@@ -5,9 +5,7 @@ import { WithId } from "../../../data/provider";
 import { AttendantSocialLink } from "../../../data/attendants";
 import Icon, { getIconByCaseInsensitiveName } from "../../Icons";
 
-type InputProps<T extends WithId> = React.ImgHTMLAttributes<HTMLInputElement> & FieldRendererPros<T>;
-
-const SocialRenderer = <T extends WithId>({value, onChange}: InputProps<T>) => {
+const SocialRenderer = <T extends WithId>({value, onChange}: FieldRendererPros<T>) => {
   const valueRef = useRef<Partial<AttendantSocialLink>>(typeof value !== "object" ? {} : value);
   const [name, setName] = useState(valueRef.current.name || "");
   const [icon, setIcon] = useState(valueRef.current.icon || "");

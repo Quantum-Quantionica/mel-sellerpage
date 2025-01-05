@@ -1,7 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 
-import AttendantsProvider, { Attendant } from "../../data/attendants";
-import { DynamicForm, DynamicList, ImageRenderer, ListRenderer, ListRendererConfigs, SocialRenderer, TextArea } from "../../components/forms";
+import AttendantsProvider, { Attendant } from "../../../data/attendants";
+import { DynamicForm, DynamicList, ImageRenderer, ListRenderer, ListRendererConfigs, SocialRenderer, TextArea } from "../../../components/forms";
+import OrganizationalCultureRenderer from "./OrganizationalCultureRenderer";
+import SiteConfigsRenderer from "./SiteConfigsRenderer";
 
 const newUrl = 'new';
 const provider = new AttendantsProvider();
@@ -25,8 +27,8 @@ const AttendantsPage = () => {
         socialLinks: ListRenderer,
         history: TextArea,
         formation: TextArea,
-        //organizationalCulture: FormRenderer,
-        //siteConfig: FormRenderer,
+        organizationalCulture: OrganizationalCultureRenderer,
+        siteConfig: SiteConfigsRenderer,
       }}
       fieldConfigs={{
         socialLinks: {

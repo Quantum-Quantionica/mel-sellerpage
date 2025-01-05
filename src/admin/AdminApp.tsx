@@ -4,7 +4,7 @@ import Icon, {  Icons } from '../components/Icons';
 import MenuItem from "../app/MenuItemInterface";
 import ProductsPage from "./pages/Products";
 import ProductsProvider from "../data/products";
-import AttendantsPage from "./pages/Attendants";
+import AttendantsPage from "./pages/Attemdants/Attendants";
 
 export const menuItems: MenuItem[] = [
   { name: 'Atendentes', link: 'atendentes', params: '/:id?', icon: Icons.solid.faUserMd, page: <AttendantsPage /> },

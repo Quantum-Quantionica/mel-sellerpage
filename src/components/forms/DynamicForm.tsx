@@ -9,7 +9,7 @@ export interface DynamicFormProps<T extends WithId> {
   title: string;
   provider: Provider<T>;
   fieldRenderers?: { [key in keyof T]?: FieldRenderer<T> };
-  fieldConfigs?: { [key in keyof T]: object };
+  fieldConfigs?: { [key in keyof T]?: object };
 }
 
 export default function DynamicForm<T extends WithId>({ id, title, provider, fieldRenderers, fieldConfigs }: DynamicFormProps<T>) {
