@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Provider, WithId } from "../../data/provider";
-import { deleteImage, uploadFile } from "../../configs/firebase";
-import { FieldRendererPros } from "./Forms";
-import CachedImage from "../CacheImage";
+import { Provider, WithId } from "../../../data/provider";
+import { deleteImage, uploadFile } from "../../../configs/firebase";
+import { FieldRendererPros } from "../Forms";
+import CachedImage from "../../CacheImage";
 
 const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item, save }: FieldRendererPros<T>) => {
   const [state, setState] = useState<'uploading'|'deleting'|'finish'>('finish');

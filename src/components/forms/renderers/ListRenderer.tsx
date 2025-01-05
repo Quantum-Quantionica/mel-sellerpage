@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { FieldRenderer, FieldRendererPros, Input } from ".";
-import { WithId } from "../../data/provider";
+import { FieldRenderer, FieldRendererPros, Input } from "../";
+import { WithId } from "../../../data/provider";
 
 export interface ListRendererConfigs<T extends WithId> {
   renderer: FieldRenderer<T>

@@ -4,8 +4,10 @@ import Icon, {  Icons } from '../components/Icons';
 import MenuItem from "../app/MenuItemInterface";
 import ProductsPage from "./pages/Products";
 import ProductsProvider from "../data/products";
+import AttendantsPage from "./pages/Attendants";
 
 export const menuItems: MenuItem[] = [
+  { name: 'Atendentes', link: 'atendentes', params: '/:id?', icon: Icons.solid.faUserMd, page: <AttendantsPage /> },
   { 
     name: 'Consultas / Avaliações', link: 'atendimentos', params: '/:id?', icon: Icons.solid.faClipboardList,
     page: <ProductsPage provider={new ProductsProvider('appointment')} title="Cadastro de Consulta / Avaliações" name="Consulta" />

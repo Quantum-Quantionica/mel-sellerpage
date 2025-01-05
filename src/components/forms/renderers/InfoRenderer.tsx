@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import { FieldRendererPros, Input, ListRenderer } from ".";
-import { WithId } from "../../data/provider";
-import { ProductInfoList } from "../../data/products";
+import { FieldRendererPros, Input, ListRenderer } from "../";
+import { WithId } from "../../../data/provider";
+import { ProductInfoList } from "../../../data/products";
 
 type InputProps<T extends WithId> = React.ImgHTMLAttributes<HTMLInputElement> & FieldRendererPros<T>;
 
