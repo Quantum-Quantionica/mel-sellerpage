@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Provider, WithId } from "../../../data/provider";
 import { deleteImage, uploadFile } from "../../../configs/firebase";
-import { FieldRendererPros } from "../Forms";
+import { FieldRendererPros } from "../DynamicForm";
 import CachedImage from "../../CacheImage";
 
 const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item, save }: FieldRendererPros<T>) => {
@@ -22,8 +22,6 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
       prevValueRef.current = false;
     }
   }, [value, save]);
-
-
 
   const handleDelete = async () => {
     setState('deleting');

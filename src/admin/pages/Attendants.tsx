@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 import AttendantsProvider, { Attendant } from "../../data/attendants";
-import { DynamicForm, DynamicList, ImageRenderer, ListRenderer, ListRendererConfigs, TextArea } from "../../components/forms";
+import { DynamicForm, DynamicList, ImageRenderer, ListRenderer, ListRendererConfigs, SocialRenderer, TextArea } from "../../components/forms";
 
 const newUrl = 'new';
 const provider = new AttendantsProvider();
@@ -30,7 +30,7 @@ const AttendantsPage = () => {
       }}
       fieldConfigs={{
         socialLinks: {
-          //renderer: ListRenderer,
+          renderer: SocialRenderer,
         } as ListRendererConfigs<Attendant>,
       }}
     />

@@ -1,5 +1,5 @@
-export { default as DynamicForm } from './Forms';
-export * from './Forms';
+export { default as DynamicForm } from './DynamicForm';
+export * from './DynamicForm';
 
 export { default as DynamicList } from './List';
 export * from './List';
@@ -12,5 +12,7 @@ export * from './renderers/InfoRenderer';
 
 export { default as ListRenderer } from './renderers/ListRenderer';
 export * from './renderers/ListRenderer';
+
+export { default as SocialRenderer } from './renderers/SocialRenderer';
 
 export * from './renderers/InputRenderer';
