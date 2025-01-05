@@ -4,9 +4,12 @@ export interface Attendant {
   id?: string;
   name: string;
   brand: string;
+  title?: string;
+  slogan?: string;
   photo?: string;
   history?: string;
   formation?: string;
+  registration: string;
   socialLinks?: AttendantSocialLink[];
   organizationalCulture?: AttendantOrganizationalCulture;
   siteConfig?: SiteConfig;
@@ -32,7 +35,7 @@ export interface AttendantSocialLink {
 export default class AttendantsProvider extends AbstractProvider<Attendant> {
   public collectionName: string = "attendants";
   public keys: (keyof Attendant)[] = [
-    "name", "brand", "photo", "history", "formation", "socialLinks", "organizationalCulture", "siteConfig"
+    "name", "brand", "title", "slogan", "registration", "photo", "history", "formation", "socialLinks", "organizationalCulture", "siteConfig"
   ];
   protected arrayFieldsFilter: ProviderArrayFilters<Attendant> = {
     socialLinks: this.filterObjectArrays,
