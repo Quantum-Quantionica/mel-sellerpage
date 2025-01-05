@@ -39,7 +39,7 @@ export async function deleteImage(url: string) {
 export const uploadFile = async (
   file: File, fileName: string, progressCallBack: (percentage: number) => void
 ): Promise<string> => (new Promise((resolve, reject) => {
-  const fileRef = ref(storage, fileName);
+  const fileRef = ref(storage, fileName + uniqid());
   const uploadTask = uploadBytesResumable(fileRef, file, {
     cacheControl: "public, max-age=31536000, immutable",
     contentType: file.type,
@@ -59,3 +59,8 @@ export const uploadFile = async (
     }
   );
 }));
+
+function uniqid():string{
+  return (new Date()).getTime().toString(16).slice(2) +
+    Math.random().toString(16).slice(2);
+}

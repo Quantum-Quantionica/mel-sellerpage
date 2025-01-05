@@ -85,6 +85,5 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
 export default ImageRenderer
 
 function getFileName(item: WithId, provider: Provider<any>) {
-  const hash = Math.random().toString(36).substring(7);
-  return `${provider.collectionName}/${item.id}/${hash}`;
+  return `${provider.collectionName}/${item.id}/`;
 }
