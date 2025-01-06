@@ -1,5 +1,5 @@
 :root {
-    --header-height: 115px;
+    --header-height: 105px;
 }
 
 nav {
@@ -28,7 +28,6 @@ nav > a {
     padding: 10px 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     text-decoration: none;
-    color: white;
 }
 
 nav > a:hover {
@@ -41,7 +40,7 @@ nav > a > svg {
 
 .closeArea {
     position: fixed;
-    top: var(--header-height);
+    top: calc(var(--header-height) + 9px);
     right: 0;
     bottom: 0;
     left: 0;

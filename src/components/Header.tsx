@@ -42,7 +42,10 @@ export default function Header() {
     </header>
     <div className={menuVisible ? 'visible' : 'hidden'}>
       <div className="closeArea" onClick={() => setMenuVisible(false)} />
-      <nav>
+      <nav style={{
+        backgroundColor: configs.headerBackgroundColor,
+        color: configs.headerFontColor,
+      }}>
         {menuItems.map(item =>
           <Link to={item.link} title={item.name} key={item.link}>
             <Icon icon={item.icon} color={configs.menuAssentColor || configs.headerAssentColor} />
