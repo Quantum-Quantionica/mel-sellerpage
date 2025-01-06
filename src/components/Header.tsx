@@ -30,9 +30,9 @@ export default function Header() {
         borderColor: configs.headerAssentColor,
         backgroundColor: configs.headerBackgroundColor,
       }}>
-        <Icon icon={Icons.solid.faBars} color={configs.headerAssentColor} />
-        <img src={configs.logo} alt="logo" height="100" />
-        <Icon icon={Icons.solid.faSearch} color={configs.headerAssentColor} />
+        <Icon icon={Icons.solid.faBars} color={configs.headerAssentColor} size="xl" />
+        <img src={configs.logo} alt="logo" height="90" />
+        <Icon icon={Icons.solid.faSearch} color={configs.headerAssentColor} size="xl" />
       </div>
     </header>
     <nav>

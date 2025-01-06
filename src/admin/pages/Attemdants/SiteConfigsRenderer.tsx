@@ -10,6 +10,7 @@ const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: Fi
 
   useEffect(() => {
     if (typeof value === "object") {
+      valueRef.current = value;
       setLogo(value.logo || "");
     }
   }, [value]);
