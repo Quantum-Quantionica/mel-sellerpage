@@ -7,10 +7,11 @@ export interface DynamicListProps<T extends WithId> {
   title: string;
   nameKey: keyof T;
   provider: Provider<T>;
+  adicionalFields?: (item: T) => JSX.Element;
   deleteInterceptor?: (item: T) => Promise<boolean> | boolean;
 }
 
-export default function DynamicList<T extends WithId>({ title, nameKey, provider, deleteInterceptor }: DynamicListProps<T>) {
+export default function DynamicList<T extends WithId>({ title, nameKey, provider, deleteInterceptor, adicionalFields }: DynamicListProps<T>) {
   const [items, setItems] = useState<T[]>([]);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export default function DynamicList<T extends WithId>({ title, nameKey, provider
               {item[nameKey] as string || `No ${nameKey as string} found`}
             </ Link>
             <button onClick={() => handleDelete(item)}>Delete</button>
+            {adicionalFields && adicionalFields(item)}
           </li>
         ))}
       </ul>

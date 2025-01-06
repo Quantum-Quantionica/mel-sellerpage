@@ -7,14 +7,18 @@ import SiteConfigsRenderer from "./SiteConfigsRenderer";
 
 const newUrl = 'new';
 const provider = new AttendantsProvider();
+const windowBaseURL = `${window.location.protocol}//${window.location.hostname}${window.location.port?':'+window.location.port:''}`;
 
 const AttendantsPage = () => {
   const { id } = useParams<{ id: string }>();  
+  const getSiteUrl = (item: Attendant) => 
+    `${windowBaseURL}?site=${item.id}`;
 
   if(!id)
     return <>
       <Link to={newUrl}>Add Attendant</Link>
-      <DynamicList provider={provider} title="Attendant" nameKey="name" />
+      <DynamicList provider={provider} title="Attendant" nameKey="name"
+        adicionalFields={item => <a href={getSiteUrl(item)}>Open Site</a>} />
     </>;
 
   return (
