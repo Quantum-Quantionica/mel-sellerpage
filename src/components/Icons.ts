@@ -1,9 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import * as brands from '@fortawesome/free-brands-svg-icons'
 import * as solid from '@fortawesome/free-solid-svg-icons'
 
-export default FontAwesomeIcon
+export default Icon
 export type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 export const Icons = { brands, solid }
 

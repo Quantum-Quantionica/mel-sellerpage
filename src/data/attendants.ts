@@ -1,3 +1,4 @@
+import { SiteConfig } from "../configs/siteConfigs";
 import AbstractProvider, { ProviderArrayFilters } from "./provider";
 
 export interface Attendant {
@@ -13,11 +14,6 @@ export interface Attendant {
   socialLinks?: AttendantSocialLink[];
   organizationalCulture?: AttendantOrganizationalCulture;
   siteConfig?: SiteConfig;
-}
-
-export interface SiteConfig {
-  backgroundImage?: string;
-  logo?: string;
 }
 
 export interface AttendantOrganizationalCulture {

@@ -1,6 +1,15 @@
+import { useConfigs } from "../app/ConfigProvider";
+
 export default function Footer() {
-  return <footer>
-    <h2>Footer</h2>
-    <p>Footer content goes here</p>
+  const configs = useConfigs();
+
+  return <footer style={{
+    backgroundColor: configs.headerAssentColor,
+    color: configs.fotterFontColor,
+  }}>
+    <div className="content">
+      <h2>Footer</h2>
+      <p>Footer content goes here</p>
+    </div>
   </footer>;
 }

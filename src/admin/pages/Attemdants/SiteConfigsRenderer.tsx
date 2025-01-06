@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 
 import { WithId } from "../../../data/provider";
-import { SiteConfig } from "../../../data/attendants";
-import { FieldRendererPros, ImageRenderer } from "../../../components/forms";
+import { SiteConfig, ConfigKeys } from "../../../configs/siteConfigs";
+import { FieldRendererPros, ImageRenderer, Input } from "../../../components/forms";
 
-const SiteConfigsRenderer = <T extends WithId>({value, onChange, ...props}: FieldRendererPros<T>) => {
+const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: FieldRendererPros<T>) => {
   const valueRef = useRef<Partial<SiteConfig>>(typeof value !== "object" ? {} : value);
   const [logo, setLogo] = useState(valueRef.current.logo || "");
-  
 
   useEffect(() => {
     if (typeof value === "object") {
       setLogo(value.logo || "");
     }
-  },[value]);
+  }, [value]);
 
   return <>
+    <h2>Site Configs</h2>
     <ImageRenderer
       provider={props.provider} item={props.item} save={props.save}
       name="Logo" value={logo} onChange={(text: string) => {
@@ -23,6 +23,15 @@ const SiteConfigsRenderer = <T extends WithId>({value, onChange, ...props}: Fiel
         valueRef.current.logo = text;
         onChange(valueRef.current);
       }} />
+    {ConfigKeys.map((item) =>
+      <Input
+        key={item}
+        provider={props.provider} item={props.item} save={props.save}
+        name={item} value={valueRef.current[item]} onChange={(text: string) => {
+          valueRef.current[item] = text;
+          onChange(valueRef.current);
+        }} />
+    )}
   </>;
 };
 export default SiteConfigsRenderer;

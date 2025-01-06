@@ -59,7 +59,9 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
       <label>{name}</label>
       {(value||urlToShow) && (
         <div>
-          <CachedImage src={urlToShow||value} alt="Preview" style={{ width: "100%", maxWidth: "600px", margin: "10px 0" }} />
+          <CachedImage src={urlToShow||value} alt="Preview" style={{
+            maxWidth: "400px", maxHeight: "80px", margin: "10px 0" 
+          }} />
           <p>URL: {value}</p>
         </div>
       )}

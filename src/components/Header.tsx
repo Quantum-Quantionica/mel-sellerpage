@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 
 import Icon, { Icons } from './Icons';
-import logo from '../images/logo.svg';
-
 import Home from "../pages/Home";
 import MenuItem from "../app/MenuItemInterface";
+import { useConfigs } from "../app/ConfigProvider";
 
 export const menuItems: MenuItem[] = [
   { name: 'Home', link: '', icon: Icons.solid.faHouse, page: <Home /> },
@@ -17,22 +16,32 @@ export const menuItems: MenuItem[] = [
   { name: 'Indicações', link: 'indicacoes', icon: Icons.solid.faStar },
 ];
 
+
 export default function Header() {
-  return <header>
-    <button>Menu</button>
+  const configs = useConfigs();
+
+  return <>
+    <header style={{
+      backgroundColor: configs.headerBackgroundColor,
+      borderBottomColor: configs.headerAssentColor,
+      color: configs.headerFontColor,
+    }}>
+      <div className="content" style={{
+        borderColor: configs.headerAssentColor,
+        backgroundColor: configs.headerBackgroundColor,
+      }}>
+        <Icon icon={Icons.solid.faBars} color={configs.headerAssentColor} />
+        <img src={configs.logo} alt="logo" height="100" />
+        <Icon icon={Icons.solid.faSearch} color={configs.headerAssentColor} />
+      </div>
+    </header>
     <nav>
-      <ul>
-        {menuItems.map(item => 
-          <li key={item.link}>
-            <Link to={item.link} title={item.name}>
-              <Icon icon={item.icon}/>
-              {item.name}
-            </Link>
-          </li>
-        )}
-      </ul>
+      {menuItems.map(item =>
+        <Link to={item.link} title={item.name} key={item.link}>
+          <Icon icon={item.icon} color={configs.menuAssentColor || configs.headerAssentColor} />
+          {item.name}
+        </Link>
+      )}
     </nav>
-    <img src={logo} alt="logo" width="50" />
-    <input type="text" placeholder="Search" />
-  </header>;
+  </>;
 }
