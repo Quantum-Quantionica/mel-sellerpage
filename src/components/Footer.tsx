@@ -11,7 +11,7 @@ export default function Footer() {
     <div className="content">
       <img src={configs.fotterLogo || configs.logo} alt="logo" height="90" />
       <div className="socials">
-        {configs.socials.map(social => <a href={social.link} key={social.name} title={social.name}>
+        {configs.socials.map(social => <a href={social.link} key={social.name} title={social.name} target="_blank" rel="noreferrer">
           <Icon icon={getIconByCaseInsensitiveName(social.icon)} color={configs.fotterFontColor} />
         </a> )}
       </div>

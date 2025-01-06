@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
+import './ImageRenderer.css';
 import { Provider, WithId } from "../../../data/provider";
 import { deleteImage, uploadFile } from "../../../configs/firebase";
 import { FieldRendererPros } from "../DynamicForm";
 import CachedImage from "../../CacheImage";
+import Icon, { Icons } from "../../Icons";
 
 const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item, save }: FieldRendererPros<T>) => {
   const [state, setState] = useState<'uploading'|'deleting'|'finish'>('finish');
@@ -55,31 +57,27 @@ const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item
   };
 
   return (
-    <div>
-      <div>
+    <div className="image-renderer">
+      <div className="image-preview">
+        {(value||urlToShow) && (
+          <CachedImage src={urlToShow||value} alt="Preview" />
+        )}
+      </div>
+      <div className="image-info">
         <label>{name}: </label>
-        <input
-          type="file"
-          accept="image/*"
+        <input type="file" accept="image/*" disabled={state !== 'finish'}
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) handleFileChange(file);
-          }}
-          disabled={state !== 'finish'}
-        />
-      </div>
-      {(value||urlToShow) && (
-        <div>
-          <CachedImage src={urlToShow||value} alt="Preview" style={{
-            maxWidth: "400px", maxHeight: "80px", margin: "10px 0" 
           }} />
-          <p>URL: {value}</p>
-        </div>
-      )}
+        <p className="image-url">{value || "No image uploaded"}</p>
+      </div>
       {state === 'deleting' && <p>Deleting...</p>}
       {state === 'uploading' && <p>Uploading... {Math.round(uploadProgress)}%</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={handleDelete} disabled={state !== 'finish' || !value}>Delete</button>
+      {error && <p className="error-message">{error}</p>}
+      <button className="delete-button" onClick={handleDelete} disabled={state !== 'finish' || !value}>
+        <Icon icon={Icons.solid.faTrash} /> Delete
+      </button>
     </div>
   );
 };
