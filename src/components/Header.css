@@ -2,7 +2,7 @@
     --header-height: 105px;
 }
 
-nav {
+.sidebar > nav {
     position: fixed;
     top: var(--header-height);
     left: -250px;
@@ -17,12 +17,12 @@ nav {
     z-index: 1000;
 }
 
-.visible > nav {
+.sidebar.visible > nav {
     transform: translateX(250px);
     /* Aparece na tela */
 }
 
-nav > a {
+.sidebar > nav > a {
     display: flex;
     align-items: center;
     padding: 10px 20px;
@@ -30,15 +30,15 @@ nav > a {
     text-decoration: none;
 }
 
-nav > a:hover {
+.sidebar > nav > a:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-nav > a > svg {
+.sidebar > nav > a > svg {
     margin-right: 1em;
 }
 
-.closeArea {
+.sidebar > .closeArea {
     position: fixed;
     top: calc(var(--header-height) + 9px);
     right: 0;
@@ -51,7 +51,7 @@ nav > a > svg {
     transition: opacity 0.3s ease-in-out;
 }
 
-.visible > .closeArea {
+.sidebar.visible > .closeArea {
     pointer-events: auto;
     opacity: 1;
 }

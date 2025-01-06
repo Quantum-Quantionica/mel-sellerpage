@@ -18,10 +18,10 @@ export const menuItems: MenuItem[] = [
   { name: 'Indicações', link: 'indicacoes', icon: Icons.solid.faStar },
 ];
 
-
 export default function Header() {
   const [menuVisible, setMenuVisible] = useState(false);
   const configs = useConfigs();
+  const closeMenu = () => setMenuVisible(false);
 
   return <>
     <header style={{
@@ -40,14 +40,14 @@ export default function Header() {
         <Icon icon={Icons.solid.faSearch} color={configs.headerAssentColor} size="xl" />
       </div>
     </header>
-    <div className={menuVisible ? 'visible' : 'hidden'}>
-      <div className="closeArea" onClick={() => setMenuVisible(false)} />
+    <div className={[menuVisible ? 'visible' : 'hidden', 'sidebar'].join(' ')}>
+      <div className="closeArea" onClick={closeMenu} />
       <nav style={{
         backgroundColor: configs.headerBackgroundColor,
         color: configs.headerFontColor,
       }}>
         {menuItems.map(item =>
-          <Link to={item.link} title={item.name} key={item.link}>
+          <Link to={item.link} title={item.name} key={item.link} onClick={closeMenu}>
             <Icon icon={item.icon} color={configs.menuAssentColor || configs.headerAssentColor} />
             {item.name}
           </Link>

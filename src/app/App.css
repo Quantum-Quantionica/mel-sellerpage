@@ -39,6 +39,7 @@ footer {
 .socials {
     display: flex;
     justify-content: center;
+    align-items: baseline;
     padding: 0.5rem;
 }
 
