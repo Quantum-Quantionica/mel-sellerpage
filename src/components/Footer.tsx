@@ -1,4 +1,5 @@
 import { useConfigs } from "../app/ConfigProvider";
+import Icon, { getIconByCaseInsensitiveName } from "./Icons";
 
 export default function Footer() {
   const configs = useConfigs();
@@ -8,8 +9,15 @@ export default function Footer() {
     color: configs.fotterFontColor,
   }}>
     <div className="content">
-      <h2>Footer</h2>
-      <p>Footer content goes here</p>
+      <img src={configs.fotterLogo || configs.logo} alt="logo" height="90" />
+      <div className="socials">
+        {configs.socials.map(social => <a href={social.link} key={social.name} title={social.name}>
+          <Icon icon={getIconByCaseInsensitiveName(social.icon)} color={configs.fotterFontColor} />
+        </a> )}
+      </div>
+      <span className="madeBy">
+        Created by <a href="https://linkedin.com/in/victorwads" rel="noreferrer" target="_blank">Victor Wads</a>
+      </span>
     </div>
   </footer>;
 }

@@ -1,5 +1,5 @@
 import defaultLogo from '../images/logo.svg';
-import AttendantsProvider from "../data/attendants";
+import AttendantsProvider, { AttendantSocialLink } from "../data/attendants";
 
 const storage = window.sessionStorage;
 
@@ -11,7 +11,9 @@ export interface SiteConfig {
   headerAssentColor: string;
   headerFontColor: string;
   menuAssentColor?: string;
+  fotterLogo: string;
   fotterFontColor: string;
+  socials: AttendantSocialLink[];
 }
 
 export const ConfigKeys: (keyof SiteConfig)[] = [
@@ -25,9 +27,10 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
 
 class ConfigsCacheProvider {
 
-  private static KEY = 'siteConfig_';
-  private static KEY_EXPIRATION = 'siteConfigExpiration_';
   private static EXPIRATION_TIME = 1000 * 60// * 60 * 24; // 24 hours in milliseconds
+  private static KEY_EXPIRATION = 'siteConfigExpiration_';
+  private static KEY_DATA = 'siteConfig_';
+  private static KEY_ID = 'siteConfigDefaultId';
   private lastRequestPromise: Promise<any> | null = null;
 
   private attendantProvider = new AttendantsProvider();
@@ -40,6 +43,7 @@ class ConfigsCacheProvider {
     headerAssentColor: 'orange',
     headerFontColor: '#000',
     fotterFontColor: '#000',
+    socials: []
   }
 
   public async get(): Promise<SiteConfig> {
@@ -72,6 +76,7 @@ class ConfigsCacheProvider {
     const attendant = await this.attendantProvider.getById(id)
     console.log('Getting config from database for id:', id, attendant?.siteConfig);
     if(attendant?.siteConfig) {
+      attendant.siteConfig.socials = attendant?.socialLinks || [];
       this.saveConfigToCache(id, attendant?.siteConfig);
       return attendant?.siteConfig;
     };
@@ -79,18 +84,22 @@ class ConfigsCacheProvider {
     return {};
   }
 
-  private getConfigId(): string | undefined {
-    return new URLSearchParams(window.location.search).get('site') || undefined;
+  private getConfigId(): string | null {
+    const fromUrl = new URLSearchParams(window.location.search).get('site');
+    if(fromUrl) {
+      storage.setItem(ConfigsCacheProvider.KEY_ID, fromUrl);
+    }
+    return fromUrl || storage.getItem(ConfigsCacheProvider.KEY_ID);
   }
 
   private saveConfigToCache(id: string, siteConfig: SiteConfig) {
-    storage.setItem(ConfigsCacheProvider.KEY + id, JSON.stringify(siteConfig));
+    storage.setItem(ConfigsCacheProvider.KEY_DATA + id, JSON.stringify(siteConfig));
     storage.setItem(ConfigsCacheProvider.KEY_EXPIRATION + id, new Date().toISOString());
   }
 
-  private getConfigFromCache(id?: string, force: boolean = false): Partial<SiteConfig> | null {
+  private getConfigFromCache(id: string | null, force: boolean = false): Partial<SiteConfig> | null {
     if(!id) return null;
-    const jsonCache = storage.getItem(ConfigsCacheProvider.KEY + id);
+    const jsonCache = storage.getItem(ConfigsCacheProvider.KEY_DATA + id);
     if(!jsonCache) return null;
 
     const createDateString = storage.getItem(ConfigsCacheProvider.KEY_EXPIRATION + id);
@@ -99,14 +108,13 @@ class ConfigsCacheProvider {
     const isCacheValid = expirationTime > new Date().getTime();
     
     if(!isCacheValid && !force) {
-      storage.removeItem(ConfigsCacheProvider.KEY + id);
+      storage.removeItem(ConfigsCacheProvider.KEY_DATA + id);
       console.warn('Cache expired, removing cache for id:', id);
       return null;
     }
 
     try {
-      const cache = JSON.parse(jsonCache);
-      console.log('Getting config from cache for id:', id, 'forced:', force, cache);
+      const cache = JSON.parse(jsonCache) as SiteConfig;
       return cache;
     } catch (error) {
       console.error('Error parsing cache:', error);

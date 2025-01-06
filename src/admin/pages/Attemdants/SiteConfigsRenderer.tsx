@@ -7,6 +7,7 @@ import { FieldRendererPros, ImageRenderer, Input } from "../../../components/for
 const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: FieldRendererPros<T>) => {
   const valueRef = useRef<Partial<SiteConfig>>(typeof value !== "object" ? {} : value);
   const [logo, setLogo] = useState(valueRef.current.logo || "");
+  const [fotterLogo, setFotterLogo] = useState(valueRef.current.fotterLogo || "");
 
   useEffect(() => {
     if (typeof value === "object") {
@@ -22,6 +23,13 @@ const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: Fi
       name="Logo" value={logo} onChange={(text: string) => {
         setLogo(text);
         valueRef.current.logo = text;
+        onChange(valueRef.current);
+      }} />
+    <ImageRenderer
+      provider={props.provider} item={props.item} save={props.save}
+      name="Fotter Logo" value={fotterLogo} onChange={(text: string) => {
+        setFotterLogo(text);
+        valueRef.current.fotterLogo = text;
         onChange(valueRef.current);
       }} />
     {ConfigKeys.map((item) =>

@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import './Header.css';
 import Icon, { Icons } from './Icons';
 import Home from "../pages/Home";
 import MenuItem from "../app/MenuItemInterface";
@@ -18,6 +20,7 @@ export const menuItems: MenuItem[] = [
 
 
 export default function Header() {
+  const [menuVisible, setMenuVisible] = useState(false);
   const configs = useConfigs();
 
   return <>
@@ -30,18 +33,23 @@ export default function Header() {
         borderColor: configs.headerAssentColor,
         backgroundColor: configs.headerBackgroundColor,
       }}>
-        <Icon icon={Icons.solid.faBars} color={configs.headerAssentColor} size="xl" />
+        <Icon
+          icon={Icons.solid.faBars} color={configs.headerAssentColor} size="xl"
+          onClick={() => setMenuVisible(!menuVisible)} />
         <img src={configs.logo} alt="logo" height="90" />
         <Icon icon={Icons.solid.faSearch} color={configs.headerAssentColor} size="xl" />
       </div>
     </header>
-    <nav>
-      {menuItems.map(item =>
-        <Link to={item.link} title={item.name} key={item.link}>
-          <Icon icon={item.icon} color={configs.menuAssentColor || configs.headerAssentColor} />
-          {item.name}
-        </Link>
-      )}
-    </nav>
+    <div className={menuVisible ? 'visible' : 'hidden'}>
+      <div className="closeArea" onClick={() => setMenuVisible(false)} />
+      <nav>
+        {menuItems.map(item =>
+          <Link to={item.link} title={item.name} key={item.link}>
+            <Icon icon={item.icon} color={configs.menuAssentColor || configs.headerAssentColor} />
+            {item.name}
+          </Link>
+        )}
+      </nav>
+    </div>
   </>;
 }

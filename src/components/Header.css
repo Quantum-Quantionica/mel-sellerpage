@@ -1,0 +1,58 @@
+:root {
+    --header-height: 115px;
+}
+
+nav {
+    position: fixed;
+    top: var(--header-height);
+    left: -250px;
+    /* Começa fora da tela */
+    width: 250px;
+    height: 100vh;
+    background-color: #333;
+    color: white;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-250px);
+    z-index: 1000;
+}
+
+.visible > nav {
+    transform: translateX(250px);
+    /* Aparece na tela */
+}
+
+nav > a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    color: white;
+}
+
+nav > a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav > a > svg {
+    margin-right: 1em;
+}
+
+.closeArea {
+    position: fixed;
+    top: var(--header-height);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.visible > .closeArea {
+    pointer-events: auto;
+    opacity: 1;
+}
