@@ -6,12 +6,17 @@ import Icon, { Icons } from './Icons';
 import Home from "../pages/Home";
 import MenuItem from "../app/MenuItemInterface";
 import { useConfigs } from "../app/ConfigProvider";
+import ProductsPage from "../pages/Product";
+import ProductsProvider from "../data/products";
 
 export const menuItems: MenuItem[] = [
   { name: 'Home', link: '', icon: Icons.solid.faHouse, page: <Home /> },
   { name: 'Quem Somos', link: 'sobre', icon: Icons.solid.faBuilding },
   { name: 'Fale com a gente', link: 'fale-conosco', icon: Icons.solid.faHeadset },
-  { name: 'Cursos', link: 'cursos', params: '/:id?', icon: Icons.solid.faChalkboardTeacher },
+  {
+    name: 'Cursos', link: 'cursos', params: '/:id?', icon: Icons.solid.faChalkboardTeacher,
+    page: <ProductsPage provider={new ProductsProvider('course')} title="Cursos" />
+  },
   { name: 'Consultas / Avaliações', link: 'atendimentos', icon: Icons.solid.faClipboardList },
   { name: 'Livros / E-Books', link: 'livros', icon: Icons.solid.faBook },
   { name: 'Videos', link: 'videos', params: '/:id?', icon: Icons.solid.faVideo },

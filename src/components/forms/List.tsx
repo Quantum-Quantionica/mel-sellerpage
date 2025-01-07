@@ -33,9 +33,12 @@ export default function DynamicList<T extends WithId>({ title, nameKey, provider
       <ul>
         {items.map(item => (
           item.id && <li key={item.id}>
-            <Link to={item.id}>
-              {item[nameKey] as string || `No ${nameKey as string} found`}
-            </ Link>
+            <span>Id: {item.id}</span>
+            <strong style={{display: "block"}}>
+              <Link to={item.id}>
+                {item[nameKey] as string || `No ${nameKey as string} found`}
+              </Link>
+            </strong>
             <button onClick={() => handleDelete(item)}>Delete</button>
             {adicionalFields && adicionalFields(item)}
           </li>
