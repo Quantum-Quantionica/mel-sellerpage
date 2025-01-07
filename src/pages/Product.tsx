@@ -22,7 +22,7 @@ export default function ProductsPage({title, provider}: ProductsPageProps) {
     };
     provider.getById(id).then(setProduct);
     return () => setProduct(null);
-  },[id, provider]); 
+  },[id, provider, productList.length]);
 
   if(!id) return <div className="content">
     <h1>{title}</h1>

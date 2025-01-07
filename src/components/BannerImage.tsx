@@ -17,13 +17,11 @@ interface BannerImageInfo {
 const sideStyle: CSSProperties = {
   position: 'absolute',
   top: 0, bottom: 0, left: 0, right: 0,
-  transition: 'background-color 0.5s, opacity 0.5s',
   filter: 'blur(1px)',
 }
 const innerStyle: CSSProperties = {
   position: 'absolute', zIndex: 1,
   top: 0, bottom: 0, width: '20px',
-  transition: 'background 0.5s, opacity 0.5s',
 }
 
 const defaultBannerInfo: BannerImageInfo = {
@@ -37,11 +35,6 @@ const BannerImage = ({ src, usePattern = true }: BannerImageProps) => {
   const [bannerInfo, setBannerInfo] = useState<BannerImageInfo>(defaultBannerInfo);
   const imageRef = useRef<HTMLImageElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
-  const onResize = () => {
-    if (!imageRef.current || !boxRef.current) return;
-    if (!boxRef.current) return;
-    setBannerInfo({ ...bannerInfo, ...calculateSizes(imageRef.current, boxRef.current) });
-  }
 
   useEffect(() => {
     const promisse = fetchAndSetImageData(src)
@@ -56,9 +49,15 @@ const BannerImage = ({ src, usePattern = true }: BannerImageProps) => {
 
   useEffect(() => {
     if(!imageRef.current) return;
+    const onResize = () => {
+      if (!imageRef.current || !boxRef.current) return;
+      if (!boxRef.current) return;
+      setBannerInfo({ ...bannerInfo, ...calculateSizes(imageRef.current, boxRef.current) });
+    }
+  
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [src, onResize]);
+  }, [bannerInfo]);
 
   return <>
     <div
@@ -78,7 +77,7 @@ const BannerImage = ({ src, usePattern = true }: BannerImageProps) => {
         background: `linear-gradient(to right, ${bannerInfo.left}, transparent)`,
       }} /> }
       <img className="content" alt="Banner" src={dataURL} ref={imageRef}
-        style={{ height: "300px", transition: 'opacity 0.5s', opacity: bannerInfo.opacity }}
+        style={{ height: "300px", opacity: bannerInfo.opacity }}
         onLoad={(e) => {
           if (!boxRef.current || !src) return;
           setBannerInfo(
