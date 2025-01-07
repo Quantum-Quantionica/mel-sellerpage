@@ -16,10 +16,12 @@ export default function ProductsPage({title, provider}: ProductsPageProps) {
 
   useEffect(() => {
     if(!id) {
-      provider.listAll().then(setProductList);
+      if(productList.length === 0)
+        provider.listAll().then(setProductList);
       return;
     };
     provider.getById(id).then(setProduct);
+    return () => setProduct(null);
   },[id, provider]); 
 
   if(!id) return <div className="content">
