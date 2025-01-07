@@ -17,8 +17,14 @@ export const menuItems: MenuItem[] = [
     name: 'Cursos', link: 'cursos', params: '/:id?', icon: Icons.solid.faChalkboardTeacher,
     page: <ProductsPage provider={new ProductsProvider('course')} title="Cursos" />
   },
-  { name: 'Consultas / Avaliações', link: 'atendimentos', icon: Icons.solid.faClipboardList },
-  { name: 'Livros / E-Books', link: 'livros', icon: Icons.solid.faBook },
+  { 
+    name: 'Consultas / Avaliações', params: '/:id?', link: 'atendimentos', icon: Icons.solid.faClipboardList,
+    page: <ProductsPage provider={new ProductsProvider('appointment')} title="Consultas / Avaliações" />
+  },
+  {
+    name: 'Livros / E-Books', params: '/:id?', link: 'livros', icon: Icons.solid.faBook,
+    page: <ProductsPage provider={new ProductsProvider('book')} title="Livros" />
+  },
   { name: 'Videos', link: 'videos', params: '/:id?', icon: Icons.solid.faVideo },
   { name: 'Indicações', link: 'indicacoes', icon: Icons.solid.faStar },
 ];

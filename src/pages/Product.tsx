@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import ProductsProvider, { Product } from "../data/products";
 import BannerImage from "../components/BannerImage";
@@ -9,14 +9,27 @@ export interface ProductsPageProps {
   title: string;
 }
 
-export default function ProductsPage({provider}: ProductsPageProps) {
+export default function ProductsPage({title, provider}: ProductsPageProps) {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>();
+  const [productList, setProductList] = useState<Product[]>([]);
 
   useEffect(() => {
-    if(!id) return;
+    if(!id) {
+      provider.listAll().then(setProductList);
+      return;
+    };
     provider.getById(id).then(setProduct);
   },[id, provider]); 
+
+  if(!id) return <div className="content">
+    <h1>{title}</h1>
+    <ul>
+      {productList.map(product => <li key={product.id}>
+        <Link to={`${product.id}`}>{product.name}</Link>
+      </li>)}
+    </ul>
+  </div>;
   
   return <>
     {product && <BannerImage src={product.image}  />}
