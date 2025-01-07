@@ -1,7 +1,7 @@
 import defaultLogo from '../images/logo.svg';
 import AttendantsProvider, { AttendantSocialLink } from "../data/attendants";
 
-const storage = window.sessionStorage;
+const storage = window.localStorage;
 
 export interface SiteConfig {
   logo: string;
