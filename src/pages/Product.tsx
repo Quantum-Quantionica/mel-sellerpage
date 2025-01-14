@@ -45,6 +45,7 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
     }
     root?.addEventListener('scroll', handleScroll);
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => {
       root?.removeEventListener('scroll', handleScroll);
       window.removeEventListener('scroll', handleScroll);
