@@ -7,14 +7,15 @@ import MainContent from '../components/MainContent';
 import Footer from '../components/Footer';
 import ConfigProvider from './ConfigProvider';
 
-
 function App() {
   return <AppRoutes routes={[
-    { base: '/', routes: appMenus, rootElement: <ConfigProvider>
-      <Header />
-      <MainContent />
-      <Footer />
-    </ConfigProvider>},
+    {
+      base: '/', routes: appMenus, rootElement: <ConfigProvider>
+        <Header />
+        <MainContent />
+        <Footer />
+      </ConfigProvider>
+    },
     { base: '/admin', routes: adminMenus, rootElement: <AdminApp /> },
   ]} />
 }

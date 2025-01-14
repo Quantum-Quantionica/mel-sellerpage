@@ -1,0 +1,82 @@
+* {
+    /* border: 1px solid red; */
+}
+
+.product-box {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Id Desktop */
+@media (min-width: 800px) {
+    .product-box {
+        flex-wrap: nowrap;
+    }
+    .product-box > .info {
+        max-width: 60%;
+    }
+}
+
+.product-box > .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    gap: 10px;
+}
+
+.product-box > .info > .price {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.product-box > .info > .paymentType {
+    font-size: 0.8em;
+}
+
+.product-box > .video {
+    flex: 1;
+    aspect-ratio: 16/9;
+    max-width: 400px;
+}
+
+.product-box > .video > iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.button-by {
+    display: block;
+    padding: 1em;
+    border-radius: 8px;
+    border: 2px solid rgb(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.button-by.floating {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+}
+
+.button-by > svg {
+    margin-right: 0.8em;
+}
+
+.mark-list li {
+    padding: 0.3em 0;
+}
+
+.mark-list > li > ul {
+    padding-left: 1em;
+}
+
+.mark-list > li > ul > li {
+    display: flex;
+}
+
+.mark-list > li > ul > li > svg {
+    margin-right: 0.5em;
+}

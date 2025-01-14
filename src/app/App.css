@@ -7,6 +7,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 .content {
@@ -14,12 +15,12 @@
     display: block;
     margin: 0 auto;
     max-width: 1100px;
+    padding: 0 0.8rem;
 }
 
 header {
     display: flex;
     justify-content: center;
-    padding: 0 0.8rem;
     border-bottom-width: 9px;
     border-bottom-style: solid;
 }

@@ -1,5 +1,6 @@
 import defaultLogo from '../images/logo.svg';
 import AttendantsProvider, { AttendantSocialLink } from "../data/attendants";
+import { IconDefinition, IconKey, Icons } from '../components/Icons';
 
 const storage = window.localStorage;
 
@@ -11,7 +12,9 @@ export interface SiteConfig {
   headerAssentColor: string;
   headerFontColor: string;
   menuAssentColor?: string;
-  fotterLogo: string;
+  markColor: string;
+  markIcon: IconKey | IconDefinition,
+  fotterLogo?: string;
   fotterFontColor: string;
   socials: AttendantSocialLink[];
 }
@@ -43,6 +46,8 @@ class ConfigsCacheProvider {
     headerAssentColor: 'orange',
     headerFontColor: '#000',
     fotterFontColor: '#000',
+    markColor: 'orange',
+    markIcon: Icons.solid.faQuoteLeft,
     socials: []
   }
 
