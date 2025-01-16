@@ -25,12 +25,14 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
   "headerAssentColor",
   "headerFontColor",
   "menuAssentColor",
-  "fotterFontColor"
+  "fotterFontColor",
+  "markColor",
+  "markIcon",
 ]
 
 class ConfigsCacheProvider {
 
-  private static EXPIRATION_TIME = 1000 * 60// * 60 * 24; // 24 hours in milliseconds
+  private static EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours in milliseconds
   private static KEY_EXPIRATION = 'siteConfigExpiration_';
   private static KEY_DATA = 'siteConfig_';
   private static KEY_ID = 'siteConfigDefaultId';

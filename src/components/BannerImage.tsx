@@ -162,25 +162,27 @@ const createColumnPattern = (data: Uint8ClampedArray, height: number) => {
 
 const cachedImages = new Map<string, string>();
 
-const fetchAndSetImageData = async (imageUrl?: string) => new Promise<string>(async (resolve, reject) => {
-  if (!imageUrl) return reject("No image url provided");
+const fetchAndSetImageData = async (imageUrl?: string) => new Promise<string>((resolve, reject) => {
+  (async () => {
+    if (!imageUrl) return reject("No image url provided");
 
-  const cached = cachedImages.get(imageUrl);
-  if (cached) return resolve(cached);
-  try {
-    const response = await fetch(imageUrl, { cache: "force-cache" });
-    if (!response.ok) reject("Erro ao carregar a imagem");
-    
-    const blob = await response.blob();
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const dataUrl = reader.result as string;
-      reader.onloadend = null;
-      cachedImages.set(imageUrl, dataUrl);
-      resolve(dataUrl);
-    };
-    reader.readAsDataURL(blob);
-  } catch (err) {
-    reject(err);
-  }
+    const cached = cachedImages.get(imageUrl);
+    if (cached) return resolve(cached);
+    try {
+      const response = await fetch(imageUrl, { cache: "force-cache" });
+      if (!response.ok) reject("Erro ao carregar a imagem");
+      
+      const blob = await response.blob();
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result as string;
+        reader.onloadend = null;
+        cachedImages.set(imageUrl, dataUrl);
+        resolve(dataUrl);
+      };
+      reader.readAsDataURL(blob);
+    } catch (err) {
+      reject(err);
+    }
+  })();
 });

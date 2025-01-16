@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from "react";
 
 import { WithId } from "../../../data/provider";
 import { SiteConfig, ConfigKeys } from "../../../configs/siteConfigs";
-import { FieldRendererPros, ImageRenderer, Input } from "../../../components/forms";
+import { FieldRenderer, FieldRendererPros, ImageRenderer, Input } from "../../../components/forms";
+import IconRenderer from "../../../components/forms/renderers/IconRenderer";
+
+const ConfigKeysRenderer: { [key in keyof SiteConfig]?: FieldRenderer<any> } = {
+  "markIcon": IconRenderer
+}
 
 const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: FieldRendererPros<T>) => {
   const valueRef = useRef<Partial<SiteConfig>>(typeof value !== "object" ? {} : value);
@@ -32,14 +37,16 @@ const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: Fi
         valueRef.current.fotterLogo = text;
         onChange(valueRef.current);
       }} />
-    {ConfigKeys.map((item) =>
-      <Input
+    {ConfigKeys.map((item) => {
+      const Renderer: FieldRenderer<any> = ConfigKeysRenderer[item] || Input;
+      return <Renderer
         key={item}
         provider={props.provider} item={props.item} save={props.save}
         name={item} value={valueRef.current[item]} onChange={(text: string) => {
           valueRef.current[item] = text;
           onChange(valueRef.current);
         }} />
+    }
     )}
   </>;
 };

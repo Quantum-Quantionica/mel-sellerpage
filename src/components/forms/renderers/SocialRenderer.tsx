@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { FieldRendererPros, Input } from "..";
 import { WithId } from "../../../data/provider";
 import { AttendantSocialLink } from "../../../data/attendants";
-import Icon, { getIconByCaseInsensitiveName } from "../../Icons";
+import IconRenderer from "./IconRenderer";
 
 const SocialRenderer = <T extends WithId>({value, onChange}: FieldRendererPros<T>) => {
   const valueRef = useRef<Partial<AttendantSocialLink>>(typeof value !== "object" ? {} : value);
@@ -19,8 +19,6 @@ const SocialRenderer = <T extends WithId>({value, onChange}: FieldRendererPros<T
       setLink(value.link || "");
     }
   },[value]);
-
-  const iconInstance = getIconByCaseInsensitiveName(icon);
 
   return <>
     <Input name="Link" value={link} onChange={(text: string) => {
@@ -39,9 +37,11 @@ const SocialRenderer = <T extends WithId>({value, onChange}: FieldRendererPros<T
       valueRef.current.icon = text;
       onChange(valueRef.current);
     }} />
-    <a href={link} target="_blank" rel="noreferrer">
-      <Icon icon={iconInstance} />
-    </a>
+    <IconRenderer name="Icon" value={icon} onChange={(text: string) => {
+      setIcon(text);
+      valueRef.current.icon = text;
+      onChange(valueRef.current);
+    }} />
   </>;
 };
 export default SocialRenderer;

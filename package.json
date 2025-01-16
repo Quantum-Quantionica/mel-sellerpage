@@ -27,7 +27,7 @@
     "build": "CI=true && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --config ./eslint.config.mjs"
+    "lint": "eslint src --config ./eslint.config.mjs"
   },
   "eslintConfig": {
     "extends": [
