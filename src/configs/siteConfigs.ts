@@ -17,6 +17,7 @@ export interface SiteConfig {
   fotterLogo?: string;
   fotterFontColor: string;
   socials: AttendantSocialLink[];
+  whatsappNumber?: string;
 }
 
 export const ConfigKeys: (keyof SiteConfig)[] = [
@@ -28,11 +29,12 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
   "fotterFontColor",
   "markColor",
   "markIcon",
+  "whatsappNumber",
 ]
 
 class ConfigsCacheProvider {
 
-  private static EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours in milliseconds
+  private static EXPIRATION_TIME = 1000// * 60 * 60 * 24; // 24 hours in milliseconds
   private static KEY_EXPIRATION = 'siteConfigExpiration_';
   private static KEY_DATA = 'siteConfig_';
   private static KEY_ID = 'siteConfigDefaultId';
