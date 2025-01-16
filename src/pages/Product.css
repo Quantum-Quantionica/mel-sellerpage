@@ -59,6 +59,11 @@
     position: fixed;
     right: 20px;
     bottom: 20px;
+    transition: opacity 0.5s;
+}
+
+.button-by.hide {
+    opacity: 0;
 }
 
 .button-by > svg {

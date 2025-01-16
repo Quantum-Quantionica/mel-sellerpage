@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import "./Product.css";
@@ -25,6 +25,8 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
   const [product, setProduct] = useState<Product | null>();
   const [productList, setProductList] = useState<Product[]>([]);
   const [floatingBottomMargin, setFloatingBottomMargin] = useState(0);
+  const [showFloatingButton, setShowFloatingButton] = useState(false);
+  const buttonRef = useRef<HTMLAnchorElement>(null);
   const configs = useConfigs();
 
   useEffect(() => {
@@ -39,6 +41,9 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
   useEffect(() => {
     const root = document.getElementById('root');
     const handleScroll = () => {
+      if(buttonRef.current)
+        setShowFloatingButton(!isElementVisible(buttonRef.current))
+
       const footer = document.querySelector('footer');
       if (!footer) return;
       setFloatingBottomMargin(window.innerHeight - footer.getBoundingClientRect().top + 20);
@@ -65,7 +70,7 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
 
   return <>
     {product && <BannerImage src={product.image} />}
-    <div className="content">
+    <div className="content" style={{margin: '20px auto 80px auto'}}>
       <h2>{product.name}</h2>
       <div className="product-box">
         <div className="info">
@@ -74,7 +79,7 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
           <span className="price">{formatPrice(product)}</span>
           <span className="paymentType">{product.paymentInfo}</span>
           <div className="spacer"></div>
-          <a className="button-by" href={product.purchaseUrl} style={{
+          <a className="button-by" href={product.purchaseUrl} ref={buttonRef} style={{
             backgroundColor: configs.markColor,
           }}><Icon icon={Icons.solid.faCartShopping} />Comprar</a>
         </div>
@@ -109,7 +114,7 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
         </ul>
       </>
       }
-      <a className="button-by floating" href={product.purchaseUrl} style={{
+      <a className={`button-by floating${showFloatingButton ? '' : ' hide'}`} href={product.purchaseUrl} style={{
         backgroundColor: configs.markColor,
       }}><Icon icon={Icons.solid.faCartShopping} />Comprar</a>
     </div>
@@ -120,3 +125,13 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
       `}</style>}
   </>;
 }
+
+const isElementVisible = (element: HTMLElement): boolean => {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+};
