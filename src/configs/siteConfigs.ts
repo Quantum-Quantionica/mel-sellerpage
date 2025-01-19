@@ -18,6 +18,7 @@ export interface SiteConfig {
   fotterFontColor: string;
   socials: AttendantSocialLink[];
   whatsappNumber?: string;
+  whatsappLink?: string;
 }
 
 export const ConfigKeys: (keyof SiteConfig)[] = [
@@ -59,10 +60,12 @@ class ConfigsCacheProvider {
     if(this.lastRequestPromise) {
       await this.lastRequestPromise;
     }
-    const config = this.lastRequestPromise = this.getConfig();
+    const configRequest = this.lastRequestPromise = this.getConfig();
+    const config = await configRequest;
     return {
       ...this.defaultConfig,
-      ...await config
+      ...config,
+      whatsappLink: `https://wa.me/${config.whatsappNumber?.replace(/\D/g, '')}`
     };
   }
 

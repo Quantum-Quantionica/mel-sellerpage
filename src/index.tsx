@@ -5,13 +5,16 @@ import './index.css';
 import './configs/firebase';
 import App from './app/App';
 import reportWebVitals from './configs/reportWebVitals';
+import { ConfigProvider } from './app/ConfigProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <ConfigProvider>
+      <App />
+    </ConfigProvider>
   </React.StrictMode>
 );
 

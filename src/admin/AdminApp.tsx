@@ -20,8 +20,8 @@ export const menuItems: MenuItem[] = [
     name: 'Livros e Ebooks', link: 'livros', params: '/:id?', icon: Icons.solid.faBuilding,
     page: <ProductsPage provider={new ProductsProvider('book')} title="Cadastro de livros" name="Livro" />
   },
-  { name: 'Videos', link: 'videos', icon: Icons.solid.faHeadset },
-  { name: 'Indicações', link: 'indicações', icon: Icons.solid.faChalkboardTeacher },
+  // { name: 'Videos', link: 'videos', icon: Icons.solid.faHeadset },
+  // { name: 'Indicações', link: 'indicações', icon: Icons.solid.faChalkboardTeacher },
 ];
 
 export default function AdminApp() {

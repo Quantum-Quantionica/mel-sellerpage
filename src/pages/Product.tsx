@@ -24,7 +24,6 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>();
   const [productList, setProductList] = useState<Product[]>([]);
-  const [floatingBottomMargin, setFloatingBottomMargin] = useState(0);
   const [showFloatingButton, setShowFloatingButton] = useState(false);
   const buttonRef = useRef<HTMLAnchorElement>(null);
   const configs = useConfigs();
@@ -39,22 +38,11 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
   }, [id, provider, productList.length]);
 
   useEffect(() => {
-    const root = document.getElementById('root');
     const handleScroll = () => {
       if(buttonRef.current)
         setShowFloatingButton(!isElementVisible(buttonRef.current))
-
-      const footer = document.querySelector('footer');
-      if (!footer) return;
-      setFloatingBottomMargin(window.innerHeight - footer.getBoundingClientRect().top + 20);
     }
-    root?.addEventListener('scroll', handleScroll);
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => {
-      root?.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('scroll', handleScroll);
-    }
+    return registerWindowMoveEvent(handleScroll);
   }, []);
 
   if (!id) return <div className="content">
@@ -81,7 +69,7 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
           <div className="spacer"></div>
           <a className="button-by" href={product.purchaseUrl} ref={buttonRef} style={{
             backgroundColor: configs.markColor,
-          }}><Icon icon={Icons.solid.faCartShopping} />Comprar</a>
+          }}><Icon icon={Icons.solid.faCartShopping} />Adquirir</a>
         </div>
         {product.youtube && <div className="video">
           <iframe
@@ -116,13 +104,8 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
       }
       <a className={`button-by floating${showFloatingButton ? '' : ' hide'}`} href={product.purchaseUrl} style={{
         backgroundColor: configs.markColor,
-      }}><Icon icon={Icons.solid.faCartShopping} />Comprar</a>
+      }}><Icon icon={Icons.solid.faCartShopping} />Adquirir</a>
     </div>
-    {floatingBottomMargin > 20 && <style>{`
-.button-by.floating {
-    bottom: ${floatingBottomMargin}px;
-}
-      `}</style>}
   </>;
 }
 
@@ -135,3 +118,17 @@ const isElementVisible = (element: HTMLElement): boolean => {
     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   );
 };
+
+export const registerWindowMoveEvent = (callback: () => void) => {
+  const root = document.getElementById('root');
+  root?.addEventListener('scroll', callback);
+
+  window.addEventListener('scroll', callback);
+  window.addEventListener('resize', callback);
+  callback();
+  return () => {
+    root?.removeEventListener('scroll', callback);
+    window.removeEventListener('scroll', callback);
+    window.removeEventListener('resize', callback);
+  }
+}

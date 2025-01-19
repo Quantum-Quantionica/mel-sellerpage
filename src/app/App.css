@@ -57,3 +57,18 @@ footer {
     right: 15px;
     font-size: 0.6em;
 }
+
+.whatszapp.floating {
+    display: flex;
+    z-index: 1000;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    bottom: 20px;
+    left: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    background-color: #25d366;
+    color: white;
+}

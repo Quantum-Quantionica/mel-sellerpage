@@ -6,9 +6,6 @@ interface EmptyPageProps {
 
 export default function EmptyPage({ name }: EmptyPageProps) {
   const configs = useConfigs();
-
-  const normalizedNumber = configs.whatsappNumber?.replace(/\D/g, '');
-
   return (
     <div className="content">
       <h1>{name} PlaceHolder Page</h1>
@@ -16,7 +13,7 @@ export default function EmptyPage({ name }: EmptyPageProps) {
 
       {configs.whatsappNumber && <>
         <p>Whatsapp: {configs.whatsappNumber}</p>
-        <a href={`https://wa.me/${normalizedNumber}`}>Send a message</a>
+        <a href={configs.whatsappLink}>Send a message</a>
       </>}
     </div>
   );

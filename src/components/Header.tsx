@@ -12,7 +12,7 @@ import ProductsProvider from "../data/products";
 export const menuItems: MenuItem[] = [
   { name: 'Home', link: '', icon: Icons.solid.faHouse, page: <Home /> },
   { name: 'Quem Somos', link: 'sobre', icon: Icons.solid.faBuilding },
-  { name: 'Fale com a gente', link: 'fale-conosco', icon: Icons.solid.faHeadset },
+  // { name: 'Fale com a gente', link: 'fale-conosco', icon: Icons.solid.faHeadset },
   {
     name: 'Cursos', link: 'cursos', params: '/:id?', icon: Icons.solid.faChalkboardTeacher,
     page: <ProductsPage provider={new ProductsProvider('course')} title="Cursos" />
@@ -25,8 +25,8 @@ export const menuItems: MenuItem[] = [
     name: 'Livros / E-Books', params: '/:id?', link: 'livros', icon: Icons.solid.faBook,
     page: <ProductsPage provider={new ProductsProvider('book')} title="Livros" />
   },
-  { name: 'Videos', link: 'videos', params: '/:id?', icon: Icons.solid.faVideo },
-  { name: 'Indicações', link: 'indicacoes', icon: Icons.solid.faStar },
+  // { name: 'Videos', link: 'videos', params: '/:id?', icon: Icons.solid.faVideo },
+  // { name: 'Indicações', link: 'indicacoes', icon: Icons.solid.faStar },
 ];
 
 export default function Header() {
