@@ -19,6 +19,12 @@
     }
 }
 
+.product hr {
+    border-width: 0.5px;
+    border-bottom: none;
+    margin: 2.5em 0;
+}
+
 .product-box > .info {
     display: flex;
     flex-direction: column;

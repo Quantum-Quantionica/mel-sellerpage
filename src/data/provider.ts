@@ -1,6 +1,18 @@
 import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, query, where, addDoc, deleteField, serverTimestamp } from "firebase/firestore";
 import { db } from "../configs/firebase";
 
+const maxRequestsPerSecond = 10;
+let requestsOnLastSecond = 0;
+setInterval(() => {
+  requestsOnLastSecond = 0;
+}, 1000);
+function allertIfTooManyRequests() {
+  requestsOnLastSecond++;
+  if (requestsOnLastSecond > maxRequestsPerSecond) {
+    alert("Too many requests on last second");
+  }
+}
+
 export interface WithId {
   id?: string;
 }
@@ -40,6 +52,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
   }
 
   async listAll(filter?: Partial<T>): Promise<T[]> {
+    allertIfTooManyRequests();
     const ref = collection(db, this.collectionName);
     let q = query(ref);
 
@@ -56,6 +69,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
   }
 
   async save(item: Partial<T>, validate: boolean = false): Promise<Partial<T>> {
+    allertIfTooManyRequests();
     this.filterData(item);
     if(validate) this.validateData(item);
     const partialItem = { ...item, updatedAt: serverTimestamp() };
@@ -75,11 +89,13 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
   }
 
   async delete(id: string): Promise<void> {
+    allertIfTooManyRequests();
     const ref = doc(db, this.collectionName, id);
     await deleteDoc(ref);
   }
 
   async getById(id: string): Promise<T | null> {
+    allertIfTooManyRequests();
     const ref = doc(db, this.collectionName, id);
     const snapshot = await getDoc(ref);
 

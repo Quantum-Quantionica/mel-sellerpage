@@ -1,5 +1,5 @@
 import defaultLogo from '../images/logo.svg';
-import AttendantsProvider, { AttendantSocialLink } from "../data/attendants";
+import AttendantsProvider, { AttendantSocialLink, Attendant } from "../data/attendants";
 import { IconDefinition, IconKey, Icons } from '../components/Icons';
 
 const storage = window.localStorage;
@@ -35,9 +35,9 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
 
 class ConfigsCacheProvider {
 
-  private static EXPIRATION_TIME = 1000// * 60 * 60 * 24; // 24 hours in milliseconds
+  private static EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours in milliseconds
   private static KEY_EXPIRATION = 'siteConfigExpiration_';
-  private static KEY_DATA = 'siteConfig_';
+  private static KEY_DATA = 'siteAttendantData_';
   private static KEY_ID = 'siteConfigDefaultId';
   private lastRequestPromise: Promise<any> | null = null;
 
@@ -60,11 +60,11 @@ class ConfigsCacheProvider {
     if(this.lastRequestPromise) {
       await this.lastRequestPromise;
     }
-    const configRequest = this.lastRequestPromise = this.getConfig();
+    const configRequest = this.lastRequestPromise = this.getAttendant();
     const config = await configRequest;
     return {
       ...this.defaultConfig,
-      ...config,
+      ...config.siteConfig,
       whatsappLink: `https://wa.me/${config.whatsappNumber?.replace(/\D/g, '')}`
     };
   }
@@ -72,16 +72,17 @@ class ConfigsCacheProvider {
   public getFromCache(): SiteConfig {
     return {
       ...this.defaultConfig,
-      ...this.getConfigFromCache(this.getConfigId(), true) || {}
+      ...this.getAttendantFromCache(this.getAttendantId(), true)?.siteConfig || {}
     };
   }
 
-  private async getConfig(): Promise<Partial<SiteConfig>> {
-    const id = this.getConfigId()
+  public async getAttendant(): Promise<Partial<Attendant>> {
+    const id = this.getAttendantId()
     if(!id) return {}
 
-    const cache = this.getConfigFromCache(id);
+    const cache = this.getAttendantFromCache(id);
     if(cache) {
+      console.log('Getting config from cache for id:', id, cache);
       return cache;
     };
 
@@ -89,14 +90,14 @@ class ConfigsCacheProvider {
     console.log('Getting config from database for id:', id, attendant?.siteConfig);
     if(attendant?.siteConfig) {
       attendant.siteConfig.socials = attendant?.socialLinks || [];
-      this.saveConfigToCache(id, attendant?.siteConfig);
-      return attendant?.siteConfig;
+      this.saveAttendantToCache(id, attendant);
+      return attendant;
     };
 
     return {};
   }
 
-  private getConfigId(): string | null {
+  private getAttendantId(): string | null {
     const fromUrl = new URLSearchParams(window.location.search).get('site');
     if(fromUrl) {
       storage.setItem(ConfigsCacheProvider.KEY_ID, fromUrl);
@@ -104,12 +105,12 @@ class ConfigsCacheProvider {
     return fromUrl || storage.getItem(ConfigsCacheProvider.KEY_ID);
   }
 
-  private saveConfigToCache(id: string, siteConfig: SiteConfig) {
+  private saveAttendantToCache(id: string, siteConfig: Attendant) {
     storage.setItem(ConfigsCacheProvider.KEY_DATA + id, JSON.stringify(siteConfig));
     storage.setItem(ConfigsCacheProvider.KEY_EXPIRATION + id, new Date().toISOString());
   }
 
-  private getConfigFromCache(id: string | null, force: boolean = false): Partial<SiteConfig> | null {
+  private getAttendantFromCache(id: string | null, force: boolean = false): Partial<Attendant> | null {
     if(!id) return null;
     const jsonCache = storage.getItem(ConfigsCacheProvider.KEY_DATA + id);
     if(!jsonCache) return null;
@@ -126,7 +127,7 @@ class ConfigsCacheProvider {
     }
 
     try {
-      const cache = JSON.parse(jsonCache) as SiteConfig;
+      const cache = JSON.parse(jsonCache) as Attendant;
       return cache;
     } catch (error) {
       console.error('Error parsing cache:', error);

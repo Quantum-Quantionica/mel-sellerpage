@@ -8,10 +8,11 @@ import MenuItem from "../app/MenuItemInterface";
 import { useConfigs } from "../app/ConfigProvider";
 import ProductsPage from "../pages/Product";
 import ProductsProvider from "../data/products";
+import WhoWeAre from "../pages/WhoWeAre";
 
 export const menuItems: MenuItem[] = [
   { name: 'Home', link: '', icon: Icons.solid.faHouse, page: <Home /> },
-  { name: 'Quem Somos', link: 'sobre', icon: Icons.solid.faBuilding },
+  { name: 'Quem Somos', link: 'sobre', icon: Icons.solid.faBuilding, page: <WhoWeAre /> },
   // { name: 'Fale com a gente', link: 'fale-conosco', icon: Icons.solid.faHeadset },
   {
     name: 'Cursos', link: 'cursos', params: '/:id?', icon: Icons.solid.faChalkboardTeacher,

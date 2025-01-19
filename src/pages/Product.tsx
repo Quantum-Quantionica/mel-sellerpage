@@ -6,6 +6,7 @@ import ProductsProvider, { Product } from "../data/products";
 import BannerImage from "../components/BannerImage";
 import Icon, { getIconByCaseInsensitiveName, Icons } from "../components/Icons";
 import { useConfigs } from "../app/ConfigProvider";
+import WhoWeAre from "./WhoWeAre";
 
 export interface ProductsPageProps {
   provider: ProductsProvider;
@@ -58,7 +59,7 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
 
   return <>
     {product && <BannerImage src={product.image} />}
-    <div className="content" style={{margin: '20px auto 80px auto'}}>
+    <div className="content product" style={{margin: '20px auto 80px auto'}}>
       <h2>{product.name}</h2>
       <div className="product-box">
         <div className="info">
@@ -102,6 +103,8 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
         </ul>
       </>
       }
+      <hr style={{borderColor: configs.headerAssentColor}} />
+      <WhoWeAre />
       <a className={`button-by floating${showFloatingButton ? '' : ' hide'}`} href={product.purchaseUrl} style={{
         backgroundColor: configs.markColor,
       }}><Icon icon={Icons.solid.faCartShopping} />Adquirir</a>
