@@ -1,0 +1,65 @@
+nav {
+    background-color: #1f1f1f;
+    color: white;
+    text-wrap-mode: nowrap;
+}
+
+nav > ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0;
+}
+
+nav > ul > li {
+    flex: 1;
+    text-align: center;
+    box-sizing: content-box;
+}
+
+nav > ul > li > a {
+    display: block;
+    padding: 1em 4em;
+}
+
+nav > ul > li.active {
+    background: #eee;
+    color: #1f1f1f;
+}
+
+nav svg {
+    margin-right: 0.5em;
+}
+
+button {
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+button svg {
+    margin-right: 0.4em;
+}
+
+.dynamic-list h1 {
+    margin: 0;
+    padding: 0.5em 0;
+    border-bottom: 2px solid #aaa;
+}
+
+.dynamic-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.dynamic-list ul > li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8em;
+    justify-content: space-between;
+    padding: 0.5em;
+    border-bottom: 1px solid #ddd;
+}
+
+.dynamic-list ul > li .spacer {
+    flex: 1;
+}

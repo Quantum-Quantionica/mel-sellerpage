@@ -19,8 +19,8 @@ const InfoRenderer = <T extends WithId>({name, value, onChange, ...props}: Input
     }
   },[value]);
 
-  return <>
-    {name}:
+  return <div>
+    <label>{name}:</label>
     <Input  {...props} name="Titulo" value={title} onChange={text => {
       setTitle(text);
       valueRef.current.title = text;
@@ -37,6 +37,6 @@ const InfoRenderer = <T extends WithId>({name, value, onChange, ...props}: Input
         valueRef.current.items = list;
         onChange(valueRef.current);
       }}/>
-  </>;
+  </div>;
 };
 export default InfoRenderer;

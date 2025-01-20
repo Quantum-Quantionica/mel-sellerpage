@@ -13,13 +13,15 @@ const OrganizationalCultureRenderer = <T extends WithId>({value, onChange}: Fiel
 
   useEffect(() => {
     if (typeof value === "object") {
+      valueRef.current = value;
       setMission(value.mission || "");
       setVision(value.vision || "");
       setValues(value.values || []);
     }
   },[value]);
 
-  return <>
+  return <div style={{ padding: "1em", border: "1px solid #ccc", borderRadius: "5px", backgroundColor: "#e5fadf" }}>
+    <h3>Organizational Culture</h3>
     <TextArea name="Mission" value={mission} onChange={(text: string) => {
       setMission(text);
       valueRef.current.mission = text;
@@ -35,6 +37,6 @@ const OrganizationalCultureRenderer = <T extends WithId>({value, onChange}: Fiel
       valueRef.current.values = text;
       onChange(valueRef.current);
     }} />
-  </>;
+  </div>;
 };
 export default OrganizationalCultureRenderer;

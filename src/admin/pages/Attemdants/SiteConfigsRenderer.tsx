@@ -21,7 +21,7 @@ const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: Fi
     }
   }, [value]);
 
-  return <>
+  return <div style={{ padding: "1em", border: "1px solid #ccc", borderRadius: "5px", backgroundColor: "#fadfdf" }}>
     <h2>Site Configs</h2>
     <ImageRenderer
       provider={props.provider} item={props.item} save={props.save}
@@ -48,6 +48,6 @@ const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: Fi
         }} />
     }
     )}
-  </>;
+  </div>;
 };
 export default SiteConfigsRenderer;

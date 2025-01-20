@@ -4,6 +4,7 @@ import AttendantsProvider, { Attendant } from "../../../data/attendants";
 import { DynamicForm, DynamicList, ImageRenderer, ListRenderer, ListRendererConfigs, SocialRenderer, TextArea } from "../../../components/forms";
 import OrganizationalCultureRenderer from "./OrganizationalCultureRenderer";
 import SiteConfigsRenderer from "./SiteConfigsRenderer";
+import Icon, { Icons } from "../../../components/Icons";
 
 const newUrl = 'new';
 const provider = new AttendantsProvider();
@@ -16,9 +17,14 @@ const AttendantsPage = () => {
 
   if(!id)
     return <>
-      <Link to={newUrl}>Add Attendant</Link>
+      <Link to={newUrl}><button>
+        <Icon icon={Icons.solid.faPlus} />
+        Add Attendant
+      </button></Link>
       <DynamicList provider={provider} title="Attendant" nameKey="name"
-        adicionalFields={item => <a href={getSiteUrl(item)}>Open Site</a>} />
+        adicionalFields={item => <a href={getSiteUrl(item)} target="_blank" rel="noreferrer">
+          <button>Open Site</button>
+        </a>} />
     </>;
 
   return (

@@ -1,0 +1,29 @@
+.input-box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    gap: 15px;
+}
+
+.input-box input, .input-box textarea {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.input-box input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.input-box label {
+    font-size: 16px;
+    color: #333;
+    text-transform: capitalize;
+}
+

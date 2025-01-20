@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import './DynamicForm.css';
 import { WithId, Provider } from "../../data/provider";
 import { Input } from ".";
 
@@ -48,7 +49,7 @@ export default function DynamicForm<T extends WithId>({ id, title, provider, fie
   },[id, provider]);
 
   return (
-    <div>
+    <div className="dymantic-form">
       <h1>{title}</h1>
       {provider.keys.map(key => {
         const value = formData[key];

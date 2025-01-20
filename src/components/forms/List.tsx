@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Provider, WithId } from "../../data/provider";
 import { Link } from "react-router-dom";
+import Icon, { Icons } from "../Icons";
 
 export interface DynamicListProps<T extends WithId> {
   title: string;
@@ -28,7 +29,7 @@ export default function DynamicList<T extends WithId>({ title, nameKey, provider
   };
 
   return (
-    <div>
+    <div className="dynamic-list">
       <h1>{title}</h1>
       <ul>
         {items.map(item => (
@@ -39,8 +40,12 @@ export default function DynamicList<T extends WithId>({ title, nameKey, provider
                 {item[nameKey] as string || `No ${nameKey as string} found`}
               </Link>
             </strong>
-            <button onClick={() => handleDelete(item)}>Delete</button>
+            <div className="spacer" />
             {adicionalFields && adicionalFields(item)}
+            <button onClick={() => handleDelete(item)}>
+              <Icon icon={Icons.solid.faTrash} />
+              Delete
+            </button>
           </li>
         ))}
       </ul>

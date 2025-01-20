@@ -35,7 +35,7 @@ export default function AppRoutes({ routes }: AppRoutesProps) {
         <Routes key={info.base}>
           <Route path={info.base} element={info.rootElement} key={info.base}>
             {info.routes.map(item =>
-              <Route
+              item.page !== null && <Route
                 index={item.link === ''}
                 element={item.page ?? <EmptyPage name={item.name} />}
                 path={info.base + item.link + (item.params ?? '')}

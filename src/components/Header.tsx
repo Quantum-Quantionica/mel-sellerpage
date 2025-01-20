@@ -30,6 +30,12 @@ export const menuItems: MenuItem[] = [
   // { name: 'Indicações', link: 'indicacoes', icon: Icons.solid.faStar },
 ];
 
+if(window.localStorage.getItem('admin') === 'true') {
+  menuItems.push({
+    name: 'Administração', link: 'admin', icon: Icons.solid.faTools, page: null
+  });
+}
+
 export default function Header() {
   const [menuVisible, setMenuVisible] = useState(false);
   const configs = useConfigs();

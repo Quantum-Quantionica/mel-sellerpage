@@ -1,6 +1,8 @@
+import './ListRenderer.css';
 import { useEffect, useRef, useState } from "react";
 import { FieldRenderer, FieldRendererPros, Input } from "../";
 import { WithId } from "../../../data/provider";
+import Icon, { Icons } from '../../Icons';
 
 export interface ListRendererConfigs<T extends WithId> {
   renderer: FieldRenderer<T>
@@ -34,8 +36,17 @@ export default function ListRenderer<T extends WithId>({ name, value, onChange, 
     processAddLast(value || []);
   }, [value]);
 
-  return <div>
-    <label>{name}</label>
+  return <div className="list-box">
+    <div>
+      <label>{name}</label>
+      <button type="button" onClick={() => {
+        list.push(undefined);
+        onChange(list)
+      }}>
+        <Icon icon={Icons.solid.faPlus} />
+        Add {name} Item
+      </button>
+    </div>
     <ul>
       {list.map((itemValue, index) => (<li key={index}>
         <Element
@@ -53,9 +64,5 @@ export default function ListRenderer<T extends WithId>({ name, value, onChange, 
         />
       </li>))}
     </ul>
-    <button type="button" onClick={() => {
-      list.push(undefined);
-      onChange(list)
-    }}>Add {name} Item</button>
   </div>
 }

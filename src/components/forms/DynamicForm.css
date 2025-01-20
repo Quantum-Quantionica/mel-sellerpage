@@ -1,0 +1,19 @@
+.dymantic-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dymantic-form ul {
+    padding-left: 2em;
+}
+
+.dymantic-form > button {
+    margin: 1em;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
