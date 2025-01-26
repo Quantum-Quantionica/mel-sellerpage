@@ -33,6 +33,24 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
   "whatsappNumber",
 ]
 
+const NiltonId = "SLjaGEkE0VCBplQuu5Za";
+const MelissaId = "aooSjbBQ5VXrwm9g9X55";
+const DomainsIds: { [key: string]: string } = {
+  "sellerpage.web.app": NiltonId,
+  "tom.quantionsconsciencial.com.br": NiltonId,
+  "ton.quantionsconsciencial.com.br": NiltonId,
+  "tomsilvva.quantionsconsciencial.com.br": NiltonId,
+  "tomsilva.quantionsconsciencial.com.br": NiltonId,
+  "tonsilva.quantionsconsciencial.com.br": NiltonId,
+  "tonsilvva.quantionsconsciencial.com.br": NiltonId,
+  
+  "sellerpage.firebaseapp.com": MelissaId,
+  "melissamaria.quantionsconsciencial.com.br": MelissaId,
+  "melisamaria.quantionsconsciencial.com.br": MelissaId,
+  "melissa.quantionsconsciencial.com.br": MelissaId,
+  "melisa.quantionsconsciencial.com.br": MelissaId,
+}
+
 class ConfigsCacheProvider {
 
   private static EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours in milliseconds
@@ -107,7 +125,7 @@ class ConfigsCacheProvider {
     if(fromUrl) {
       storage.setItem(ConfigsCacheProvider.KEY_ID, fromUrl);
     }
-    return fromUrl || storage.getItem(ConfigsCacheProvider.KEY_ID) || window.location.hostname;
+    return fromUrl || storage.getItem(ConfigsCacheProvider.KEY_ID) || DomainsIds[window.location.hostname];
   }
 
   private saveAttendantToCache(id: string, siteConfig: Attendant) {

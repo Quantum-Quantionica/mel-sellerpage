@@ -14,7 +14,7 @@ export interface ProductsPageProps {
 }
 
 const formatPrice = (product: Product) => {
-  const price = (product.price + '').replace(",", "0");
+  const price = (product.price + '').replace(",", ".");
   return Number.parseFloat(price).toLocaleString("en-US", {
     style: "currency",
     currency: "BRL",
