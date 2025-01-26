@@ -87,6 +87,11 @@ class ConfigsCacheProvider {
     };
 
     const attendant = await this.attendantProvider.getById(id)
+    if(!attendant) {
+      console.warn('Attendant not found for id:', id, ', removing cached id');
+      storage.removeItem(ConfigsCacheProvider.KEY_ID);
+      return {};
+    };
     console.log('Getting config from database for id:', id, attendant?.siteConfig);
     if(attendant?.siteConfig) {
       attendant.siteConfig.socials = attendant?.socialLinks || [];
@@ -102,7 +107,7 @@ class ConfigsCacheProvider {
     if(fromUrl) {
       storage.setItem(ConfigsCacheProvider.KEY_ID, fromUrl);
     }
-    return fromUrl || storage.getItem(ConfigsCacheProvider.KEY_ID);
+    return fromUrl || storage.getItem(ConfigsCacheProvider.KEY_ID) || window.location.hostname;
   }
 
   private saveAttendantToCache(id: string, siteConfig: Attendant) {
