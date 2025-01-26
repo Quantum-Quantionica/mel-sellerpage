@@ -34,6 +34,7 @@ const AttendantsPage = () => {
       provider={new AttendantsProvider()}
       fieldRenderers={{
         photo: ImageRenderer,
+        domains: ListRenderer,
         socialLinks: ListRenderer,
         history: TextArea,
         formation: TextArea,

@@ -3,6 +3,7 @@ import AbstractProvider, { ProviderArrayFilters } from "./provider";
 
 export interface Attendant {
   id?: string;
+  domains?: string[];
   name: string;
   brand: string;
   title?: string;
@@ -31,7 +32,7 @@ export interface AttendantSocialLink {
 export default class AttendantsProvider extends AbstractProvider<Attendant> {
   public collectionName: string = "attendants";
   public keys: (keyof Attendant)[] = [
-    "name", "brand", "title", "slogan", "registration", "photo", "history", "formation", "socialLinks", "organizationalCulture", "siteConfig"
+    "domains", "name", "brand", "title", "slogan", "registration", "photo", "history", "formation", "socialLinks", "organizationalCulture", "siteConfig"
   ];
   protected arrayFieldsFilter: ProviderArrayFilters<Attendant> = {
     socialLinks: this.filterObjectArrays,
