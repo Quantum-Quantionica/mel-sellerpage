@@ -1,5 +1,5 @@
 
-import AbstractProvider, { ProviderArrayFilters } from "./provider";
+import AbstractProvider from "./provider";
 
 export interface ProductInfoList {
     title: string;
@@ -31,34 +31,9 @@ export default class ProductsProvider extends AbstractProvider<Product> {
     "name", "description", "image", "youtube", "price", "paymentInfo", "infos", "reviews", "tags", "purchaseUrl"
   ];
   protected requiredFields: (keyof Product)[] = ["name", "description"];
-  protected arrayFieldsFilter: ProviderArrayFilters<Product>
-
+  
   constructor(private type: ProductType) {
     super();
-    this.arrayFieldsFilter =  {
-      reviews: this.filterStringArrays,
-      tags: this.filterStringArrays,
-      infos: this.filterInfo
-    }
-  }
-
-  private filterInfo = (list?: ProductInfoList[]) => {
-    if (!list) return [];
-    return list
-      .map(item => typeof item === "object" ? item : {} as ProductInfoList)
-      .map(item => ({
-        title: (item.title || "").trim(),
-        items: this.filterStringArrays(item.items)
-      })) 
-      .filter(item => (item.title.length + item.items.length) !== 0);
-  }
-
-  private filterStringArrays(list?: string[]) {
-    if (!list) return [];
-    return list
-      .filter(item => !!item)
-      .map(item => (item+"").trim())
-      .filter(item => item.length !== 0);
   }
 
   private fixData(item: Product | null): Product | null {

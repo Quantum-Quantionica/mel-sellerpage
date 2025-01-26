@@ -1,5 +1,5 @@
 import { SiteConfig } from "../configs/siteConfigs";
-import AbstractProvider, { ProviderArrayFilters } from "./provider";
+import AbstractProvider from "./provider";
 
 export interface Attendant {
   id?: string;
@@ -34,9 +34,6 @@ export default class AttendantsProvider extends AbstractProvider<Attendant> {
   public keys: (keyof Attendant)[] = [
     "domains", "name", "brand", "title", "slogan", "registration", "photo", "history", "formation", "socialLinks", "organizationalCulture", "siteConfig"
   ];
-  protected arrayFieldsFilter: ProviderArrayFilters<Attendant> = {
-    socialLinks: this.filterObjectArrays,
-  };
   protected requiredFields: (keyof Attendant)[] = ["name", "brand"];
 
   private filterObjectArrays(list?: any[]) {

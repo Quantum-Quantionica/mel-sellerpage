@@ -31,7 +31,7 @@ export type ProviderArrayFilters<T> = {[key in keyof T]?: ProviderArrayFilter<an
 export default abstract class AbstractFirestoreProvider<T extends WithId> implements Provider<T> {
   public abstract collectionName: string;
   public abstract keys: (keyof T)[];
-  protected abstract arrayFieldsFilter: ProviderArrayFilters<T>
+  protected arrayFieldsFilter: ProviderArrayFilters<T> = {};
   protected abstract requiredFields: (keyof T)[];
 
   protected filterData(item: Partial<T>) {
@@ -70,11 +70,12 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
 
   async save(item: Partial<T>, validate: boolean = false): Promise<Partial<T>> {
     allertIfTooManyRequests();
+    item = this.cleanObject(item);
     this.filterData(item);
     if(validate) this.validateData(item);
-    const partialItem = { ...item, updatedAt: serverTimestamp() };
+    const partialItem = { ...item, updatedAt: serverTimestamp() } as Partial<T>;
     if (item.id) {
-      partialItem.id = deleteField();
+      partialItem.id = deleteField() as any;
       const ref = doc(db, this.collectionName, item.id);
       console.log("Document updated with ID:", item.id, item);
       await setDoc(ref, partialItem, { merge: true });
@@ -104,5 +105,25 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     }
 
     return { id: snapshot.id, ...snapshot.data() } as T;
+  }
+
+  private cleanObject(obj: any): any {
+    if (Array.isArray(obj)) {
+      return obj
+        .map(item => item)
+        .filter(item => item !== null && item !== undefined && item !== "" && !(typeof item === "object" && Object.keys(item).length === 0));
+    } else if (typeof obj === "string") {
+      return obj.trim();
+    } else if (obj !== null && typeof obj === "object") {
+      const cleanedObj = Object.keys(obj).reduce((acc, key) => {
+        const value = this.cleanObject(obj[key]);
+        if (value !== null && value !== undefined && value !== "" && !(typeof value === "object" && Object.keys(value).length === 0)) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as any);
+      return Object.keys(cleanedObj).length === 0 ? null : cleanedObj;
+    }
+    return obj;
   }
 }
