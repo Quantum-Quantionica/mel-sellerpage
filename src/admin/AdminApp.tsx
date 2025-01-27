@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 import './AdminApp.css';
 import Icon, { Icons } from '../components/Icons';
@@ -26,12 +27,41 @@ export const menuItems: MenuItem[] = [
   // { name: 'Indicações', link: 'indicações', icon: Icons.solid.faChalkboardTeacher },
 ];
 
+const auth = getAuth();
 export default function AdminApp() {
   const location = useLocation();
+  const [user, setUser] = useState(auth.currentUser);
 
   useEffect(() => {
-    window.localStorage.setItem('admin', 'true');
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        window.localStorage.setItem('admin', 'true');
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
+
+  const handleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error("Error signing in with Google: ", error);
+    }
+  };
+
+  if (!user) {
+    return (
+      <div className="auth-page">
+        <h1>Admin Login</h1>
+        <button onClick={handleLogin}>Login with Google</button>
+      </div>
+    );
+  }
 
   return <>
     <nav>

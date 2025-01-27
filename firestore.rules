@@ -1,0 +1,14 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid in [
+        'svJHvkfiF8NfkvgtRpwu9N4MSy42',
+        'hrib7aaNkobPbR18kOQLLDwzqIg1',
+        'GcOWnevAljWom1e6bc0XEh8kLt63'
+      ];
+    }
+  }
+}
