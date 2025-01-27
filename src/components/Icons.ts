@@ -12,7 +12,7 @@ export const Icons = { solid, brands }
 
 export function getIconByCaseInsensitiveName(name: string | IconDefinition): IconDefinition {
   if(typeof name !== 'string') return name;
-  const normalizedName = ICON_NAME_PREFIX + name.toLowerCase().replace('-', '');
+  const normalizedName = ICON_NAME_PREFIX + name.trim().toLowerCase().replace('-', '');
   const foundIcon = iconNames.find(iconName =>
     iconName.lowerCaseName === normalizedName
   )?.icon;

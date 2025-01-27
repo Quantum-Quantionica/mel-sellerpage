@@ -121,7 +121,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
   private cleanObject(obj: any): any {
     if (Array.isArray(obj)) {
       return obj
-        .map(item => item)
+        .map(item => this.cleanObject(item))
         .filter(item => item !== null && item !== undefined && item !== "" && !(typeof item === "object" && Object.keys(item).length === 0));
     } else if (typeof obj === "string") {
       return obj.trim();

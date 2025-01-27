@@ -32,11 +32,6 @@ const SocialRenderer = <T extends WithId>({value, onChange}: FieldRendererPros<T
       valueRef.current.name = newText;
       onChange(valueRef.current);
     }} />
-    <Input name="Icon" value={icon} onChange={(text: string) => {
-      setIcon(text);
-      valueRef.current.icon = text;
-      onChange(valueRef.current);
-    }} />
     <IconRenderer name="Icon" value={icon} onChange={(text: string) => {
       setIcon(text);
       valueRef.current.icon = text;
