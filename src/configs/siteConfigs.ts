@@ -136,6 +136,7 @@ class ConfigsCacheProvider {
   }
 
   private saveAttendantToCache(attendant: Attendant) {
+    this.checkMainDomain(attendant.mainDomain);
     storage.setItem(ConfigsCacheProvider.KEY_DATA + attendant.id, JSON.stringify(attendant));
     storage.setItem(ConfigsCacheProvider.KEY_EXPIRATION + attendant.id, new Date().toISOString());
   }
@@ -158,6 +159,7 @@ class ConfigsCacheProvider {
 
     try {
       const cache = JSON.parse(jsonCache) as Attendant;
+      this.checkMainDomain(cache.mainDomain);
       return cache;
     } catch (error) {
       console.error('Error parsing cache:', error);
@@ -166,6 +168,12 @@ class ConfigsCacheProvider {
     return null;
   }
 
+  private checkMainDomain(domain?: string) {
+    if(domain && window.location.protocol === 'https:' && window.location.hostname !== domain) {
+      console.log('Redirecting to main domain:', domain);
+      window.location.hostname = domain;
+    }
+  }
 }
 
 const ConfigsCache = new ConfigsCacheProvider()

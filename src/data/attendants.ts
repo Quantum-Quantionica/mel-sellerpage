@@ -3,7 +3,6 @@ import AbstractProvider from "./provider";
 
 export interface Attendant {
   id?: string;
-  domains?: string[];
   name: string;
   brand: string;
   title?: string;
@@ -15,6 +14,8 @@ export interface Attendant {
   socialLinks?: AttendantSocialLink[];
   organizationalCulture?: AttendantOrganizationalCulture;
   siteConfig?: SiteConfig;
+  mainDomain?: string;
+  domains?: string[];
 }
 
 export interface AttendantOrganizationalCulture {
@@ -32,7 +33,7 @@ export interface AttendantSocialLink {
 export default class AttendantsProvider extends AbstractProvider<Attendant> {
   public collectionName: string = "attendants";
   public keys: (keyof Attendant)[] = [
-    "domains", "name", "brand", "title", "slogan", "registration", "photo", "history", "formation", "socialLinks", "organizationalCulture", "siteConfig"
+    "name", "brand", "title", "slogan", "registration", "photo", "history", "formation", "socialLinks", "organizationalCulture", "siteConfig", "mainDomain", "domains"
   ];
   protected requiredFields: (keyof Attendant)[] = ["name", "brand"];
 
