@@ -95,6 +95,12 @@ class ConfigsCacheProvider {
   }
 
   public async getAttendant(): Promise<Partial<Attendant>> {
+    const attendant = await this._getAttendant();
+    document.title = attendant?.brand || 'Seller Page';
+    return attendant;
+  }
+
+  private async _getAttendant(): Promise<Partial<Attendant>> {
     const id = this.getAttendantId()
     if(!id) return {}
 
