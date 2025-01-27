@@ -58,7 +58,13 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
 
     if (filter) {
       for (const [key, value] of Object.entries(filter)) {
-        if (value !== undefined) {
+        if (Array.isArray(value)) {
+          if (value.length === 1) {
+            q = query(q, where(key, "array-contains", value[0]));
+          } else if (value.length > 1) {
+            q = query(q, where(key, "array-contains-any", value));
+          }
+        } else if (value !== undefined) {
           q = query(q, where(key, "==", value));
         }
       }
@@ -66,6 +72,11 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
 
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
+  }
+
+  async getOne(filter: Partial<T>): Promise<T | null> {
+    const list = await this.listAll(filter);
+    return list.length > 0 ? list[0] : null;
   }
 
   async save(item: Partial<T>, validate: boolean = false): Promise<Partial<T>> {

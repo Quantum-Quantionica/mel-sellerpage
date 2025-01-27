@@ -33,24 +33,6 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
   "whatsappNumber",
 ]
 
-const NiltonId = "SLjaGEkE0VCBplQuu5Za";
-const MelissaId = "aooSjbBQ5VXrwm9g9X55";
-const DomainsIds: { [key: string]: string } = {
-  "sellerpage.web.app": NiltonId,
-  "tom.quantionsconsciencial.com.br": NiltonId,
-  "ton.quantionsconsciencial.com.br": NiltonId,
-  "tomsilvva.quantionsconsciencial.com.br": NiltonId,
-  "tomsilva.quantionsconsciencial.com.br": NiltonId,
-  "tonsilva.quantionsconsciencial.com.br": NiltonId,
-  "tonsilvva.quantionsconsciencial.com.br": NiltonId,
-  
-  "sellerpage.firebaseapp.com": MelissaId,
-  "melissamaria.quantionsconsciencial.com.br": MelissaId,
-  "melisamaria.quantionsconsciencial.com.br": MelissaId,
-  "melissa.quantionsconsciencial.com.br": MelissaId,
-  "melisa.quantionsconsciencial.com.br": MelissaId,
-}
-
 class ConfigsCacheProvider {
 
   private static EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours in milliseconds
@@ -76,6 +58,7 @@ class ConfigsCacheProvider {
 
   public async get(): Promise<SiteConfig> {
     if(this.lastRequestPromise) {
+      console.log('Waiting for last request to finish');
       await this.lastRequestPromise;
     }
     const configRequest = this.lastRequestPromise = this.getAttendant();
@@ -87,10 +70,12 @@ class ConfigsCacheProvider {
     };
   }
 
-  public getFromCache(): SiteConfig {
+  public getFromCache(): SiteConfig|null {
+    const id = this.getCachedAttendantId();
+    if(!id) return null;
     return {
       ...this.defaultConfig,
-      ...this.getAttendantFromCache(this.getAttendantId(), true)?.siteConfig || {}
+      ...this.getAttendantFromCache(id, true)?.siteConfig || {}
     };
   }
 
@@ -101,7 +86,7 @@ class ConfigsCacheProvider {
   }
 
   private async _getAttendant(): Promise<Partial<Attendant>> {
-    const id = this.getAttendantId()
+    const id = await this.getAttendantId()
     if(!id) return {}
 
     const cache = this.getAttendantFromCache(id);
@@ -119,24 +104,40 @@ class ConfigsCacheProvider {
     console.log('Getting config from database for id:', id, attendant?.siteConfig);
     if(attendant?.siteConfig) {
       attendant.siteConfig.socials = attendant?.socialLinks || [];
-      this.saveAttendantToCache(id, attendant);
+      this.saveAttendantToCache(attendant);
       return attendant;
     };
 
     return {};
   }
 
-  private getAttendantId(): string | null {
+  private async getAttendantId(): Promise<string | null> {
+    const id = this.getCachedAttendantId();
+    if(id) return id;
+
+    const attendant = await this.attendantProvider.getOne({ domains: [window.location.hostname] });
+    if(attendant) {
+      this.saveAttendantToCache(attendant);
+      if (attendant.id) {
+        storage.setItem(ConfigsCacheProvider.KEY_ID, attendant.id);
+        return attendant.id;
+      }
+    }
+    console.log('Attendant not found for domain:', window.location.hostname);
+    return null;
+  }
+
+  private getCachedAttendantId(): string | null {
     const fromUrl = new URLSearchParams(window.location.search).get('site');
     if(fromUrl) {
       storage.setItem(ConfigsCacheProvider.KEY_ID, fromUrl);
     }
-    return fromUrl || storage.getItem(ConfigsCacheProvider.KEY_ID) || DomainsIds[window.location.hostname];
+    return fromUrl || storage.getItem(ConfigsCacheProvider.KEY_ID);
   }
 
-  private saveAttendantToCache(id: string, siteConfig: Attendant) {
-    storage.setItem(ConfigsCacheProvider.KEY_DATA + id, JSON.stringify(siteConfig));
-    storage.setItem(ConfigsCacheProvider.KEY_EXPIRATION + id, new Date().toISOString());
+  private saveAttendantToCache(attendant: Attendant) {
+    storage.setItem(ConfigsCacheProvider.KEY_DATA + attendant.id, JSON.stringify(attendant));
+    storage.setItem(ConfigsCacheProvider.KEY_EXPIRATION + attendant.id, new Date().toISOString());
   }
 
   private getAttendantFromCache(id: string | null, force: boolean = false): Partial<Attendant> | null {

@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import ConfigsCache, { SiteConfig } from "../configs/siteConfigs";
 
 interface ConfigContextValue {
-  config: SiteConfig;
+  config: SiteConfig|null;
 }
 
 const ConfigContext = createContext<ConfigContextValue | undefined>(undefined);

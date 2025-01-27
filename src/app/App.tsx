@@ -25,7 +25,7 @@ function App() {
 
   return <AppRoutes routes={[
     {
-      base: '/', routes: appMenus, rootElement: <>
+      base: '/', routes: appMenus, rootElement: !configs ? <>Loading</> : <>
         <Header />
         <MainContent />
         <Footer />
