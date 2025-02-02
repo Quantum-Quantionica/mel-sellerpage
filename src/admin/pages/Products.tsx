@@ -34,6 +34,7 @@ const ProductsPage = ({provider, title, name}: ProductsPageProps) => {
       id={id === newUrl ? undefined : id}
       provider={provider}
       fieldRenderers={{
+        attendants: ListRenderer,
         description: TextArea,
         image: ImageRenderer,
         images: ListRenderer,

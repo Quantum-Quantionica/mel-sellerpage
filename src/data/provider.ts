@@ -38,7 +38,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     for (const entry of Object.entries(this.arrayFieldsFilter)) {
       const key = entry[0] as keyof T;
       const filter = entry[1] as ProviderArrayFilter<string>;
-      item[key] = filter(item[key]);
+      (item as any)[key] = filter((item as any)[key]);
     }
     return item;
   }
@@ -59,10 +59,11 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     if (filter) {
       for (const [key, value] of Object.entries(filter)) {
         if (Array.isArray(value)) {
-          if (value.length === 1) {
-            q = query(q, where(key, "array-contains", value[0]));
-          } else if (value.length > 1) {
-            q = query(q, where(key, "array-contains-any", value));
+          const filteredValue = value.filter(item => !!item && item !== "");
+          if (filteredValue.length === 1) {
+            q = query(q, where(key, "array-contains", filteredValue[0]));
+          } else if (filteredValue.length > 1) {
+            q = query(q, where(key, "array-contains-any", filteredValue));
           }
         } else if (value !== undefined) {
           q = query(q, where(key, "==", value));
@@ -91,7 +92,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
       console.log("Document updated with ID:", item.id, item);
       await setDoc(ref, partialItem, { merge: true });
     } else {
-      partialItem.createdAt = serverTimestamp();
+      (partialItem as any).createdAt = serverTimestamp();
       const ref = collection(db, this.collectionName);
       const newDocRef = await addDoc(ref, partialItem);
       console.log("New document created with ID:", newDocRef.id);

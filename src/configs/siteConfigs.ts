@@ -2,7 +2,7 @@ import defaultLogo from '../images/logo.svg';
 import AttendantsProvider, { AttendantSocialLink, Attendant } from "../data/attendants";
 import { IconDefinition, IconKey, Icons } from '../components/Icons';
 
-const storage = window.localStorage;
+const storage = window.sessionStorage;
 
 export interface SiteConfig {
   logo: string;
@@ -127,7 +127,7 @@ class ConfigsCacheProvider {
     return null;
   }
 
-  private getCachedAttendantId(): string | null {
+  public getCachedAttendantId(): string | null {
     const fromUrl = new URLSearchParams(window.location.search).get('site');
     if(fromUrl) {
       storage.setItem(ConfigsCacheProvider.KEY_ID, fromUrl);
@@ -136,7 +136,6 @@ class ConfigsCacheProvider {
   }
 
   private saveAttendantToCache(attendant: Attendant) {
-    this.checkMainDomain(attendant.mainDomain);
     storage.setItem(ConfigsCacheProvider.KEY_DATA + attendant.id, JSON.stringify(attendant));
     storage.setItem(ConfigsCacheProvider.KEY_EXPIRATION + attendant.id, new Date().toISOString());
   }
@@ -159,20 +158,12 @@ class ConfigsCacheProvider {
 
     try {
       const cache = JSON.parse(jsonCache) as Attendant;
-      this.checkMainDomain(cache.mainDomain);
       return cache;
     } catch (error) {
       console.error('Error parsing cache:', error);
     } 
 
     return null;
-  }
-
-  private checkMainDomain(domain?: string) {
-    if(domain && window.location.protocol === 'https:' && window.location.hostname !== domain) {
-      console.log('Redirecting to main domain:', domain);
-      window.location.hostname = domain;
-    }
   }
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "./Product.css";
 import ProductsProvider, { Product } from "../data/products";
@@ -7,6 +7,7 @@ import BannerImage from "../components/BannerImage";
 import Icon, { getIconByCaseInsensitiveName, Icons } from "../components/Icons";
 import { useConfigs } from "../app/ConfigProvider";
 import WhoWeAre from "./WhoWeAre";
+import ProductThumb from "../components/ProductThumb";
 
 export interface ProductsPageProps {
   provider: ProductsProvider;
@@ -28,6 +29,7 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
   const [showFloatingButton, setShowFloatingButton] = useState(false);
   const buttonRef = useRef<HTMLAnchorElement>(null);
   const configs = useConfigs();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!id) {
@@ -48,11 +50,11 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
 
   if (!id) return <div className="content">
     <h1>{title}</h1>
-    <ul>
-      {productList.map(product => <li key={product.id}>
-        <Link to={`${product.id}`}>{product.name}</Link>
-      </li>)}
-    </ul>
+    <div className="products-box">
+      {productList.map(product => 
+        <ProductThumb key={product.id} item={product} onSelected={() => navigate(product.id!)} />
+      )}
+    </div>
   </div>;
 
   if (!product) return <></>;

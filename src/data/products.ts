@@ -1,4 +1,5 @@
 
+import ConfigsCache from "../configs/siteConfigs";
 import AbstractProvider from "./provider";
 
 export interface ProductInfoList {
@@ -10,8 +11,10 @@ export type ProductType = 'course' | 'book' | 'appointment';
 
 export interface Product {
     id?: string;
+    attendants?: string[];
     name: string;
     type?: ProductType;
+    category?: string;
     description: string;
     image?: string;
     images?: string[];
@@ -28,7 +31,7 @@ export interface Product {
 export default class ProductsProvider extends AbstractProvider<Product> {
   public collectionName = "products";
   public keys: (keyof Product)[] = [
-    "name", "description", "image", "youtube", "price", "paymentInfo", "infos", "reviews", "tags", "purchaseUrl"
+    "attendants", "category", "name", "description", "image", "youtube", "price", "paymentInfo", "infos", "reviews", "tags", "purchaseUrl"
   ];
   protected requiredFields: (keyof Product)[] = ["name", "description"];
   
@@ -51,7 +54,9 @@ export default class ProductsProvider extends AbstractProvider<Product> {
   }
 
   public async listAll(filter?: Partial<Product>): Promise<Product[]> {
-    const all = await super.listAll({ type: this.type, ...filter });
+    const attendent = ConfigsCache.getCachedAttendantId();
+    const attendentFilter = attendent ? { attendants: [attendent] } : {};
+    const all = await super.listAll({ type: this.type, ...attendentFilter, ...filter });
     all.forEach(this.fixData)
     return all;
   }

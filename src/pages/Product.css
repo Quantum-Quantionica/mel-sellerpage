@@ -55,10 +55,11 @@
 
 .button-by {
     display: block;
-    padding: 1em;
+    padding: 0.8em 1em;
     border-radius: 8px;
     border: 2px solid rgb(0, 0, 0, 0.1);
     box-sizing: border-box;
+    white-space: nowrap;
 }
 
 .button-by.floating {

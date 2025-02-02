@@ -24,7 +24,7 @@ export const useConfigs = () => {
   if (!context) {
     throw new Error("useConfig must be used within a ConfigProvider");
   }
-  return context.config;
+  return context.config!;
 };
 
 export default ConfigProvider;
