@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, query, where, addDoc, deleteField, serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, query, where, addDoc, deleteField, serverTimestamp, FieldValue } from "firebase/firestore";
 import { db } from "../configs/firebase";
 
 const maxRequestsPerSecond = 10;
@@ -131,6 +131,8 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
         const value = this.cleanObject(obj[key]);
         if (value !== null && value !== undefined && value !== "" && !(typeof value === "object" && Object.keys(value).length === 0)) {
           acc[key] = value;
+        } else {
+          acc[key] = deleteField();
         }
         return acc;
       }, {} as any);
