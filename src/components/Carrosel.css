@@ -1,0 +1,21 @@
+.carrosel > div {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 8/3;
+}
+
+.carrosel > div > div {
+    display: block;
+    position: absolute;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    opacity: 0;
+    transition: opacity 1s;
+    background-position: center;
+    background-size: cover;
+}
+
+.carrosel > div > div.active {
+    opacity: 1;
+}

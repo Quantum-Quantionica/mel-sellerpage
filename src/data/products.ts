@@ -12,19 +12,19 @@ export type ProductType = 'course' | 'book' | 'appointment';
 export interface Product {
     id?: string;
     attendants?: string[];
-    name: string;
+    name?: string;
     type?: ProductType;
     category?: string;
-    description: string;
+    description?: string;
     image?: string;
     images?: string[];
     youtube?: string;
     paymentInfo: string;
-    infos: ProductInfoList[];
-    reviews: string[];
-    tags: string[];
+    infos?: ProductInfoList[];
+    reviews?: string[];
+    tags?: string[];
 
-    price: number;
+    price?: number;
     purchaseUrl?: string;
   }
 

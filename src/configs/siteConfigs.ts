@@ -19,6 +19,7 @@ export interface SiteConfig {
   socials: AttendantSocialLink[];
   whatsappNumber?: string;
   whatsappLink?: string;
+  carrosel?: string[];
 }
 
 export const ConfigKeys: (keyof SiteConfig)[] = [
@@ -31,6 +32,7 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
   "markColor",
   "markIcon",
   "whatsappNumber",
+  "carrosel",
 ]
 
 class ConfigsCacheProvider {

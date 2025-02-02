@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, query, where, addDoc, deleteField, serverTimestamp, FieldValue } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, query, where, addDoc, deleteField, serverTimestamp } from "firebase/firestore";
 import { db } from "../configs/firebase";
 
 const maxRequestsPerSecond = 10;

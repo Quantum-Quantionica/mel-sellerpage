@@ -87,7 +87,7 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
         </div>}
       </div>
       <ul className="mark-list">
-        {product.infos.map((info, index) => <li key={index}>
+        {product.infos?.map((info, index) => <li key={index}>
           <h3>{info.title}</h3>
           <ul>
             {info.items.map((item, index) => <li key={index}>
