@@ -15,21 +15,21 @@ export default function ProductThumb({ item, onSelected }: ProductProps) {
   return <div className="product-item" style={{borderColor: configs.headerAssentColor}}>
     <div className="product-image" style={{ backgroundImage: `url(${item.image})` }} />
     <span>{item.category || item.type}</span>
-    <h2>{item.name.capitalizeSelective()}</h2>
+    <h2>{capitalizeSelective(item.name)}</h2>
     <div className="product-actions">
       <a className="button-by" href={item.purchaseUrl} style={{
         backgroundColor: configs.markColor,
       }}><Icon icon={Icons.solid.faCartShopping} />Adquirir</a>
-      <a className="button-by" onClick={() => onSelected(item)} style={{
+      <span className="button-by" onClick={() => onSelected(item)} style={{
         backgroundColor: configs.backgroundColor,
         color: configs.menuAssentColor,
-      }}><Icon icon={Icons.solid.faEye} />Ver Mais</a>
+      }}><Icon icon={Icons.solid.faEye} />Ver Mais</span>
     </div>
   </div>
 }
 
-String.prototype.capitalizeSelective = function () {
-  return this.toLocaleLowerCase().split(" ")
-    .map((word, index) => (word.length > 2 || index == 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word))
+function capitalizeSelective(string?: string) {
+  return (string ?? "").toLocaleLowerCase().split(" ")
+    .map((word, index) => (word.length > 2 || index === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word))
     .join(" ");
 }

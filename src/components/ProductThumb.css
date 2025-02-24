@@ -59,10 +59,8 @@
     gap: 10px;
 }
 
-.product-item > .product-actions > a {
+.product-item > .product-actions > .button-by {
     cursor: pointer;
     text-align: center;
     flex: 1;
-    font-size: 0.8em;
-    padding: 0.2em;
 }
