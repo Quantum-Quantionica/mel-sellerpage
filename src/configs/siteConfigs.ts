@@ -2,7 +2,8 @@ import { IconDefinition, IconKey, Icons } from '../components/Icons';
 import AttendantsProvider, { Attendant, AttendantSocialLink } from "../data/attendants";
 import defaultLogo from '../images/logo.svg';
 
-const storage = window.localStorage;
+const isDev = window.location.host === 'localhost';
+const storage = isDev ? window.sessionStorage : window.localStorage;
 
 export interface SiteConfig {
   logo: string;
@@ -38,9 +39,9 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
 
 class ConfigsCacheProvider {
 
-  private static EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours in milliseconds
+  private static EXPIRATION_TIME = 1000 * (isDev ? 60 : 60 * 60 * 24); // ? 1min : 24 hours in milliseconds
   private static KEY_EXPIRATION = 'siteConfigExpiration_';
-  private static KEY_DATA = 'siteAttendantData_';
+  private static KEY_DATA = 'siteAttendantData_v2_';
   private static KEY_ID = 'siteConfigDefaultId';
   private lastRequestPromise: Promise<any> | null = null;
 
@@ -73,7 +74,7 @@ class ConfigsCacheProvider {
     return {
       ...this.defaultConfig,
       ...config.siteConfig,
-      whatsappLink: `https://wa.me/${config.whatsappNumber?.replace(/\D/g, '')}`
+      whatsappLink: `https://wa.me/${config.siteConfig?.whatsappNumber?.replace(/\D/g, '')}`
     };
   }
 
@@ -110,6 +111,7 @@ class ConfigsCacheProvider {
     };
     console.log('Getting config from database for id:', id, attendant?.siteConfig);
     if(attendant?.siteConfig) {
+      console.log("Socials Configs Copy, As:", attendant?.socialLinks, "a:", attendant);
       attendant.siteConfig.socials = attendant?.socialLinks || [];
       this.saveAttendantToCache(attendant);
       return attendant;
