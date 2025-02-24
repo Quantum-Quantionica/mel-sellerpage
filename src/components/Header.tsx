@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useConfigs } from "../app/ConfigProvider";
+import MenuItem from "../app/MenuItemInterface";
+import ProductsProvider from "../data/products";
+import Home from "../pages/Home";
+import ProductsPage from "../pages/Product";
+import WhoWeAre from "../pages/WhoWeAre";
 import './Header.css';
 import Icon, { Icons } from './Icons';
-import Home from "../pages/Home";
-import MenuItem from "../app/MenuItemInterface";
-import { useConfigs } from "../app/ConfigProvider";
-import ProductsPage from "../pages/Product";
-import ProductsProvider from "../data/products";
-import WhoWeAre from "../pages/WhoWeAre";
+
+export const booksPageLink = 'livros';
 
 export const menuItems: MenuItem[] = [
   { name: 'Home', link: '', icon: Icons.solid.faHouse, page: <Home /> },
@@ -23,7 +25,7 @@ export const menuItems: MenuItem[] = [
     page: <ProductsPage provider={new ProductsProvider('appointment')} title="Consultas / Avaliações" />
   },
   {
-    name: 'Livros / E-Books', params: '/:id?', link: 'livros', icon: Icons.solid.faBook,
+    name: 'Livros / E-Books', params: '/:id?', link: booksPageLink, icon: Icons.solid.faBook,
     page: <ProductsPage provider={new ProductsProvider('book')} title="Livros" />
   },
   // { name: 'Videos', link: 'videos', params: '/:id?', icon: Icons.solid.faVideo },

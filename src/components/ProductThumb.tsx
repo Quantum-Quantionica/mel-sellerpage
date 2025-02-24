@@ -1,5 +1,6 @@
 import { useConfigs } from "../app/ConfigProvider";
 import { Product } from "../data/products";
+import { booksPageLink } from "./Header";
 import Icon, { Icons } from "./Icons";
 
 import "./ProductThumb.css";
@@ -9,7 +10,7 @@ export interface ProductProps {
   onSelected: (product: Product) => void;
 }
 
-export default function ProductThumb({ item, onSelected }: ProductProps) {
+export default function ProductThumb({ item }: ProductProps) {
   const configs = useConfigs();
 
   return <div className="product-item" style={{borderColor: configs.headerAssentColor}}>
@@ -20,10 +21,10 @@ export default function ProductThumb({ item, onSelected }: ProductProps) {
       <a className="button-by" href={item.purchaseUrl} style={{
         backgroundColor: configs.markColor,
       }}><Icon icon={Icons.solid.faCartShopping} />Adquirir</a>
-      <span className="button-by" onClick={() => onSelected(item)} style={{
+      <a className="button-by" href={`\\${booksPageLink}\\${item.id}`} style={{
         backgroundColor: configs.backgroundColor,
         color: configs.menuAssentColor,
-      }}><Icon icon={Icons.solid.faEye} />Ver Mais</span>
+      }}><Icon icon={Icons.solid.faEye} />Ver Mais</a>
     </div>
   </div>
 }

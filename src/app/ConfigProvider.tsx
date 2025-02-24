@@ -11,7 +11,10 @@ export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [config, setConfig] = useState(ConfigsCache.getFromCache());
 
   useEffect(() => {
-    ConfigsCache.get().then(setConfig);
+    ConfigsCache.get().then(config => {
+      changeFavicon(config.favicon ?? config.logo);
+      setConfig(config);
+    });
   }, []);
 
   return <ConfigContext.Provider value={{ config }}>
@@ -28,3 +31,15 @@ export const useConfigs = () => {
 };
 
 export default ConfigProvider;
+
+const changeFavicon = (url: string) => {
+  const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+  if (link) {
+    link.href = url;
+  } else {
+    const newLink = document.createElement("link");
+    newLink.rel = "icon";
+    newLink.href = url;
+    document.head.appendChild(newLink);
+  }
+};

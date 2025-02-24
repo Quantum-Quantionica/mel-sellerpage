@@ -1,11 +1,12 @@
-import defaultLogo from '../images/logo.svg';
-import AttendantsProvider, { AttendantSocialLink, Attendant } from "../data/attendants";
 import { IconDefinition, IconKey, Icons } from '../components/Icons';
+import AttendantsProvider, { Attendant, AttendantSocialLink } from "../data/attendants";
+import defaultLogo from '../images/logo.svg';
 
-const storage = window.sessionStorage;
+const storage = window.localStorage;
 
 export interface SiteConfig {
   logo: string;
+  favicon?: string;
   backgroundColor: string;
   backgroundImage: string;
   headerBackgroundColor: string;
@@ -56,6 +57,10 @@ class ConfigsCacheProvider {
     markColor: 'orange',
     markIcon: Icons.solid.faQuoteLeft,
     socials: []
+  }
+
+  constructor() {
+    this.get();
   }
 
   public async get(): Promise<SiteConfig> {

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-import { WithId } from "../../../data/provider";
-import { SiteConfig, ConfigKeys } from "../../../configs/siteConfigs";
 import { FieldRenderer, FieldRendererPros, ImageRenderer, Input, ListRenderer, ListRendererConfigs } from "../../../components/forms";
 import IconRenderer from "../../../components/forms/renderers/IconRenderer";
+import { ConfigKeys, SiteConfig } from "../../../configs/siteConfigs";
+import { WithId } from "../../../data/provider";
 
 const ConfigKeysRenderer: { [key in keyof SiteConfig]?: FieldRenderer<any> } = {
   "markIcon": IconRenderer,
@@ -19,6 +19,7 @@ const ConfigKeysRendererConfigs: { [key in keyof SiteConfig]?: object } = {
 const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: FieldRendererPros<T>) => {
   const valueRef = useRef<Partial<SiteConfig>>(typeof value !== "object" ? {} : value);
   const [logo, setLogo] = useState(valueRef.current.logo || "");
+  const [favicon, setFavicon] = useState(valueRef.current.favicon || "");
   const [fotterLogo, setFotterLogo] = useState(valueRef.current.fotterLogo || "");
 
   useEffect(() => {
@@ -35,6 +36,13 @@ const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: Fi
       name="Logo" value={logo} onChange={(text: string) => {
         setLogo(text);
         valueRef.current.logo = text;
+        onChange(valueRef.current);
+      }} />
+    <ImageRenderer
+      provider={props.provider} item={props.item} save={props.save}
+      name="Tab Fav Icon" value={favicon} onChange={(text: string) => {
+        setFavicon(text);
+        valueRef.current.favicon = text;
         onChange(valueRef.current);
       }} />
     <ImageRenderer

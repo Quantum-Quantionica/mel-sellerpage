@@ -4,6 +4,7 @@ import Icon, { getIconByCaseInsensitiveName } from "./Icons";
 export default function Footer() {
   const configs = useConfigs();
 
+  console.log("Socials Config", configs.socials, configs);
   return <footer style={{
     backgroundColor: configs.headerAssentColor,
     color: configs.fotterFontColor,
