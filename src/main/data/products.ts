@@ -10,29 +10,30 @@ export interface ProductInfoList {
 export type ProductType = 'course' | 'book' | 'appointment';
 
 export interface Product {
-    id?: string;
-    attendants?: string[];
-    name?: string;
-    type?: ProductType;
-    category?: string;
-    description?: string;
-    image?: string;
-    images?: string[];
-    youtube?: string;
-    paymentInfo: string;
-    infos?: ProductInfoList[];
-    reviews?: string[];
-    tags?: string[];
-    price?: number;
-    purchaseUrl?: string;
-    homePosition?: number|string;
-  }
+  id?: string;
+  homePosition?: number|string;
+  name?: string;
+  type?: ProductType;
+  category?: string;
+  headline?: string;
+  description?: string;
+  price?: number;
+  purchaseUrl?: string;
+  paymentInfo: string;
+  image?: string;
+  youtube?: string;
+  infos?: ProductInfoList[];
+  reviews?: string[];
+  tags?: string[];
+  attendants?: string[];
+}
 
 export default class ProductsProvider extends AbstractProvider<Product> {
   private static MAX_HOME_PRODUCTS: number | undefined;
   public collectionName = "products";
   public keys: (keyof Product)[] = [
-    "homePosition", "name", "description", "category", "image", "youtube", "price", "purchaseUrl", "paymentInfo", "infos", "reviews", "tags", "attendants"
+    "homePosition", "name", "headline", "description", "category", "image", "price", "purchaseUrl", "paymentInfo",
+    "youtube", "infos", "reviews", "tags", "attendants"
   ];
   protected requiredFields: (keyof Product)[] = ["name", "description"];
   private fullName: string;

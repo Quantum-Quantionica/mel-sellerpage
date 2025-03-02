@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import Carrosel from "../components/Carrosel";
 import ProductsProvider, { Product } from "../main/data/products";
-import ProductThumb from "./Products/ProductThumb";
+import ProductHomeThumb from "./Products/ProductHomeThumb";
 
 const homeProdutsProvider = new ProductsProvider();
 
@@ -16,14 +16,13 @@ export default function Home() {
   }, []);
 
   return <div className="content">
-    <h1 style={{
-      marginTop: "1em",
-      textAlign: "center",
-    }}>Destaques</h1>
     <Carrosel />
+    <h1 style={{
+      marginTop: "1.5em",
+    }}>Destaques</h1>
     <div className="products-box">
       {products.map(product => 
-        <ProductThumb key={product.id} item={product} onSelected={() => navigate(product.id!)} />
+        <ProductHomeThumb key={product.id} item={product} onSelected={() => navigate(product.id!)} />
       )}
     </div>
   </div>;

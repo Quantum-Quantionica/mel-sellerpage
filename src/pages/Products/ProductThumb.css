@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 1.5em auto;
+    margin: 1em auto;
     padding: 10px;
     column-gap: 20px;
     row-gap: 40px;
@@ -15,7 +15,6 @@
     border: 2px solid #e7e7e7;
     border-radius: 8px;
     background-color: #fff;
-    transition: border-color 0.3s;
     min-width: 300px;
     max-width: 400px;
     aspect-ratio: 1/0.9;

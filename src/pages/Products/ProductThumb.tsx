@@ -21,7 +21,7 @@ export default function ProductThumb({ item }: ProductProps) {
   </div>
 }
 
-function capitalizeSelective(string?: string) {
+export function capitalizeSelective(string?: string) {
   return (string ?? "").toLocaleLowerCase().split(" ")
     .map((word, index) => (word.length > 2 || index === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word))
     .join(" ");
