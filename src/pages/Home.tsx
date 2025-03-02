@@ -21,9 +21,7 @@ export default function Home() {
       marginTop: "1.5em",
     }}>Destaques</h1>
     <div className="products-box home">
-      {products.map(product => 
-        <ProductHomeThumb key={product.id} item={product} onSelected={() => navigate(product.id!)} />
-      )}
+      {products.map(product => <ProductHomeThumb key={product.id} item={product} onSelected={() => navigate(product.id!)} /> )}
     </div>
   </div>;
 }
