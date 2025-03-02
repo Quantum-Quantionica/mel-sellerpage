@@ -65,14 +65,25 @@ export default class ProductsProvider extends AbstractProvider<Product> {
     return { type: this.type, ...attendentFilter, ...filter };
   }
 
-  public async listAll(filter?: Partial<Product>): Promise<Product[]> {
-    const mergedFilter = this.getMergedFilter(filter);
-    const all = await super.listAll(mergedFilter);
-
-    if(all.length === 0)
+  private saveCountCache(count: number) {
+    if(count === 0)
       configStorage.removeItem(this.fullName);
     else 
       configStorage.setItem(this.fullName, "true");
+    return count;
+  }
+
+  public async countAll(filter?: Partial<Product> | undefined): Promise<number> {
+    const mergedFilter = this.getMergedFilter(filter);
+    return this.saveCountCache(
+      await super.countAll(mergedFilter)
+    );
+  }
+
+  public async listAll(filter?: Partial<Product>): Promise<Product[]> {
+    const mergedFilter = this.getMergedFilter(filter);
+    const all = await super.listAll(mergedFilter);
+    this.saveCountCache(all.length);
     return all;
   }
 
