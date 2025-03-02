@@ -1,3 +1,11 @@
+.products-box.home {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0px;
+    gap: 20px;
+}
+
 .product-home-item {
     display: flex;
     flex-direction: row;
@@ -13,11 +21,18 @@
     flex: 1;
 }
 
+.product-home-item > div > .line {
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background-color: var(--headerFontColor);
+}
+
 .product-home-item > div > span {
     text-transform: capitalize;
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-weight: 500;
-    color: var(--headerFontColor);
+    color: var(--markColor);
 }
 
 .product-home-item > div > h2 {
@@ -25,9 +40,14 @@
     display: flex;
     font-weight: 700;
     font-size: 1em;
-    line-height: 1em;
-    margin-top: 5px;
+    margin-bottom: 0.3em;
+    margin-top: 1em;
     color: var(--headerFontColor);
+}
+
+.product-home-item > div > p {
+    text-transform: capitalize;
+    font-size: 0.8em;
     color: gray;
 }
 

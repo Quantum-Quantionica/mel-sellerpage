@@ -20,7 +20,7 @@ export default function Home() {
     <h1 style={{
       marginTop: "1.5em",
     }}>Destaques</h1>
-    <div className="products-box">
+    <div className="products-box home">
       {products.map(product => 
         <ProductHomeThumb key={product.id} item={product} onSelected={() => navigate(product.id!)} />
       )}

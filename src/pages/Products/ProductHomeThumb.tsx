@@ -13,6 +13,7 @@ export default function ProductHomeThumb({ item }: ProductProps) {
     <div>
       <span>{item.category || item.type}</span>
       <h2>{capitalizeSelective(item.name)}</h2>
+      <div className="line" />
       <p>{item.headline}</p>
     </div>
     <div>

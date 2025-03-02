@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 1em auto;
+    margin-bottom: 3em;
     padding: 10px;
     column-gap: 20px;
     row-gap: 40px;
