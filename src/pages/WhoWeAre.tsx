@@ -31,16 +31,15 @@ export default function WhoWeAre() {
         }}>
         </div>
         <div style={{ flex: 1 }} >
-          {/* , overflow: 'auto', maxHeight: maxHeigthSizeCss }}> */}
           <h1>{attendant?.brand}</h1>
           <div>{attendant?.title}</div>
-          <div>{attendant?.registration}</div>
-          <h2>{attendant?.slogan}</h2>
-          <p>{attendant?.history}</p>
-          <p>{attendant?.formation}</p>
+          {attendant?.registration && <div>{attendant?.registration}</div>}
+          {attendant?.slogan && <h2>{attendant?.slogan}</h2>}
+          {attendant?.history && <p>{attendant?.history}</p>}
           {culture?.mission && <p>{culture?.mission}</p>}
           {culture?.vision && <p>{culture?.vision}</p>}
           {culture?.values && <p>{culture?.values}</p>}
+          {attendant?.formation && <p>{attendant?.formation}</p>}
         </div>
       </div>
     </div>
