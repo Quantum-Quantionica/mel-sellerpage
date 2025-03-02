@@ -28,12 +28,12 @@ jobs:
         run: yarn install --frozen-lockfile --non-interactive
       - name: Set Firebase config
         env:
-          FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+          FIREBASE_CONFIG_MERIDION: ${{ secrets.FIREBASE_CONFIG_MERIDION }}
         run: |
-          if [ -z "$FIREBASE_CONFIG" ]; then
-            echo "FIREBASE_CONFIG is empty" && exit 1
+          if [ -z "$FIREBASE_CONFIG_MERIDION" ]; then
+            echo "FIREBASE_CONFIG_MERIDION is empty" && exit 1
           fi
-          echo "$FIREBASE_CONFIG" > src/configs/firebaseConfig.json
+          echo "$FIREBASE_CONFIG_MERIDION" > src/configs/firebaseConfig.json
       - name: Build dist
         run: yarn build
       - name: Config npm Cache
@@ -44,6 +44,6 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SELLERPAGE }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MERIDION_PI }}'
           channelId: live
           projectId: sellerpage

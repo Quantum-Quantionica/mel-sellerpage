@@ -5,9 +5,14 @@ service cloud.firestore {
     match /{document=**} {
       allow read: if true;
       allow write: if request.auth != null && request.auth.uid in [
+        // Seller page user ids
         'aVr4Z2u41SelSvBuXbI55LLrKTP2',
         'hrib7aaNkobPbR18kOQLLDwzqIg1',
-        'GcOWnevAljWom1e6bc0XEh8kLt63'
+        'GcOWnevAljWom1e6bc0XEh8kLt63',
+        // Meridion page user ids
+        'MNk1L2Zeh9PhzqfNLBTY7dxF5g82',
+        'PaOhW9sGLtMHD1IrQ7w5D7uiUc12',
+        'T0TnGeKT6Yex4uP3Y2FUWK3cNOu2'
       ];
     }
   }

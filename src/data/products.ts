@@ -4,7 +4,7 @@ import AbstractProvider from "./provider";
 
 export interface ProductInfoList {
     title: string;
-    items: string[];
+    items?: string[];
 }
 
 export type ProductType = 'course' | 'book' | 'appointment';

@@ -2,7 +2,7 @@ import { IconDefinition, IconKey, Icons } from '../components/Icons';
 import AttendantsProvider, { Attendant, AttendantSocialLink } from "../data/attendants";
 import defaultLogo from '../images/logo.svg';
 
-const isDev = window.location.host === 'localhost';
+const isDev = window.location.hostname === 'localhost';
 const storage = isDev ? window.sessionStorage : window.localStorage;
 
 export interface SiteConfig {
@@ -111,7 +111,6 @@ class ConfigsCacheProvider {
     };
     console.log('Getting config from database for id:', id, attendant?.siteConfig);
     if(attendant?.siteConfig) {
-      console.log("Socials Configs Copy, As:", attendant?.socialLinks, "a:", attendant);
       attendant.siteConfig.socials = attendant?.socialLinks || [];
       this.saveAttendantToCache(attendant);
       return attendant;

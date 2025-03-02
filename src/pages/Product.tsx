@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import "./Product.css";
+import { useConfigs } from "../app/ConfigProvider";
 import ProductsProvider, { Product } from "../data/products";
+
 import BannerImage from "../components/BannerImage";
 import Icon, { getIconByCaseInsensitiveName, Icons } from "../components/Icons";
-import { useConfigs } from "../app/ConfigProvider";
-import WhoWeAre from "./WhoWeAre";
 import ProductThumb from "../components/ProductThumb";
+import WhoWeAre from "./WhoWeAre";
+
+import "./Product.css";
 
 export interface ProductsPageProps {
   provider: ProductsProvider;
@@ -90,7 +92,7 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
         {product.infos?.map((info, index) => <li key={index}>
           <h3>{info.title}</h3>
           <ul>
-            {info.items.map((item, index) => <li key={index}>
+            {info.items?.map((item, index) => <li key={index}>
               <Icon icon={getIconByCaseInsensitiveName(configs.markIcon)} style={{ color: configs.markColor }} /><div>{item}</div>
             </li>)}
           </ul>
