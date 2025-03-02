@@ -13,7 +13,7 @@ import ProductsPage from "./pages/Products";
 export const menuItems: MenuItem[] = [
   { name: 'Atendentes', link: 'atendentes', params: '/:id?', icon: Icons.solid.faUserMd, page: <AttendantsPage /> },
   {
-    name: 'Consultas / Avaliações', link: 'atendimentos', params: '/:id?', icon: Icons.solid.faClipboardList,
+    name: 'Consultas & Avaliações', link: 'atendimentos', params: '/:id?', icon: Icons.solid.faClipboardList,
     page: <ProductsPage provider={new ProductsProvider('appointment')} title="Cadastro de Consulta / Avaliações" name="Consulta" />
   },
   {

@@ -27,8 +27,7 @@ const CarroselItemRenderer = <T extends WithId>({ value, onChange, ...props }: F
     }
   }, [value]);
 
-  return <div style={{ padding: "1em", border: "1px solid #ccc", borderRadius: "5px", backgroundColor: "#fadfdf" }}>
-    <h2>Site Configs</h2>
+  return <>
     <ImageRenderer
       provider={props.provider} item={props.item} save={props.save}
       name="Logo" value={imagem} onChange={(text: string) => {
@@ -50,6 +49,6 @@ const CarroselItemRenderer = <T extends WithId>({ value, onChange, ...props }: F
         valueRef.current.link = text;
         onChange(valueRef.current);
       }} />
-  </div>;
+  </>;
 };
 export default CarroselItemRenderer;

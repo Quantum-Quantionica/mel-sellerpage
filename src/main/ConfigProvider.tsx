@@ -19,6 +19,22 @@ export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   return <ConfigContext.Provider value={{ config }}>
     {children}
+    {config && <style>{`
+      html {
+${Object
+    .keys(config)
+    .map(key => {
+      if(typeof config[key] !== 'string' || config[key].length === 0) return '';
+      const value: string = config[key] as string;
+      
+      return value.includes('http')
+        ? `--${key}: url(${value};)\n`
+        : `--${key}: ${value};\n`
+    })
+    .join('')
+}
+      }
+    `}</style>}
   </ConfigContext.Provider>
 };
 

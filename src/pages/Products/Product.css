@@ -1,5 +1,7 @@
-* {
-    /* border: 1px solid red; */
+.content > h1 {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: var(--menuAssentColor);
 }
 
 .product-box {

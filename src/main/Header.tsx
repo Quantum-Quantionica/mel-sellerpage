@@ -30,14 +30,14 @@ export const menuItems: MenuItem[] = [
     page: <ProductsPage provider={providers.course} title="Cursos" />
   },
   {
-    name: 'Consultas / Avaliações', params: '/:id?', link: 'atendimentos', icon: Icons.solid.faClipboardList,
+    name: 'Consultas & Avaliações', params: '/:id?', link: 'atendimentos', icon: Icons.solid.faClipboardList,
     provider: providers.appointment,
-    page: <ProductsPage provider={providers.appointment} title="Consultas / Avaliações" />
+    page: <ProductsPage provider={providers.appointment} title="Consultas & Avaliações" />
   },
   {
-    name: 'Livros / E-Books', params: '/:id?', link: booksPageLink, icon: Icons.solid.faBook,
+    name: 'Livros & E-Books', params: '/:id?', link: booksPageLink, icon: Icons.solid.faBook,
     provider: providers.book,
-    page: <ProductsPage provider={providers.book} title="Livros" />
+    page: <ProductsPage provider={providers.book} title="Livros & E-Books" />
   },
   // { name: 'Videos', link: 'videos', params: '/:id?', icon: Icons.solid.faVideo },
   // { name: 'Indicações', link: 'indicacoes', icon: Icons.solid.faStar },
@@ -55,15 +55,8 @@ export default function Header() {
   const closeMenu = () => setMenuVisible(false);
 
   return <>
-    <header style={{
-      backgroundColor: configs.headerBackgroundColor,
-      borderBottomColor: configs.headerAssentColor,
-      color: configs.headerFontColor,
-    }}>
-      <div className="content" style={{
-        borderColor: configs.headerAssentColor,
-        backgroundColor: configs.headerBackgroundColor,
-      }}>
+    <header>
+      <div className="content">
         <Icon
           icon={Icons.solid.faBars} color={configs.headerAssentColor} size="xl"
           onClick={() => setMenuVisible(!menuVisible)} />
@@ -73,10 +66,7 @@ export default function Header() {
     </header>
     <div className={[menuVisible ? 'visible' : 'hidden', 'sidebar'].join(' ')}>
       <div className="closeArea" onClick={closeMenu} />
-      <nav style={{
-        backgroundColor: configs.headerBackgroundColor,
-        color: configs.headerFontColor,
-      }}>
+      <nav>
         {menuItems.map(item => <MenuItemComponent key={item.link} item={item} close={closeMenu} />)}
       </nav>
     </div>

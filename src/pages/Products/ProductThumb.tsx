@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
+import "./ProductThumb.css";
+
 import Icon, { Icons } from "../../components/Icons";
 import { Product } from "../../main/data/products";
-import { useConfigs } from "../../main/ConfigProvider";
-
-import "./ProductThumb.css";
 
 export interface ProductProps {
   item: Product;
@@ -11,20 +10,13 @@ export interface ProductProps {
 }
 
 export default function ProductThumb({ item }: ProductProps) {
-  const configs = useConfigs();
-
-  return <div className="product-item" style={{borderColor: configs.headerAssentColor}}>
-    <div className="product-image" style={{ backgroundImage: `url(${item.image})` }} />
+  return <div className="product-item">
+    <div className="product-image" style={{ backgroundImage: `url(${item.image})`}} />
     <span>{item.category || item.type}</span>
     <h2>{capitalizeSelective(item.name)}</h2>
     <div className="product-actions">
-      <a className="button-by" href={item.purchaseUrl} style={{
-        backgroundColor: configs.markColor,
-      }}><Icon icon={Icons.solid.faCartShopping} />Adquirir</a>
-      <Link className="button-by" to={item.id!} style={{
-        backgroundColor: configs.backgroundColor,
-        color: configs.menuAssentColor,
-      }}><Icon icon={Icons.solid.faEye} />Ver Mais</Link>
+      <a className="button-by" href={item.purchaseUrl}><Icon icon={Icons.solid.faCartShopping} />Adquirir</a>
+      <Link className="button-by see" to={item.id!}><Icon icon={Icons.solid.faEye} />Ver Mais</Link>
     </div>
   </div>
 }

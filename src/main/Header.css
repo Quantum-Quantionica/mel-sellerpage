@@ -2,19 +2,30 @@
     --header-height: 105px;
 }
 
+header {
+    background-color: var(--headerBackgroundColor);
+    border-bottom-color: var(--headerAssentColor);
+    color: var(--headerFontColor);
+}
+
+header > .content {
+    border-color: var(--headerAssentColor);
+    background-color: var(--headerBackgroundColor);
+}
+
 .sidebar > nav {
     position: fixed;
     top: var(--header-height);
-    left: -250px;
+    background-color: var(--headerBackgroundColor);
+    color: var(--headerFontColor);
     /* Começa fora da tela */
+    left: -250px;
     width: 250px;
     height: 100vh;
-    background-color: #333;
-    color: white;
     overflow-y: auto;
     transition: transform 0.3s ease-in-out;
     transform: translateX(-250px);
-    z-index: 1000;
+    z-index: 100;
 }
 
 .sidebar.visible > nav {

@@ -12,9 +12,9 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    border: 2px solid #e7e7e7;
     border-radius: 8px;
     background-color: #fff;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     transition: border-color 0.3s;
     min-width: 300px;
     max-width: 400px;
@@ -24,19 +24,22 @@
 .product-item > span {
     padding-left: 10px;
     text-transform: capitalize;
+    font-size: 0.8em;
+    font-weight: 500;
+    color: var(--headerFontColor);
 }
 
 .product-item > h2 {
     flex: 1;
     display: flex;
     padding: 10px;
-    font-weight: bold;
-    font-size: 1.4em;
+    font-weight: 600;
+    font-size: 1.1em;
     line-height: 1em;
-    opacity: 0.5;
     margin: 0 0 0.2em;
+    color: var(--headerFontColor);
+    color: gray;
 }
-    
 
 .product-item > .product-image {
     width: 100%;
@@ -48,7 +51,7 @@
     overflow: hidden;
     border-radius: 8px 8px 0 0;
     border-bottom: 8px solid;
-    border-color: inherit;
+    border-color: var(--headerAssentColor);
 }
 
 .product-item > .product-actions {
@@ -63,4 +66,10 @@
     cursor: pointer;
     text-align: center;
     flex: 1;
+    background-color: var(--markColor);
+}
+
+.product-item > .product-actions > .button-by.see {
+    background-color: var(--backgroundColor);
+    color: var(--menuAssentColor);
 }
