@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom";
 import { useConfigs } from "../app/ConfigProvider";
 import { Product } from "../data/products";
-import { booksPageLink } from "./Header";
 import Icon, { Icons } from "./Icons";
 
 import "./ProductThumb.css";
@@ -21,10 +21,10 @@ export default function ProductThumb({ item }: ProductProps) {
       <a className="button-by" href={item.purchaseUrl} style={{
         backgroundColor: configs.markColor,
       }}><Icon icon={Icons.solid.faCartShopping} />Adquirir</a>
-      <a className="button-by" href={`\\${booksPageLink}\\${item.id}`} style={{
+      <Link className="button-by" to={item.id!} style={{
         backgroundColor: configs.backgroundColor,
         color: configs.menuAssentColor,
-      }}><Icon icon={Icons.solid.faEye} />Ver Mais</a>
+      }}><Icon icon={Icons.solid.faEye} />Ver Mais</Link>
     </div>
   </div>
 }
