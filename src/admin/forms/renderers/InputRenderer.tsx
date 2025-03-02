@@ -1,7 +1,7 @@
 import './InputRenderer.css';
-import { WithId } from "../../../data/provider";
+import { WithId } from "../../../main/data/provider";
 import { FieldRendererPros } from "../";
-import Icon, { IconDefinition } from "../../Icons";
+import Icon, { IconDefinition } from "../../../components/Icons";
 
 type InputProps<T extends WithId> = FieldRendererPros<T> & { icon: IconDefinition };
 

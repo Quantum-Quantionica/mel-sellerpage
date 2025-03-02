@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-import ConfigsCache, { SiteConfig } from "../configs/siteConfigs";
+import ConfigsCache, { SiteConfig } from "./configs/siteConfigs";
 
 interface ConfigContextValue {
   config: SiteConfig|null;

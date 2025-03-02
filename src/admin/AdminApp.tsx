@@ -2,10 +2,10 @@ import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
-import MenuItem from "../app/MenuItemInterface";
 import Icon, { Icons } from '../components/Icons';
-import { configStorage } from "../configs/siteConfigs";
-import ProductsProvider from "../data/products";
+import { configStorage } from "../main/configs/siteConfigs";
+import ProductsProvider from "../main/data/products";
+import MenuItem from "../main/MenuItemInterface";
 import './AdminApp.css';
 import AttendantsPage from "./pages/Attemdants/Attendants";
 import ProductsPage from "./pages/Products";

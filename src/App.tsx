@@ -1,14 +1,16 @@
-import './App.css';
-import AppRoutes from './AppRoutes';
-import AdminApp, { menuItems as adminMenus } from '../admin/AdminApp';
-
-import Header, { menuItems as appMenus } from '../components/Header';
-import MainContent from '../components/MainContent';
-import Footer from '../components/Footer';
-import { useConfigs } from './ConfigProvider';
-import Icon, { Icons } from '../components/Icons';
 import { useEffect, useState } from 'react';
-import { registerWindowMoveEvent } from '../pages/Product';
+import './App.css';
+
+import AppRoutes from './main/AppRoutes';
+import { useConfigs } from './main/ConfigProvider';
+import Footer from './main/Footer';
+import Header, { menuItems as appMenus } from './main/Header';
+
+import Icon, { Icons } from './components/Icons';
+import MainContent from './components/MainContent';
+
+import AdminApp, { menuItems as adminMenus } from './admin/AdminApp';
+import { registerWindowMoveEvent } from './pages/Products';
 
 function App() {
   const [floatingBottomMargin, setFloatingBottomMargin] = useState(0);

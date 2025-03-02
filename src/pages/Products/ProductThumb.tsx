@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { useConfigs } from "../app/ConfigProvider";
-import { Product } from "../data/products";
-import Icon, { Icons } from "./Icons";
+import Icon, { Icons } from "../../components/Icons";
+import { Product } from "../../main/data/products";
+import { useConfigs } from "../../main/ConfigProvider";
 
 import "./ProductThumb.css";
 

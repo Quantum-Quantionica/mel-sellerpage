@@ -33,7 +33,7 @@ jobs:
           if [ -z "$FIREBASE_CONFIG_MERIDION" ]; then
             echo "FIREBASE_CONFIG_MERIDION is empty" && exit 1
           fi
-          echo "$FIREBASE_CONFIG_MERIDION" > src/configs/firebaseConfig.json
+          echo "$FIREBASE_CONFIG_MERIDION" > src/main/configs/firebaseConfig.json
       - name: Build dist
         run: yarn build
       - name: Config npm Cache

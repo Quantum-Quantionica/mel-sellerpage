@@ -1,8 +1,8 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { ReactNode, useEffect } from "react";
+import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom";
 
-import { analytics, logEvent } from '../configs/firebase'
 import EmptyPage from "../pages/EmptyPage";
+import { analytics, logEvent } from './configs/firebase';
 import MenuItem from "./MenuItemInterface";
 
 interface RoutesInfo {

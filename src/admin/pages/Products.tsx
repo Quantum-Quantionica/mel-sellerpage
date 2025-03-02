@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 
-import { deleteFolder } from "../../configs/firebase";
-import ProductsProvider, { Product } from "../../data/products";
+import { deleteFolder } from "../../main/configs/firebase";
+import ProductsProvider, { Product } from "../../main/data/products";
 
-import { DynamicForm, ImageRenderer, InfoRenderer, ListRenderer, ListRendererConfigs, TextArea } from "../../components/forms";
-import DynamicList from "../../components/forms/List";
 import Icon, { Icons } from "../../components/Icons";
+import { DynamicForm, ImageRenderer, InfoRenderer, ListRenderer, ListRendererConfigs, TextArea } from "../forms";
+import DynamicList from "../forms/List";
 
 const newUrl = 'new';
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import ConfigsCache from "../configs/siteConfigs";
-import { Attendant } from "../data/attendants";
+import ConfigsCache from "../main/configs/siteConfigs";
+import { Attendant } from "../main/data/attendants";
 
 let cacheAttendant: Attendant | null = null;
 

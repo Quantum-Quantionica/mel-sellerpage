@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { Provider, WithId } from "../../data/provider";
+import { Provider, WithId } from "../../main/data/provider";
 import { Link } from "react-router-dom";
-import Icon, { Icons } from "../Icons";
+import Icon, { Icons } from "../../components/Icons";
 
 export interface DynamicListProps<T extends WithId> {
   title: string;

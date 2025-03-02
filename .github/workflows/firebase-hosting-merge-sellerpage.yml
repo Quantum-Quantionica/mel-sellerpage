@@ -33,7 +33,7 @@ jobs:
           if [ -z "$FIREBASE_CONFIG_SELLERPAGE" ]; then
             echo "FIREBASE_CONFIG_SELLERPAGE is empty" && exit 1
           fi
-          echo "$FIREBASE_CONFIG_SELLERPAGE" > src/configs/firebaseConfig.json
+          echo "$FIREBASE_CONFIG_SELLERPAGE" > src/main/configs/firebaseConfig.json
       - name: Build dist
         run: yarn build
       - name: Config npm Cache

@@ -1,13 +1,12 @@
-import { IconDefinition, IconKey, Icons } from '../components/Icons';
+import { IconDefinition, IconKey, Icons } from '../../components/Icons';
 import AttendantsProvider, { Attendant, AttendantSocialLink } from "../data/attendants";
-import defaultLogo from '../images/logo.svg';
 
 export const isDev = window.location.hostname === 'localhost';
 export const configStorage = isDev ? window.sessionStorage : window.localStorage;
 export const isAdmin = configStorage.getItem('admin') === 'true';
 
 export interface SiteConfig {
-  logo: string;
+  logo?: string;
   favicon?: string;
   backgroundColor: string;
   backgroundImage: string;
@@ -49,7 +48,6 @@ class ConfigsCacheProvider {
   private attendantProvider = new AttendantsProvider();
 
   private defaultConfig: SiteConfig = {
-    logo: defaultLogo,
     backgroundColor: '#fff',
     backgroundImage: "",
     headerBackgroundColor: '#fff',

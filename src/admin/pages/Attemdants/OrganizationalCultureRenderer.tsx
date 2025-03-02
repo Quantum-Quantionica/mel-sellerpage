@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import { WithId } from "../../../data/provider";
-import { AttendantOrganizationalCulture } from "../../../data/attendants";
-import { FieldRendererPros, TextArea } from "../../../components/forms";
+import { WithId } from "../../../main/data/provider";
+import { AttendantOrganizationalCulture } from "../../../main/data/attendants";
+import { FieldRendererPros, TextArea } from "../../forms";
 
 const OrganizationalCultureRenderer = <T extends WithId>({value, onChange}: FieldRendererPros<T>) => {
   const valueRef = useRef<Partial<AttendantOrganizationalCulture>>(typeof value !== "object" ? {} : value);

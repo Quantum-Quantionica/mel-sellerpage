@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
+import './main/configs/firebase';
+import reportWebVitals from './main/configs/reportWebVitals';
+import { ConfigProvider } from './main/ConfigProvider';
+
+import App from './App';
 import './index.css';
-import './configs/firebase';
-import App from './app/App';
-import reportWebVitals from './configs/reportWebVitals';
-import { ConfigProvider } from './app/ConfigProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-import { FieldRenderer, FieldRendererPros, ImageRenderer, Input, ListRenderer, ListRendererConfigs } from "../../../components/forms";
-import IconRenderer from "../../../components/forms/renderers/IconRenderer";
-import { ConfigKeys, SiteConfig } from "../../../configs/siteConfigs";
-import { WithId } from "../../../data/provider";
+import { FieldRenderer, FieldRendererPros, ImageRenderer, Input, ListRenderer, ListRendererConfigs } from "../../forms";
+import IconRenderer from "../../forms/renderers/IconRenderer";
+import { ConfigKeys, SiteConfig } from "../../../main/configs/siteConfigs";
+import { WithId } from "../../../main/data/provider";
 
 const ConfigKeysRenderer: { [key in keyof SiteConfig]?: FieldRenderer<any> } = {
   "markIcon": IconRenderer,

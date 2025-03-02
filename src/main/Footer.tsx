@@ -1,5 +1,5 @@
-import { useConfigs } from "../app/ConfigProvider";
-import Icon, { getIconByCaseInsensitiveName } from "./Icons";
+import Icon, { getIconByCaseInsensitiveName } from "../components/Icons";
+import { useConfigs } from "./ConfigProvider";
 
 export default function Footer() {
   const configs = useConfigs();

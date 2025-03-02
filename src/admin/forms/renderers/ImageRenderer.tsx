@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
 import './ImageRenderer.css';
-import { Provider, WithId } from "../../../data/provider";
-import { deleteImage, uploadFile } from "../../../configs/firebase";
+import { Provider, WithId } from "../../../main/data/provider";
+import { deleteImage, uploadFile } from "../../../main/configs/firebase";
 import { FieldRendererPros } from "../DynamicForm";
-import CachedImage from "../../CacheImage";
-import Icon, { Icons } from "../../Icons";
+import CachedImage from "../../../components/CacheImage";
+import Icon, { Icons } from "../../../components/Icons";
 
 const ImageRenderer = <T extends WithId>({ name, value, onChange, provider, item, save }: FieldRendererPros<T>) => {
   const [state, setState] = useState<'uploading'|'deleting'|'finish'>('finish');

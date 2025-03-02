@@ -1,9 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 
-import AttendantsProvider, { Attendant } from "../../../data/attendants";
+import AttendantsProvider, { Attendant } from "../../../main/data/attendants";
 import SiteConfigsRenderer from "./SiteConfigsRenderer";
 
-import { DynamicForm, DynamicList, ImageRenderer, ListRenderer, ListRendererConfigs, SocialRenderer, TextArea } from "../../../components/forms";
+import { DynamicForm, DynamicList, ImageRenderer, ListRenderer, ListRendererConfigs, SocialRenderer, TextArea } from "../../forms";
 import Icon, { Icons } from "../../../components/Icons";
 import OrganizationalCultureRenderer from "./OrganizationalCultureRenderer";
 

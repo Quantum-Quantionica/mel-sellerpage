@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useConfigs } from '../app/ConfigProvider';
+import { useConfigs } from '../main/ConfigProvider';
 import './Carrosel.css';
 
 export default function Carrose() {

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-import { useConfigs } from "../app/ConfigProvider";
-import MenuItem from "../app/MenuItemInterface";
-import { isAdmin } from "../configs/siteConfigs";
-import ProductsProvider from "../data/products";
-import Home from "../pages/Home";
-import ProductsPage from "../pages/Product";
-import WhoWeAre from "../pages/WhoWeAre";
-import Icon, { Icons } from './Icons';
-
 import './Header.css';
+
+import { useConfigs } from "./ConfigProvider";
+import { isAdmin } from "./configs/siteConfigs";
+import ProductsProvider from "./data/products";
+import MenuItem from "./MenuItemInterface";
+
+import Icon, { Icons } from '../components/Icons';
+import Home from "../pages/Home";
+import ProductsPage from "../pages/Products";
+import WhoWeAre from "../pages/WhoWeAre";
 
 export const booksPageLink = 'livros';
 

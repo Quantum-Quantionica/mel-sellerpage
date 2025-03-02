@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useConfigs } from "../app/ConfigProvider";
-import ProductsProvider, { Product } from "../data/products";
+import ProductsProvider, { Product } from "../../main/data/products";
+import { useConfigs } from "../../main/ConfigProvider";
 
-import BannerImage from "../components/BannerImage";
-import Icon, { getIconByCaseInsensitiveName, Icons } from "../components/Icons";
-import ProductThumb from "../components/ProductThumb";
-import WhoWeAre from "./WhoWeAre";
+import BannerImage from "../../components/BannerImage";
+import Icon, { getIconByCaseInsensitiveName, Icons } from "../../components/Icons";
+import WhoWeAre from "../WhoWeAre";
+import ProductThumb from "./ProductThumb";
 
 import "./Product.css";
 
