@@ -4,6 +4,7 @@ import defaultLogo from '../images/logo.svg';
 
 const isDev = window.location.hostname === 'localhost';
 const storage = isDev ? window.sessionStorage : window.localStorage;
+const isAdmin = storage.getItem('admin') === 'true';
 
 export interface SiteConfig {
   logo: string;
@@ -39,7 +40,7 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
 
 class ConfigsCacheProvider {
 
-  private static EXPIRATION_TIME = 1000 * (isDev ? 60 : 60 * 60 * 24); // ? 1min : 24 hours in milliseconds
+  private static EXPIRATION_TIME = 1000 * ((isDev || isAdmin) ? 60 : 60 * 60 * 24); // ? 1min : 24 hours in milliseconds
   private static KEY_EXPIRATION = 'siteConfigExpiration_';
   private static KEY_DATA = 'siteAttendantData_v2_';
   private static KEY_ID = 'siteConfigDefaultId';
