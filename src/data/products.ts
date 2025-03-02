@@ -1,5 +1,5 @@
 
-import ConfigsCache from "../configs/siteConfigs";
+import ConfigsCache, { configStorage } from "../configs/siteConfigs";
 import AbstractProvider from "./provider";
 
 export interface ProductInfoList {
@@ -34,18 +34,11 @@ export default class ProductsProvider extends AbstractProvider<Product> {
     "attendants", "category", "name", "description", "image", "youtube", "price", "paymentInfo", "infos", "reviews", "tags", "purchaseUrl"
   ];
   protected requiredFields: (keyof Product)[] = ["name", "description"];
+  private fullName: string;
   
   constructor(private type: ProductType) {
     super();
-  }
-
-  private fixData(item: Product | null): Product | null {
-    if(item && Array.isArray(item.infos)) {
-      item.infos = item.infos.map(info => 
-        typeof info === "string" ? {title: info, items: [] } : info
-      )
-    }
-    return item;
+    this.fullName = this.collectionName + this.type;
   }
 
   private addAttendantIfNeeded(item: Partial<Product>) {
@@ -66,16 +59,30 @@ export default class ProductsProvider extends AbstractProvider<Product> {
     return super.filterData(item);
   }
 
-  public async listAll(filter?: Partial<Product>): Promise<Product[]> {
+  private getMergedFilter(filter?: Partial<Product>): Partial<Product> {
     const attendent = ConfigsCache.getCachedAttendantId();
     const attendentFilter = attendent ? { attendants: [attendent] } : {};
-    const all = await super.listAll({ type: this.type, ...attendentFilter, ...filter });
-    all.forEach(this.fixData)
+    return { type: this.type, ...attendentFilter, ...filter };
+  }
+
+  public async listAll(filter?: Partial<Product>): Promise<Product[]> {
+    const mergedFilter = this.getMergedFilter(filter);
+    const all = await super.listAll(mergedFilter);
+
+    if(all.length === 0)
+      configStorage.removeItem(this.fullName);
+    else 
+      configStorage.setItem(this.fullName, "true");
     return all;
   }
 
   public async getById(id: string): Promise<Product | null> {
-    return super.getById(id)
-      .then(this.fixData)
+    const cache = this.lastResult?.find(item => item.id === id);
+
+    return cache ? cache : await super.getById(id)
+  }
+
+  public hasItems(): boolean {
+    return configStorage.getItem(this.fullName) === "true";
   }
 }

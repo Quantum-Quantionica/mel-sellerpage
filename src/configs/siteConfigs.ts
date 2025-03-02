@@ -2,9 +2,9 @@ import { IconDefinition, IconKey, Icons } from '../components/Icons';
 import AttendantsProvider, { Attendant, AttendantSocialLink } from "../data/attendants";
 import defaultLogo from '../images/logo.svg';
 
-const isDev = window.location.hostname === 'localhost';
-const storage = isDev ? window.sessionStorage : window.localStorage;
-const isAdmin = storage.getItem('admin') === 'true';
+export const isDev = window.location.hostname === 'localhost';
+export const configStorage = isDev ? window.sessionStorage : window.localStorage;
+export const isAdmin = configStorage.getItem('admin') === 'true';
 
 export interface SiteConfig {
   logo: string;
@@ -107,7 +107,7 @@ class ConfigsCacheProvider {
     const attendant = await this.attendantProvider.getById(id)
     if(!attendant) {
       console.warn('Attendant not found for id:', id, ', removing cached id');
-      storage.removeItem(ConfigsCacheProvider.KEY_ID);
+      configStorage.removeItem(ConfigsCacheProvider.KEY_ID);
       return {};
     };
     console.log('Getting config from database for id:', id, attendant?.siteConfig);
@@ -128,7 +128,7 @@ class ConfigsCacheProvider {
     if(attendant) {
       this.saveAttendantToCache(attendant);
       if (attendant.id) {
-        storage.setItem(ConfigsCacheProvider.KEY_ID, attendant.id);
+        configStorage.setItem(ConfigsCacheProvider.KEY_ID, attendant.id);
         return attendant.id;
       }
     }
@@ -139,28 +139,28 @@ class ConfigsCacheProvider {
   public getCachedAttendantId(): string | null {
     const fromUrl = new URLSearchParams(window.location.search).get('site');
     if(fromUrl) {
-      storage.setItem(ConfigsCacheProvider.KEY_ID, fromUrl);
+      configStorage.setItem(ConfigsCacheProvider.KEY_ID, fromUrl);
     }
-    return fromUrl || storage.getItem(ConfigsCacheProvider.KEY_ID);
+    return fromUrl || configStorage.getItem(ConfigsCacheProvider.KEY_ID);
   }
 
   private saveAttendantToCache(attendant: Attendant) {
-    storage.setItem(ConfigsCacheProvider.KEY_DATA + attendant.id, JSON.stringify(attendant));
-    storage.setItem(ConfigsCacheProvider.KEY_EXPIRATION + attendant.id, new Date().toISOString());
+    configStorage.setItem(ConfigsCacheProvider.KEY_DATA + attendant.id, JSON.stringify(attendant));
+    configStorage.setItem(ConfigsCacheProvider.KEY_EXPIRATION + attendant.id, new Date().toISOString());
   }
 
   private getAttendantFromCache(id: string | null, force: boolean = false): Partial<Attendant> | null {
     if(!id) return null;
-    const jsonCache = storage.getItem(ConfigsCacheProvider.KEY_DATA + id);
+    const jsonCache = configStorage.getItem(ConfigsCacheProvider.KEY_DATA + id);
     if(!jsonCache) return null;
 
-    const createDateString = storage.getItem(ConfigsCacheProvider.KEY_EXPIRATION + id);
+    const createDateString = configStorage.getItem(ConfigsCacheProvider.KEY_EXPIRATION + id);
     const createDate = createDateString ? new Date(createDateString) : new Date();
     const expirationTime = createDate.getTime() + ConfigsCacheProvider.EXPIRATION_TIME;
     const isCacheValid = expirationTime > new Date().getTime();
     
     if(!isCacheValid && !force) {
-      storage.removeItem(ConfigsCacheProvider.KEY_DATA + id);
+      configStorage.removeItem(ConfigsCacheProvider.KEY_DATA + id);
       console.warn('Cache expired, removing cache for id:', id);
       return null;
     }

@@ -1,7 +1,8 @@
-import { addDoc, collection, deleteDoc, deleteField, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
-import { db } from "../configs/firebase";
+import { addDoc, collection, deleteDoc, deleteField, doc, getCountFromServer, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
+import { analytics, db, logEvent } from "../configs/firebase";
+import { isDev } from "../configs/siteConfigs";
 
-const maxRequestsPerSecond = 10;
+const maxRequestsPerSecond = 15;
 let requestsOnLastSecond = 0;
 setInterval(() => {
   requestsOnLastSecond = 0;
@@ -9,7 +10,9 @@ setInterval(() => {
 function allertIfTooManyRequests() {
   requestsOnLastSecond++;
   if (requestsOnLastSecond > maxRequestsPerSecond) {
-    alert("Too many requests on last second");
+    const message = `Too many requests on last second (${requestsOnLastSecond})`;
+    if(isDev) alert(message);
+    logEvent(analytics, "too_many_requests", { requestsOnLastSecond, domain: window.location.hostname });
   }
 }
 
@@ -51,8 +54,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     }
   }
 
-  async listAll(filter?: Partial<T>): Promise<T[]> {
-    allertIfTooManyRequests();
+  private getQueryFilter(filter?: Partial<T>) {
     const ref = collection(db, this.collectionName);
     let q = query(ref);
 
@@ -71,8 +73,31 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
       }
     }
 
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
+    return q;
+  }
+
+  protected lastResult: T[] | null = null;
+
+  async listAll(filter?: Partial<T>): Promise<T[]> {
+    allertIfTooManyRequests();
+    const query = this.getQueryFilter(filter);
+    const snapshot = await getDocs(query);
+    const result = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
+    this.lastResult = result;
+    return result;
+  }
+
+  async litsAllWithCache(): Promise<T[]> {
+    if(this.lastResult)
+      return this.lastResult;
+    return this.listAll();
+  }
+
+  async countAll(filter?: Partial<T>): Promise<number> {
+    allertIfTooManyRequests();
+    const query = this.getQueryFilter(filter);
+    const snapshot = await getCountFromServer(query);
+    return snapshot.data().count;
   }
 
   async getOne(filter: Partial<T>): Promise<T | null> {

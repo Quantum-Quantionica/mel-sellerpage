@@ -35,12 +35,12 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
 
   useEffect(() => {
     if (!id) {
-      provider.listAll().then(setProductList);
+      provider.litsAllWithCache().then(setProductList);
       return;
     };
     provider.getById(id).then(setProduct);
     return () => setProduct(null);
-  }, [id, provider, productList.length]);
+  }, [id, provider]);
 
   useEffect(() => {
     const handleScroll = () => {

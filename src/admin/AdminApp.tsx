@@ -1,13 +1,14 @@
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-import './AdminApp.css';
-import Icon, { Icons } from '../components/Icons';
 import MenuItem from "../app/MenuItemInterface";
-import ProductsPage from "./pages/Products";
+import Icon, { Icons } from '../components/Icons';
+import { configStorage } from "../configs/siteConfigs";
 import ProductsProvider from "../data/products";
+import './AdminApp.css';
 import AttendantsPage from "./pages/Attemdants/Attendants";
+import ProductsPage from "./pages/Products";
 
 export const menuItems: MenuItem[] = [
   { name: 'Atendentes', link: 'atendentes', params: '/:id?', icon: Icons.solid.faUserMd, page: <AttendantsPage /> },
@@ -36,7 +37,7 @@ export default function AdminApp() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        window.localStorage.setItem('admin', 'true');
+        configStorage.setItem('admin', 'true');
       } else {
         setUser(null);
       }
