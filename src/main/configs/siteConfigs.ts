@@ -1,5 +1,7 @@
-import { IconDefinition, IconKey, Icons } from '../../components/Icons';
 import AttendantsProvider, { Attendant, AttendantSocialLink } from "../data/attendants";
+
+import { CarroseItem } from '../../components/Carrosel';
+import { IconDefinition, IconKey, Icons } from '../../components/Icons';
 
 export const isDev = window.location.hostname === 'localhost';
 export const configStorage = isDev ? window.sessionStorage : window.localStorage;
@@ -21,7 +23,7 @@ export interface SiteConfig {
   socials: AttendantSocialLink[];
   whatsappNumber?: string;
   whatsappLink?: string;
-  carrosel?: string[];
+  carrosel?: (string | CarroseItem)[];
 }
 
 export const ConfigKeys: (keyof SiteConfig)[] = [

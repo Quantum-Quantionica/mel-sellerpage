@@ -3,9 +3,12 @@
     display: block;
     width: 100%;
     aspect-ratio: 8/3;
+    overflow: hidden;
+    margin-top: 10px;
+    border-radius: 15px;
 }
 
-.carrosel > div > div {
+.carrosel > div > .item {
     display: block;
     position: absolute;
     left: 0; right: 0;
@@ -16,6 +19,6 @@
     background-size: cover;
 }
 
-.carrosel > div > div.active {
+.carrosel > div > .item.active {
     opacity: 1;
 }

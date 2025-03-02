@@ -1,7 +1,9 @@
-import './ListRenderer.css';
 import { useEffect, useRef, useState } from "react";
-import { FieldRenderer, FieldRendererPros, Input } from "../";
+import './ListRenderer.css';
+
 import { WithId } from "../../../main/data/provider";
+
+import { FieldRenderer, FieldRendererPros, Input } from "../";
 import Icon, { Icons } from '../../../components/Icons';
 
 export interface ListRendererConfigs<T extends WithId> {

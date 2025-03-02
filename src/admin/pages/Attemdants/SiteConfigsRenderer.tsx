@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
-import { FieldRenderer, FieldRendererPros, ImageRenderer, Input, ListRenderer, ListRendererConfigs } from "../../forms";
-import IconRenderer from "../../forms/renderers/IconRenderer";
 import { ConfigKeys, SiteConfig } from "../../../main/configs/siteConfigs";
 import { WithId } from "../../../main/data/provider";
+
+import { FieldRenderer, FieldRendererPros, ImageRenderer, Input, ListRenderer, ListRendererConfigs } from "../../forms";
+import IconRenderer from "../../forms/renderers/IconRenderer";
+import CarroselItemRenderer from "./CarroselItemRenderer";
 
 const ConfigKeysRenderer: { [key in keyof SiteConfig]?: FieldRenderer<any> } = {
   "markIcon": IconRenderer,
@@ -11,7 +13,7 @@ const ConfigKeysRenderer: { [key in keyof SiteConfig]?: FieldRenderer<any> } = {
 }
 const ConfigKeysRendererConfigs: { [key in keyof SiteConfig]?: object } = {
   "carrosel": {
-    renderer: ImageRenderer,
+    renderer: CarroselItemRenderer,
   } as ListRendererConfigs<SiteConfig & { id?: string }>,
 }
 
@@ -62,8 +64,7 @@ const SiteConfigsRenderer = <T extends WithId>({ value, onChange, ...props }: Fi
           valueRef.current[item] = text;
           onChange(valueRef.current);
         }} />
-    }
-    )}
+    })}
   </div>;
 };
 export default SiteConfigsRenderer;
