@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, query, where, addDoc, deleteField, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, deleteField, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
 import { db } from "../configs/firebase";
 
 const maxRequestsPerSecond = 10;
@@ -43,7 +43,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     return item;
   }
 
-  private validateData(item: Partial<T>) {
+  protected validateData(item: Partial<T>) {
     for (const key of this.requiredFields) {
       if (!item[key] || (typeof item[key] === "string" && item[key].trim() === "")) {
         throw new Error(`Field ${key} is required`);

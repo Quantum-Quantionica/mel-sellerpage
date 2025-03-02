@@ -48,6 +48,19 @@ export default class ProductsProvider extends AbstractProvider<Product> {
     return item;
   }
 
+  private addAttendantIfNeeded(item: Partial<Product>) {
+    const attendent = ConfigsCache.getCachedAttendantId();
+    item.attendants = item.attendants ?? [];
+    if (attendent && item.attendants.length === 0) {
+      item.attendants.push(attendent);
+    }
+  }
+
+  protected validateData(item: Partial<Product>): void {
+    this.addAttendantIfNeeded(item);
+    super.validateData(item);
+  }
+
   protected filterData(item: Partial<Product>) {
     item.type = this.type
     return super.filterData(item);

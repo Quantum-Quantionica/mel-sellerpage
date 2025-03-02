@@ -1,9 +1,10 @@
 import { Link, useParams } from "react-router-dom";
 
+import { deleteFolder } from "../../configs/firebase";
 import ProductsProvider, { Product } from "../../data/products";
+
 import { DynamicForm, ImageRenderer, InfoRenderer, ListRenderer, ListRendererConfigs, TextArea } from "../../components/forms";
 import DynamicList from "../../components/forms/List";
-import { deleteFolder } from "../../configs/firebase";
 import Icon, { Icons } from "../../components/Icons";
 
 const newUrl = 'new';
@@ -25,7 +26,7 @@ const ProductsPage = ({provider, title, name}: ProductsPageProps) => {
       <DynamicList provider={provider} title={name} nameKey="name" deleteInterceptor={async item => {
         await deleteFolder(`${provider.collectionName}/${item.id}`);
         return true;
-      }} />
+      }} adicionalFields={item => <span><b>Attendants: </b>{item.attendants?.join(', ')}</span>} />
     </>;
 
   return (
