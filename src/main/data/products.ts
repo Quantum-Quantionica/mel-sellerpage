@@ -23,20 +23,21 @@ export interface Product {
     infos?: ProductInfoList[];
     reviews?: string[];
     tags?: string[];
-
     price?: number;
     purchaseUrl?: string;
+    homePosition?: number|string;
   }
 
 export default class ProductsProvider extends AbstractProvider<Product> {
+  private static MAX_HOME_PRODUCTS: number | undefined;
   public collectionName = "products";
   public keys: (keyof Product)[] = [
-    "attendants", "category", "name", "description", "image", "youtube", "price", "paymentInfo", "infos", "reviews", "tags", "purchaseUrl"
+    "homePosition", "name", "description", "category", "image", "youtube", "price", "purchaseUrl", "paymentInfo", "infos", "reviews", "tags", "attendants"
   ];
   protected requiredFields: (keyof Product)[] = ["name", "description"];
   private fullName: string;
   
-  constructor(private type: ProductType) {
+  constructor(private type?: ProductType) {
     super();
     this.fullName = this.collectionName + this.type;
   }
@@ -51,6 +52,8 @@ export default class ProductsProvider extends AbstractProvider<Product> {
 
   protected validateData(item: Partial<Product>): void {
     this.addAttendantIfNeeded(item);
+    if(typeof item.homePosition === "string")
+      item.homePosition = Number.parseFloat(item.homePosition.replace(",", "."));
     super.validateData(item);
   }
 
@@ -62,7 +65,8 @@ export default class ProductsProvider extends AbstractProvider<Product> {
   private getMergedFilter(filter?: Partial<Product>): Partial<Product> {
     const attendent = ConfigsCache.getCachedAttendantId();
     const attendentFilter = attendent ? { attendants: [attendent] } : {};
-    return { type: this.type, ...attendentFilter, ...filter };
+    const typeFilter = this.type ? { type: this.type } : {};
+    return { ...typeFilter, ...attendentFilter, ...filter };
   }
 
   private saveCountCache(count: number) {
@@ -80,11 +84,23 @@ export default class ProductsProvider extends AbstractProvider<Product> {
     );
   }
 
-  public async listAll(filter?: Partial<Product>): Promise<Product[]> {
+  public async listAll(filter?: Partial<Product>, orderBy?: keyof Product, limit?: number): Promise<Product[]> {
     const mergedFilter = this.getMergedFilter(filter);
-    const all = await super.listAll(mergedFilter);
+    const all = await super.listAll(mergedFilter, orderBy, limit);
     this.saveCountCache(all.length);
     return all;
+  }
+
+  private lastHomeResult: Product[] | null = null;
+
+  public async listHomeProducts(): Promise<Product[]> {
+    if(this.lastHomeResult)
+      return this.lastHomeResult;
+
+    const filters = this.getMergedFilter();
+    const result = super.listAll(filters, 'homePosition', ProductsProvider.MAX_HOME_PRODUCTS);
+    this.lastHomeResult = await result;
+    return result;
   }
 
   public async getById(id: string): Promise<Product | null> {

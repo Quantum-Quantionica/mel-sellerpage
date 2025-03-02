@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, deleteField, doc, getCountFromServer, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
+import * as firestore from "firebase/firestore";
 import { analytics, db, logEvent } from "../configs/firebase";
 import { isDev } from "../configs/siteConfigs";
 
@@ -54,34 +54,39 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     }
   }
 
-  private getQueryFilter(filter?: Partial<T>) {
-    const ref = collection(db, this.collectionName);
-    let q = query(ref);
+  private getQueryFilter(filter?: Partial<T>, orderBy?: keyof T, limit?: number) {
+    const ref = firestore.collection(db, this.collectionName);
+    let q = firestore.query(ref);
 
     if (filter) {
       for (const [key, value] of Object.entries(filter)) {
         if (Array.isArray(value)) {
           const filteredValue = value.filter(item => !!item && item !== "");
           if (filteredValue.length === 1) {
-            q = query(q, where(key, "array-contains", filteredValue[0]));
+            q = firestore.query(q, firestore.where(key, "array-contains", filteredValue[0]));
           } else if (filteredValue.length > 1) {
-            q = query(q, where(key, "array-contains-any", filteredValue));
+            q = firestore.query(q, firestore.where(key, "array-contains-any", filteredValue));
           }
         } else if (value !== undefined) {
-          q = query(q, where(key, "==", value));
+          q = firestore.query(q, firestore.where(key, "==", value));
         }
       }
     }
-
+    if (orderBy) {
+      q = firestore.query(q, firestore.orderBy(orderBy as string));
+    }
+    if (limit) {
+      q = firestore.query(q, firestore.limit(limit));
+    }
     return q;
   }
 
   protected lastResult: T[] | null = null;
 
-  async listAll(filter?: Partial<T>): Promise<T[]> {
+  async listAll(filter?: Partial<T>, orderBy?: keyof T, limit?: number): Promise<T[]> {
     allertIfTooManyRequests();
-    const query = this.getQueryFilter(filter);
-    const snapshot = await getDocs(query);
+    const query = this.getQueryFilter(filter, orderBy, limit);
+    const snapshot = await firestore.getDocs(query);
     const result = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
     this.lastResult = result;
     return result;
@@ -96,7 +101,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
   async countAll(filter?: Partial<T>): Promise<number> {
     allertIfTooManyRequests();
     const query = this.getQueryFilter(filter);
-    const snapshot = await getCountFromServer(query);
+    const snapshot = await firestore.getCountFromServer(query);
     return snapshot.data().count;
   }
 
@@ -110,16 +115,16 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     item = this.cleanObject(item);
     this.filterData(item);
     if(validate) this.validateData(item);
-    const partialItem = { ...item, updatedAt: serverTimestamp() } as Partial<T>;
+    const partialItem = { ...item, updatedAt: firestore.serverTimestamp() } as Partial<T>;
     if (item.id) {
-      partialItem.id = deleteField() as any;
-      const ref = doc(db, this.collectionName, item.id);
+      partialItem.id = firestore.deleteField() as any;
+      const ref = firestore.doc(db, this.collectionName, item.id);
       console.log("Document updated with ID:", item.id, item);
-      await setDoc(ref, partialItem, { merge: true });
+      await firestore.setDoc(ref, partialItem, { merge: true });
     } else {
-      (partialItem as any).createdAt = serverTimestamp();
-      const ref = collection(db, this.collectionName);
-      const newDocRef = await addDoc(ref, partialItem);
+      (partialItem as any).createdAt = firestore.serverTimestamp();
+      const ref = firestore.collection(db, this.collectionName);
+      const newDocRef = await firestore.addDoc(ref, partialItem);
       console.log("New document created with ID:", newDocRef.id);
       item.id = newDocRef.id;
     }
@@ -128,14 +133,14 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
 
   async delete(id: string): Promise<void> {
     allertIfTooManyRequests();
-    const ref = doc(db, this.collectionName, id);
-    await deleteDoc(ref);
+    const ref = firestore.doc(db, this.collectionName, id);
+    await firestore.deleteDoc(ref);
   }
 
   async getById(id: string): Promise<T | null> {
     allertIfTooManyRequests();
-    const ref = doc(db, this.collectionName, id);
-    const snapshot = await getDoc(ref);
+    const ref = firestore.doc(db, this.collectionName, id);
+    const snapshot = await firestore.getDoc(ref);
 
     if (!snapshot.exists()) {
       return null;
@@ -157,7 +162,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
         if (value !== null && value !== undefined && value !== "" && !(typeof value === "object" && Object.keys(value).length === 0)) {
           acc[key] = value;
         } else {
-          acc[key] = deleteField();
+          acc[key] = firestore.deleteField();
         }
         return acc;
       }, {} as any);

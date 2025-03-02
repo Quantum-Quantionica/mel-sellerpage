@@ -26,7 +26,10 @@ const ProductsPage = ({provider, title, name}: ProductsPageProps) => {
       <DynamicList provider={provider} title={name} nameKey="name" deleteInterceptor={async item => {
         await deleteFolder(`${provider.collectionName}/${item.id}`);
         return true;
-      }} adicionalFields={item => <span><b>Attendants: </b>{item.attendants?.join(', ')}</span>} />
+      }} adicionalFields={item => <>
+        {item.homePosition && <span><b>Position: </b>{item.homePosition}</span>}
+        <span><b>Attendants: </b>{item.attendants?.join(', ')}</span>
+      </>} />
     </>;
 
   return (

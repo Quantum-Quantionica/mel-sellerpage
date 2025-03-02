@@ -1,8 +1,8 @@
-
-.products-box { /* list of products */
+.products-box {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin: 1.5em auto;
     padding: 10px;
     column-gap: 20px;
     row-gap: 40px;
