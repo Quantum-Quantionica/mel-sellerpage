@@ -31,9 +31,9 @@ function App() {
         <Header />
         <MainContent />
         <Footer />
-        <a href={configs.whatsappLink} target='_blank' rel='noreferrer' className='whatszapp floating'>
+        {configs.whatsappLink && <a href={configs.whatsappLink} target='_blank' rel='noreferrer' className='whatszapp floating'>
           <Icon icon={Icons.brands.faWhatsapp} size='3x' />
-        </a>
+        </a>}
         {floatingBottomMargin > 20 && <style>{`
 .floating {
     bottom: ${floatingBottomMargin}px !important;
