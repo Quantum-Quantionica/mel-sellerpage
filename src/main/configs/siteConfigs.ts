@@ -1,4 +1,4 @@
-import AttendantsProvider, { Attendant, AttendantSocialLink } from "../data/attendants";
+import AttendantsProvider, { Attendant, AttendantSocialLink, Page } from "../data/attendants";
 
 import { CarroseItem } from '../../components/Carrosel';
 import { IconDefinition, IconKey, Icons } from '../../components/Icons';
@@ -24,9 +24,12 @@ export interface SiteConfig {
   whatsappNumber?: string;
   whatsappLink?: string;
   carrosel?: (string | CarroseItem)[];
+  pages?: Page[];
 }
 
 export const ConfigKeys: (keyof SiteConfig)[] = [
+  "pages",
+  "carrosel",
   "backgroundColor",
   "headerBackgroundColor",
   "headerAssentColor",
@@ -36,7 +39,6 @@ export const ConfigKeys: (keyof SiteConfig)[] = [
   "markColor",
   "markIcon",
   "whatsappNumber",
-  "carrosel",
 ]
 
 class ConfigsCacheProvider {
@@ -75,7 +77,7 @@ class ConfigsCacheProvider {
     return {
       ...this.defaultConfig,
       ...config.siteConfig,
-      whatsappLink: `https://wa.me/${config.siteConfig?.whatsappNumber?.replace(/\D/g, '')}`
+      whatsappLink: config.siteConfig?.whatsappNumber ? `https://wa.me/${config.siteConfig?.whatsappNumber?.replace(/\D/g, '')}` : undefined
     };
   }
 

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
 import { FieldRendererPros, Input } from "..";
-import { WithId } from "../../../data/provider";
-import { AttendantSocialLink } from "../../../data/attendants";
+import { AttendantSocialLink } from "../../../main/data/attendants";
+import { WithId } from "../../../main/data/provider";
 import IconRenderer from "./IconRenderer";
 
-const SocialRenderer = <T extends WithId>({value, onChange}: FieldRendererPros<T>) => {
+const SocialRenderer = <T extends WithId>({value, onChange, ...props}: FieldRendererPros<T>) => {
   const valueRef = useRef<Partial<AttendantSocialLink>>(typeof value !== "object" ? {} : value);
   const [name, setName] = useState(valueRef.current.name || "");
   const [icon, setIcon] = useState(valueRef.current.icon || "");
@@ -21,22 +21,28 @@ const SocialRenderer = <T extends WithId>({value, onChange}: FieldRendererPros<T
   },[value]);
 
   return <>
-    <Input name="Link" value={link} onChange={(text: string) => {
-      setLink(text);
-      valueRef.current.link = text;
-      onChange(valueRef.current);
-    }} />
-    <Input name="Network Name" value={name} onChange={(text: string) => {
-      const newText = captalistFirstLetterOfEachWord(text);
-      setName(newText);
-      valueRef.current.name = newText;
-      onChange(valueRef.current);
-    }} />
-    <IconRenderer name="Icon" value={icon} onChange={(text: string) => {
-      setIcon(text);
-      valueRef.current.icon = text;
-      onChange(valueRef.current);
-    }} />
+    <Input
+      provider={props.provider} item={props.item} save={props.save}
+      name="Link" value={link} onChange={(text: string) => {
+        setLink(text);
+        valueRef.current.link = text;
+        onChange(valueRef.current);
+      }} />
+    <Input 
+      provider={props.provider} item={props.item} save={props.save}
+      name="Network Name" value={name} onChange={(text: string) => {
+        const newText = captalistFirstLetterOfEachWord(text);
+        setName(newText);
+        valueRef.current.name = newText;
+        onChange(valueRef.current);
+      }} />
+    <IconRenderer 
+      provider={props.provider} item={props.item} save={props.save}
+      name="Icon" value={icon} onChange={(text: string) => {
+        setIcon(text);
+        valueRef.current.icon = text;
+        onChange(valueRef.current);
+      }} />
   </>;
 };
 export default SocialRenderer;

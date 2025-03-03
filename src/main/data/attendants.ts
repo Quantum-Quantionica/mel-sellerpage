@@ -1,5 +1,6 @@
-import { SiteConfig } from "../configs/siteConfigs";
 import AbstractProvider from "./provider";
+
+import { SiteConfig } from "../configs/siteConfigs";
 
 export interface Attendant {
   id?: string;
@@ -27,6 +28,13 @@ export interface AttendantSocialLink {
   link: string;
   icon: string;
   name: string;
+}
+
+export type Page = {
+  name: string;
+  url: string;
+  type: string;
+  icon: string;
 }
 
 export default class AttendantsProvider extends AbstractProvider<Attendant> {

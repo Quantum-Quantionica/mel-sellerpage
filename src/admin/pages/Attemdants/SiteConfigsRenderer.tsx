@@ -6,14 +6,19 @@ import { WithId } from "../../../main/data/provider";
 import { FieldRenderer, FieldRendererPros, ImageRenderer, Input, ListRenderer, ListRendererConfigs } from "../../forms";
 import IconRenderer from "../../forms/renderers/IconRenderer";
 import CarroselItemRenderer from "./CarroselItemRenderer";
+import PageRenderer from "./PageRenderer";
 
 const ConfigKeysRenderer: { [key in keyof SiteConfig]?: FieldRenderer<any> } = {
   "markIcon": IconRenderer,
   "carrosel": ListRenderer,
+  "pages": ListRenderer,
 }
 const ConfigKeysRendererConfigs: { [key in keyof SiteConfig]?: object } = {
   "carrosel": {
     renderer: CarroselItemRenderer,
+  } as ListRendererConfigs<SiteConfig & { id?: string }>,
+  "pages": {
+    renderer: PageRenderer,
   } as ListRendererConfigs<SiteConfig & { id?: string }>,
 }
 
