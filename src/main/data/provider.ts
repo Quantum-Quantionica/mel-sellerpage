@@ -92,7 +92,7 @@ export default abstract class AbstractFirestoreProvider<T extends WithId> implem
     return result;
   }
 
-  async litsAllWithCache(): Promise<T[]> {
+  async listAllWithCache(): Promise<T[]> {
     if(this.lastResult)
       return this.lastResult;
     return this.listAll();
