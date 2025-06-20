@@ -39,7 +39,7 @@ export default function ProductsPage({ title, provider, filter }: ProductsPagePr
       if (filter) {
         provider.listAll(filter).then(setProductList);
       } else {
-        provider.litsAllWithCache().then(setProductList);
+        provider.listAllWithCache().then(setProductList);
       }
       return;
     }

@@ -5,17 +5,16 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import Icon, { Icons } from '../components/Icons';
 import { configStorage } from "../main/configs/siteConfigs";
 import ProductsProvider from "../main/data/products";
-import CategoryProductsProvider from "../main/data/categoryProducts";
 import MenuItem from "../main/MenuItemInterface";
 import './AdminApp.css';
 import AttendantsPage from "./pages/Attemdants/Attendants";
 import ProductsPage from "./pages/Products";
 
 const providers = {
-  yinYang: new CategoryProductsProvider('Yin Yang'),
-  meridianos: new CategoryProductsProvider('Meridianos'),
-  avaliacoes: new CategoryProductsProvider('Avaliações'),
-  tecnicas: new CategoryProductsProvider('Técnicas Terapêuticas'),
+  yinYang: new ProductsProvider(),
+  meridianos: new ProductsProvider(),
+  avaliacoes: new ProductsProvider(),
+  tecnicas: new ProductsProvider(),
 };
 
 export const menuItems: MenuItem[] = [

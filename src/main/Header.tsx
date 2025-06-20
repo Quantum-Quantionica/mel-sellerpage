@@ -11,7 +11,6 @@ import Icon, { Icons } from '../components/Icons';
 import Home from "../pages/Home";
 import ProductsPage from "../pages/Products";
 import WhoWeAre from "../pages/WhoWeAre";
-import CategoryProductsProvider from "./data/categoryProducts";
 
 export const booksPageLink = 'livros';
 
@@ -19,10 +18,10 @@ const providers = {
   course: new ProductsProvider('course'),
   appointment: new ProductsProvider('appointment'),
   book: new ProductsProvider('book'),
-  yinYang: new CategoryProductsProvider('Yin Yang'),
-  meridianos: new CategoryProductsProvider('Meridianos'),
-  avaliacoes: new CategoryProductsProvider('Avaliações'),
-  tecnicas: new CategoryProductsProvider('Técnicas Terapêuticas'),
+  yinYang: new ProductsProvider(),
+  meridianos: new ProductsProvider(),
+  avaliacoes: new ProductsProvider(),
+  tecnicas: new ProductsProvider(),
 };
 
 export const menuItems: MenuItem[] = [
