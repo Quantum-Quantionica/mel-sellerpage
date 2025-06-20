@@ -14,6 +14,7 @@ import "./Product.css";
 export interface ProductsPageProps {
   provider: ProductsProvider;
   title: string;
+  filter?: Partial<Product>;
 }
 
 const formatPrice = (product: Product) => {
@@ -24,7 +25,7 @@ const formatPrice = (product: Product) => {
   }).replace(",", "x").replace(".", ",").replace("x", ".").replace("R$", "R$ ");
 }
 
-export default function ProductsPage({ title, provider }: ProductsPageProps) {
+export default function ProductsPage({ title, provider, filter }: ProductsPageProps) {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>();
   const [productList, setProductList] = useState<Product[]>([]);
@@ -35,12 +36,16 @@ export default function ProductsPage({ title, provider }: ProductsPageProps) {
 
   useEffect(() => {
     if (!id) {
-      provider.litsAllWithCache().then(setProductList);
+      if (filter) {
+        provider.listAll(filter).then(setProductList);
+      } else {
+        provider.litsAllWithCache().then(setProductList);
+      }
       return;
-    };
+    }
     provider.getById(id).then(setProduct);
     return () => setProduct(null);
-  }, [id, provider]);
+  }, [id, provider, filter]);
 
   useEffect(() => {
     const handleScroll = () => {

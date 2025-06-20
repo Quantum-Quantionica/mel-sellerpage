@@ -28,7 +28,7 @@ ${Object
       const value: string = config[key] as string;
       
       return value.includes('http')
-        ? `--${key}: url(${value};)\n`
+        ? `--${key}: url(${value});\n`
         : `--${key}: ${value};\n`
     })
     .join('')

@@ -32,7 +32,7 @@ export default function Carrose() {
         const className = 'item ' + (currentIndex===index ? 'active' : '');
         const style = {backgroundImage: `url(${item.image})`};
 
-        if(item.link) return <Link key={index}to={item.link} style={style} className={className} title={item.title} />;
+        if(item.link) return <Link key={index} to={item.link} style={style} className={className} title={item.title} />;
         return <div key={index} style={style} className={className} title={item.title} />
       })}
     </div>

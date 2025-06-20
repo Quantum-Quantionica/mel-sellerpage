@@ -11,6 +11,7 @@ import Icon, { Icons } from '../components/Icons';
 import Home from "../pages/Home";
 import ProductsPage from "../pages/Products";
 import WhoWeAre from "../pages/WhoWeAre";
+import CategoryProductsProvider from "./data/categoryProducts";
 
 export const booksPageLink = 'livros';
 
@@ -18,11 +19,35 @@ const providers = {
   course: new ProductsProvider('course'),
   appointment: new ProductsProvider('appointment'),
   book: new ProductsProvider('book'),
+  yinYang: new CategoryProductsProvider('Yin Yang'),
+  meridianos: new CategoryProductsProvider('Meridianos'),
+  avaliacoes: new CategoryProductsProvider('Avaliações'),
+  tecnicas: new CategoryProductsProvider('Técnicas Terapêuticas'),
 };
 
 export const menuItems: MenuItem[] = [
   { name: 'Home', link: '', icon: Icons.solid.faHouse, page: <Home /> },
   { name: 'Quem Somos', link: 'sobre', icon: Icons.solid.faBuilding, page: <WhoWeAre /> },
+  {
+    name: 'Yin Yang', link: 'yin-yang', params: '/:id?', icon: Icons.solid.faYinYang,
+    provider: providers.yinYang,
+    page: <ProductsPage provider={providers.yinYang} title='Yin Yang' filter={{ category: 'Yin Yang' }} />,
+  },
+  {
+    name: 'Meridianos', link: 'meridianos', params: '/:id?', icon: Icons.solid.faStream,
+    provider: providers.meridianos,
+    page: <ProductsPage provider={providers.meridianos} title='Meridianos' filter={{ category: 'Meridianos' }} />,
+  },
+  {
+    name: 'Avaliações', link: 'avaliacoes', params: '/:id?', icon: Icons.solid.faClipboardCheck,
+    provider: providers.avaliacoes,
+    page: <ProductsPage provider={providers.avaliacoes} title='Avaliações' filter={{ category: 'Avaliações' }} />,
+  },
+  {
+    name: 'Técnicas Terapêuticas', link: 'tecnicas-terapeuticas', params: '/:id?', icon: Icons.solid.faHands,
+    provider: providers.tecnicas,
+    page: <ProductsPage provider={providers.tecnicas} title='Técnicas Terapêuticas' filter={{ category: 'Técnicas Terapêuticas' }} />,
+  },
   // { name: 'Fale com a gente', link: 'fale-conosco', icon: Icons.solid.faHeadset },
   {
     name: 'Cursos', link: 'cursos', params: '/:id?', icon: Icons.solid.faChalkboardTeacher,

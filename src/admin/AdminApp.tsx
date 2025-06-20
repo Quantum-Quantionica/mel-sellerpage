@@ -5,10 +5,18 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import Icon, { Icons } from '../components/Icons';
 import { configStorage } from "../main/configs/siteConfigs";
 import ProductsProvider from "../main/data/products";
+import CategoryProductsProvider from "../main/data/categoryProducts";
 import MenuItem from "../main/MenuItemInterface";
 import './AdminApp.css';
 import AttendantsPage from "./pages/Attemdants/Attendants";
 import ProductsPage from "./pages/Products";
+
+const providers = {
+  yinYang: new CategoryProductsProvider('Yin Yang'),
+  meridianos: new CategoryProductsProvider('Meridianos'),
+  avaliacoes: new CategoryProductsProvider('Avaliações'),
+  tecnicas: new CategoryProductsProvider('Técnicas Terapêuticas'),
+};
 
 export const menuItems: MenuItem[] = [
   { name: 'Atendentes', link: 'atendentes', params: '/:id?', icon: Icons.solid.faUserMd, page: <AttendantsPage /> },
@@ -23,6 +31,22 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Livros e Ebooks', link: 'livros', params: '/:id?', icon: Icons.solid.faBuilding,
     page: <ProductsPage provider={new ProductsProvider('book')} title="Cadastro de livros" name="Livro" />
+  },
+  {
+    name: 'Yin Yang', link: 'yin-yang', params: '/:id?', icon: Icons.solid.faYinYang,
+    page: <ProductsPage provider={providers.yinYang} title='Cadastro Yin Yang' name='Produto' />,
+  },
+  {
+    name: 'Meridianos', link: 'meridianos', params: '/:id?', icon: Icons.solid.faStream,
+    page: <ProductsPage provider={providers.meridianos} title='Cadastro Meridianos' name='Produto' />,
+  },
+  {
+    name: 'Avaliações', link: 'avaliacoes', params: '/:id?', icon: Icons.solid.faClipboardCheck,
+    page: <ProductsPage provider={providers.avaliacoes} title='Cadastro Avaliações' name='Produto' />,
+  },
+  {
+    name: 'Técnicas Terapêuticas', link: 'tecnicas-terapeuticas', params: '/:id?', icon: Icons.solid.faHands,
+    page: <ProductsPage provider={providers.tecnicas} title='Cadastro Técnicas Terapêuticas' name='Produto' />,
   },
   // { name: 'Videos', link: 'videos', icon: Icons.solid.faHeadset },
   // { name: 'Indicações', link: 'indicações', icon: Icons.solid.faChalkboardTeacher },
