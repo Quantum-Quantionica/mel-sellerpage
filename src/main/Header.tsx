@@ -18,10 +18,10 @@ const providers = {
   course: new ProductsProvider('course'),
   appointment: new ProductsProvider('appointment'),
   book: new ProductsProvider('book'),
-  yinYang: new ProductsProvider(),
-  meridianos: new ProductsProvider(),
-  avaliacoes: new ProductsProvider(),
-  tecnicas: new ProductsProvider(),
+  yinYang: new ProductsProvider('yin-yang'),
+  meridians: new ProductsProvider('meridians'),
+  evaluations: new ProductsProvider('evaluations'),
+  therapeuticTechniques: new ProductsProvider('therapeutic-techniques'),
 };
 
 export const menuItems: MenuItem[] = [
@@ -34,18 +34,18 @@ export const menuItems: MenuItem[] = [
   },
   {
     name: 'Meridianos', link: 'meridianos', params: '/:id?', icon: Icons.solid.faStream,
-    provider: providers.meridianos,
-    page: <ProductsPage provider={providers.meridianos} title='Meridianos' filter={{ category: 'Meridianos' }} />,
+    provider: providers.meridians,
+    page: <ProductsPage provider={providers.meridians} title='Meridianos' filter={{ category: 'Meridianos' }} />,
   },
   {
     name: 'Avaliações', link: 'avaliacoes', params: '/:id?', icon: Icons.solid.faClipboardCheck,
-    provider: providers.avaliacoes,
-    page: <ProductsPage provider={providers.avaliacoes} title='Avaliações' filter={{ category: 'Avaliações' }} />,
+    provider: providers.evaluations,
+    page: <ProductsPage provider={providers.evaluations} title='Avaliações' filter={{ category: 'Avaliações' }} />,
   },
   {
     name: 'Técnicas Terapêuticas', link: 'tecnicas-terapeuticas', params: '/:id?', icon: Icons.solid.faHands,
-    provider: providers.tecnicas,
-    page: <ProductsPage provider={providers.tecnicas} title='Técnicas Terapêuticas' filter={{ category: 'Técnicas Terapêuticas' }} />,
+    provider: providers.therapeuticTechniques,
+    page: <ProductsPage provider={providers.therapeuticTechniques} title='Técnicas Terapêuticas' filter={{ category: 'Técnicas Terapêuticas' }} />,
   },
   // { name: 'Fale com a gente', link: 'fale-conosco', icon: Icons.solid.faHeadset },
   {

@@ -7,7 +7,7 @@ export interface ProductInfoList {
     items?: string[];
 }
 
-export type ProductType = 'course' | 'book' | 'appointment';
+export type ProductType = 'course' | 'book' | 'appointment' | 'yin-yang' | 'meridians' | 'evaluations' | 'therapeutic-techniques';
 
 export interface Product {
   id?: string;

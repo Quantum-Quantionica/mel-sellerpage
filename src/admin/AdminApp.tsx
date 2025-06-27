@@ -11,25 +11,28 @@ import AttendantsPage from "./pages/Attemdants/Attendants";
 import ProductsPage from "./pages/Products";
 
 const providers = {
-  yinYang: new ProductsProvider(),
-  meridianos: new ProductsProvider(),
-  avaliacoes: new ProductsProvider(),
-  tecnicas: new ProductsProvider(),
+  appointment: new ProductsProvider('appointment'),
+  course: new ProductsProvider('course'),
+  book: new ProductsProvider('book'),
+  yinYang: new ProductsProvider('yin-yang'),
+  meridians: new ProductsProvider('meridians'),
+  evaluations: new ProductsProvider('evaluations'),
+  therapeuticTechniques: new ProductsProvider('therapeutic-techniques'),
 };
 
 export const menuItems: MenuItem[] = [
   { name: 'Atendentes', link: 'atendentes', params: '/:id?', icon: Icons.solid.faUserMd, page: <AttendantsPage /> },
   {
     name: 'Consultas & Avaliações', link: 'atendimentos', params: '/:id?', icon: Icons.solid.faClipboardList,
-    page: <ProductsPage provider={new ProductsProvider('appointment')} title="Cadastro de Consulta / Avaliações" name="Consulta" />
+    page: <ProductsPage provider={providers.appointment} title="Cadastro de Consulta / Avaliações" name="Consulta" />
   },
   {
     name: 'Cursos', link: 'cursos', params: '/:id?', icon: Icons.solid.faHouse,
-    page: <ProductsPage provider={new ProductsProvider('course')} title="Cadastro de Cursos" name="Curso" />
+    page: <ProductsPage provider={providers.course} title="Cadastro de Cursos" name="Curso" />
   },
   {
     name: 'Livros e Ebooks', link: 'livros', params: '/:id?', icon: Icons.solid.faBuilding,
-    page: <ProductsPage provider={new ProductsProvider('book')} title="Cadastro de livros" name="Livro" />
+    page: <ProductsPage provider={providers.book} title="Cadastro de livros" name="Livro" />
   },
   {
     name: 'Yin Yang', link: 'yin-yang', params: '/:id?', icon: Icons.solid.faYinYang,
@@ -37,15 +40,15 @@ export const menuItems: MenuItem[] = [
   },
   {
     name: 'Meridianos', link: 'meridianos', params: '/:id?', icon: Icons.solid.faStream,
-    page: <ProductsPage provider={providers.meridianos} title='Cadastro Meridianos' name='Produto' />,
+    page: <ProductsPage provider={providers.meridians} title='Cadastro Meridianos' name='Produto' />,
   },
   {
     name: 'Avaliações', link: 'avaliacoes', params: '/:id?', icon: Icons.solid.faClipboardCheck,
-    page: <ProductsPage provider={providers.avaliacoes} title='Cadastro Avaliações' name='Produto' />,
+    page: <ProductsPage provider={providers.evaluations} title='Cadastro Avaliações' name='Produto' />,
   },
   {
     name: 'Técnicas Terapêuticas', link: 'tecnicas-terapeuticas', params: '/:id?', icon: Icons.solid.faHands,
-    page: <ProductsPage provider={providers.tecnicas} title='Cadastro Técnicas Terapêuticas' name='Produto' />,
+    page: <ProductsPage provider={providers.therapeuticTechniques} title='Cadastro Técnicas Terapêuticas' name='Produto' />,
   },
   // { name: 'Videos', link: 'videos', icon: Icons.solid.faHeadset },
   // { name: 'Indicações', link: 'indicações', icon: Icons.solid.faChalkboardTeacher },
